@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HUD FHEO Staff Directory — Full (All Regions & Offices)</title>
+  <style>.section-match { outline: 2px solid rgba(255,77,77,0.12); }
+/* Strong, high-contrast highlight for matched grid cards */
+.search-match { z-index: 5 !important; border: 2px solid #ff4d4d !important; background: #fff7f7 !important; transform: translateY(-2px); } .search-match h4 { color: #b30000 !important; } .search-match .position { color: #8b0000 !important; } .hidden { display: none !important; } /* Needed for search/toggle */
+ /* background: #fff7f7 !important;              /* subtle warm background so border stands out 
+  transform: translateY(-2px);
+  transition: transform .12s ease, box-shadow .18s ease, background .12s ease; */
+
+/* Make heading and position text clearly red on matched cards */
+.search-match h4 { color: #b30000 !important; }
+.search-match .position { color: #8b0000 !important; }
+.hidden { display: none !important; } /* Needed for search/toggle */
+
+/* Fallback outline for browsers that may clip borders */
+.search-match::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -4px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.06);
+.search-match h4 { color: #b30000; }
+.search-match .position { color: #8b0000; }
+
+}
+.search-match h4 { color: #b30000; }
+.search-match .position { color: #8b0000; }
+
+    :root{
+      --bg:#f4f6f9;
+      --brand:#003366;
+      --accent:#0066cc;
+      --accent-strong:#005bb5;
+      --text:#333;
+      --muted:#555;
+      --card:#fff;
+      --border:#e5e7eb;
+      --focus: #ffb84d;
+      --grid-btn-bg: #e6f0ff;
+      --table-btn-bg: #fff4e6;
+      --grid-btn-active-bg: var(--accent);
+      --table-btn-active-bg: #ff8c00;
+      --grid-btn-active-color: #fff;
+      --table-btn-active-color: #fff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    header{
+      background:var(--brand); color:#fff; padding:1.5rem; text-align:center;
+    }
+    header h1{ margin:0 0 .5rem 0; font-size:1.75rem }
+    header p{ margin:.25rem 0; font-size:.95rem }
+    main{ max-width:1200px; margin:2rem auto; padding:0 1rem; }
+    .section{
+      margin:2rem 0; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.08);
+      border:1px solid var(--border);
+    }
+    .section-header{
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      padding:1rem 1rem .75rem 1rem; border-bottom:1px solid var(--border);
+      background:#f9fbff;
+    }
+    .section-header h2{
+      margin:0; font-size:1.25rem; color:var(--brand);
+    }
+    .office-header{
+      padding:.75rem 1rem; border-bottom:1px dashed var(--border); background:#fff;
+    }
+    .office-header h3{ margin:0; font-size:1.05rem; color:var(--brand) }
+    .meta{ color:var(--muted); font-size:.95rem; margin-top:.25rem }
+    .controls{
+      display:flex; gap:.5rem; align-items:center;
+    }
+    .btn{
+      appearance:none; border:1px solid var(--border); background:var(--grid-btn-bg); color:var(--text);
+      padding:.45rem .8rem; border-radius:6px; cursor:pointer; font-size:.95rem;
+      transition:all .12s ease; display:inline-flex; align-items:center; gap:.5rem;
+    }
+    .btn:hover{ transform:translateY(-1px) }
+    .btn:focus{ outline:3px solid var(--focus); outline-offset:2px }
+    .btn.grid{ background:var(--grid-btn-bg); border-color:var(--accent); color:var(--accent) }
+    .btn.table{ background:var(--table-btn-bg); border-color:#ffcc99; color:#b35a00 }
+    .btn.active.grid{ background:var(--grid-btn-active-bg); color:var(--grid-btn-active-color); border-color:var(--grid-btn-active-bg) }
+    .btn.active.table{ background:var(--table-btn-active-bg); color:var(--table-btn-active-color); border-color:var(--table-btn-active-bg) }
+    .view{ padding:1rem; }
+    .grid{
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;
+    }
+    .card{
+      background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1rem;
+      min-height:90px;
+    }
+    .card h4{ margin:.1rem 0 .35rem 0;color:var(--brand);font-size:1rem;line-height:1.2 }
+    .card .position{ display:block; font-weight:600; color:var(--muted); font-size:.9rem; margin-top:.15rem }
+    .card p{ margin:.2rem 0; color:var(--muted) }
+    .card .label{ font-weight:600; color:var(--text) }
+    .card a{ color:var(--accent); text-decoration:none }
+    .card a:hover{ text-decoration:underline }
+    .table-wrap{ overflow:auto; padding:0 1rem 1rem 1rem }
+    table{ width:100%; border-collapse:collapse; font-size:.95rem; background:#fff }
+    caption{ text-align:left; font-weight:600; padding:.5rem 0; color:var(--brand) }
+    thead th{
+      position:sticky; top:0; background:#eef4ff; color:#1f3b66;
+      border-bottom:1px solid var(--border); text-align:left; padding:.6rem;
+    }
+    tbody td{ border-top:1px solid var(--border); padding:.55rem; vertical-align:top }
+    th,td{ white-space:nowrap }
+    .searchbar{ display:flex; gap:.5rem; align-items:center; padding:1rem }
+    .searchbar input{ flex:1; padding:.6rem; border:1px solid var(--border); border-radius:6px }
+    .small-muted{ font-size:.9rem; color:var(--muted) }
+    .sr-only{
+      position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    footer{ text-align:center; color:#666; margin:2rem 0; font-size:.95rem }
+    @media print{
+      body{ background:#fff; color:#000 }
+      header, .controls, .btn, .searchbar{ display:none !important }
+      .section{ box-shadow:none; border:1px solid #ddd }
+      table{ font-size:12px }
+    }
+  /* existing styles ... */
+  .corr-code {
+    display:inline-block;
+    margin-left:.5rem;
+    font-weight:600;
+    color:var(--accent-strong);
+    font-size:.85rem;
+    background:#eef4ff;
+    padding:.1rem .4rem;
+    border-radius:4px;
+  }
+
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main-content">Skip to main content</a>
+  <header>
+    <h1>HUD FHEO Staff Directory — Full (All Regions & Offices)</h1>
+    <p>Global email: HQ_FHEO • Hotline: 1-800-669-9777 • TDD: 1-800-927-9275 • Fax: 202-485-9372</p>
+  </header>
+  <main id="main-content">
+    <section class="section" id="controls">
+      <div class="section-header" role="region" aria-labelledby="controls-title">
+        <div>
+          <h2 id="controls-title">Directory Controls</h2>
+          <div class="meta">Toggle views and search across all employees</div>
+        </div>
+        <div class="controls" role="toolbar" aria-label="View controls">
+          <button id="btnGrid" class="btn grid active" aria-pressed="true">Grid view</button>
+          <button id="btnTable" class="btn table" aria-pressed="false">Table view</button>
+        </div>
+      </div>
+      <div class="view">
+        <div class="searchbar">
+          <input id="globalSearch" placeholder="Search by name, office, position, state, or email" aria-label="Search staff">
+          <div class="small-muted">Live filter across cards and tables</div>
+        </div>
+      </div>
+    </section> </main>
+<!-- HQ -->
+<section class="section" id="hq">
+  <div class="section-header">
+    <div>
+      <h2>Headquarters (HQ)</h2>
+      <div class="meta">FHEO Leadership</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="HQ">
+    <article class="card" data-search="TRAINOR, CRAIG Assistant Secretary craig.trainor@hud.gov HQ – Room 5100 HQ CAN BE FOUND HERE.">
+      <h4>TRAINOR, CRAIG 
+        <span class="position">Assistant Secretary</span>
+        <span class="corr-code">E</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:craig.trainor@hud.gov">craig.trainor@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5100</p>
+    </article>
+
+    <article class="card" data-search="GIBBS, JOHN (Acting) Principal Deputy Assistant Secretary john.gibbs@hud.gov HQ – Room 5100 HQ CAN BE FOUND HERE.">
+      <h4>GIBBS, JOHN (Acting) 
+        <span class="position">Principal Deputy Assistant Secretary</span>
+        <span class="corr-code">E</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:john.gibbs@hud.gov">john.gibbs@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5100</p>
+    </article>
+
+    <article class="card" data-search="COOKE, KEVIN R General Deputy Assistant Secretary (SES) kevin.cooke@hud.gov HQ – Room 5100 HQ CAN BE FOUND HERE.">
+      <h4>COOKE, KEVIN R 
+        <span class="position">General Deputy Assistant Secretary (SES)</span>
+        <span class="corr-code">E1</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:kevin.cooke@hud.gov">kevin.cooke@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5100</p>
+    </article>
+
+    <article class="card" data-search="ABELL, LISA DAS for Operations and Management (SES) lisa.abell@hud.gov HQ – Room 5128 HQ CAN BE FOUND HERE.">
+      <h4>ABELL, LISA 
+        <span class="position">DAS for Operations and Management (SES)</span>
+        <span class="corr-code">EG</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:lisa.abell@hud.gov">lisa.abell@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5128</p>
+    </article>
+
+    <article class="card" data-search="TAYLOR, MELODY DAS for Policy, Legislative Initiatives and Outreach (SES) melody.taylor@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>TAYLOR, MELODY 
+        <span class="position">DAS for Policy, Legislative Initiatives and Outreach (SES)</span>
+        <span class="corr-code">EC</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:melody.taylor@hud.gov">melody.taylor@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="DOLES, ROBERT (Acting) DAS for Enforcement (SES) robert.doles@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>DOLES, ROBERT (Acting) 
+        <span class="position">DAS for Enforcement (SES)</span>
+        <span class="corr-code">ED</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:robert.doles@hud.gov">robert.doles@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="CULLEN, DEANDRA (Acting) Executive Director for Field Operations (SES) deandra.cullen@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>CULLEN, DEANDRA (Acting) 
+        <span class="position">Executive Director for Field Operations (SES)</span>
+        <span class="corr-code">E1</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:deandra.cullen@hud.gov">deandra.cullen@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="MCNALLY, CHARLES Director, Program Standards and Compliance Division charles.mcnally@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>MCNALLY, CHARLES 
+        <span class="position">Director, Program Standards and Compliance Division</span>
+        <span class="corr-code">EDPP</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:charles.mcnally@hud.gov">charles.mcnally@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="VASILOPOULOS, KATHERINE (Acting) Director, Fair Housing Initiatives Program (FHIP) Division katherine.vasilopoulos@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>VASILOPOULOS, KATHERINE (Acting) 
+        <span class="position">Director, Fair Housing Initiatives Program (FHIP) Division</span>
+        <span class="corr-code">EDPP</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:katherine.vasilopoulos@hud.gov">katherine.vasilopoulos@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="SPRINGER-ELKERSON, IRIS (Acting) Director, Policy and Legislative Initiatives Division iris.springer-elkerson@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
+      <h4>SPRINGER-ELKERSON, IRIS (Acting) 
+        <span class="position">Director, Policy and Legislative Initiatives Division</span>
+        <span class="corr-code">EC</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:iris.springer-elkerson@hud.gov">iris.springer-elkerson@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
+    </article>
+
+    <article class="card" data-search="SUTTON, JAMES N Director, Field Oversight james.sutton@hud.gov HQ – Room 5130 HQ CAN BE FOUND HERE.">
+      <h4>SUTTON, JAMES N 
+        <span class="position">Director, Field Oversight</span>
+        <span class="corr-code">E1A</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:james.sutton@hud.gov">james.sutton@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5130</p>
+    </article>
+
+    <article class="card" data-search="SMALLWOOD, MARCUS Director, Office of Information Services and Communications marcus.smallwood@hud.gov HQ – Room 5118 HQ CAN BE FOUND HERE.">
+      <h4>SMALLWOOD, MARCUS 
+        <span class="position">Director, Office of Information Services and Communications</span>
+        <span class="corr-code">EGID</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:marcus.smallwood@hud.gov">marcus.smallwood@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5118</p>
+    </article>
+
+    <article class="card" data-search="MONTGOMERY, CHARLES M III Director, Office of Management, Planning and Budget charles.montgomery@hud.gov HQ – Room 5110 HQ CAN BE FOUND HERE.">
+      <h4>MONTGOMERY, CHARLES M III 
+        <span class="position">Director, Office of Management, Planning and Budget</span>
+        <span class="corr-code">EGP</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:charles.montgomery@hud.gov">charles.montgomery@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5110</p>
+    </article>
+
+    <article class="card" data-search="WELLS, ERIC Director, Budget Division eric.wells@hud.gov HQ – Room 5110 HQ CAN BE FOUND HERE.">
+      <h4>WELLS, ERIC 
+        <span class="position">Director, Budget Division</span>
+        <span class="corr-code">EGPD</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:eric.wells@hud.gov">eric.wells@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5110</p>
+    </article>
+
+    <article class="card" data-search="GANO, JOSEPH L Director, Administrative Services joseph.gano@hud.gov HQ – Room 5124 HQ CAN BE FOUND HERE.">
+      <h4>GANO, JOSEPH L 
+        <span class="position">Director, Administrative Services</span>
+        <span class="corr-code">EGC</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:joseph.gano@hud.gov">joseph.gano@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5124</p>
+    </article>
+
+    <article class="card" data-search="JONES-PETERS, JACQUELINE Director, Resource Management Division jacqueline.jones-peters@hud.gov HQ – Room 5124 HQ CAN BE FOUND HERE.">
+      <h4>JONES-PETERS, JACQUELINE 
+        <span class="position">Director, Resource Management Division</span>
+        <span class="corr-code">EGCA</span>
+      </h4>
+      <p><strong>Email:</strong><br><a href="mailto:jacqueline.jones-peters@hud.gov">jacqueline.jones-peters@hud.gov</a></p>
+      <p><strong>Location:</strong> HQ – Room 5124</p>
+    </article>
+  </div> <!-- end of HQ grid -->
+  <div class="view table-wrap region-table" style="display:none" data-region="HQ">
+    <table>
+      <caption>HQ – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th><th>Corr. Code</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TRAINOR, CRAIG</td><td>Assistant Secretary</td><td><a href="mailto:craig.trainor@hud.gov">craig.trainor@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
+        <tr><td>GIBBS, JOHN (Acting)</td><td>Principal Deputy Assistant Secretary</td><td><a href="mailto:john.gibbs@hud.gov">john.gibbs@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
+        <tr><td>COOKE, KEVIN R</td><td>General Deputy Assistant Secretary (SES)</td><td><a href="mailto:kevin.cooke@hud.gov">kevin.cooke@hud.gov</a></td><td>HQ – Room 5100</td><td>E1</td></tr>
+        <tr><td>ABELL, LISA</td><td>DAS for Operations and Management (SES)</td><td><a href="mailto:lisa.abell@hud.gov">lisa.abell@hud.gov</a></td><td>HQ – Room 5128</td><td>EG</td></tr>
+        <tr><td>TAYLOR, MELODY</td><td>DAS for Policy, Legislative Initiatives and Outreach (SES)</td><td><a href="mailto:melody.taylor@hud.gov">melody.taylor@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EC</td></tr>
+        <tr><td>DOLES, ROBERT (Acting)</td><td>DAS for Enforcement (SES)</td><td><a href="mailto:robert.doles@hud.gov">robert.doles@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>ED</td></tr>
+        <tr><td>CULLEN, DEANDRA (Acting)</td><td>Executive Director for Field Operations (SES)</td><td><a href="mailto:deandra.cullen@hud.gov">deandra.cullen@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>E1</td></tr>
+        <tr><td>MCNALLY, CHARLES</td><td>Director, Program Standards and Compliance Division</td><td><a href="mailto:charles.mcnally@hud.gov">charles.mcnally@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EDPP</td></tr>
+        <tr><td>VASILOPOULOS, KATHERINE (Acting)</td><td>Director, Fair Housing Initiatives Program (FHIP) Division</td><td><a href="mailto:katherine.vasilopoulos@hud.gov">katherine.vasilopoulos@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EDPP</td></tr>
+        <tr><td>SPRINGER-ELKERSON, IRIS (Acting)</td><td>Director, Policy and Legislative Initiatives Division</td><td><a href="mailto:iris.springer-elkerson@hud.gov">iris.springer-elkerson@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EC</td></tr>
+        <tr><td>SUTTON, JAMES N</td><td>Director, Field Oversight</td><td><a href="mailto:james.sutton@hud.gov">james.sutton@hud.gov</a></td><td>HQ – Room 5130</td><td>E1A</td></tr>
+        <tr><td>SMALLWOOD, MARCUS</td><td>Director, Office of Information Services and Communications</td><td><a href="mailto:marcus.smallwood@hud.gov">marcus.smallwood@hud.gov</a></td><td>HQ – Room 5118</td><td>EGID</td></tr>
+        <tr><td>MONTGOMERY, CHARLES M III</td><td>Director, Office of Management, Planning and Budget</td><td><a href="mailto:charles.montgomery@hud.gov">charles.montgomery@hud.gov</a></td><td>HQ – Room 5110</td><td>EGP</td></tr>
+        <tr><td>WELLS, ERIC</td><td>Director, Budget Division</td><td><a href="mailto:eric.wells@hud.gov">eric.wells@hud.gov</a></td><td>HQ – Room 5110</td><td>EGPD</td></tr>
+        <tr><td>GANO, JOSEPH L</td><td>Director, Administrative Services</td><td><a href="mailto:joseph.gano@hud.gov">joseph.gano@hud.gov</a></td><td>HQ – Room 5124</td><td>EGC</td></tr>
+        <tr><td>JONES-PETERS, JACQUELINE</td><td>Director, Resource Management Division</td><td><a href="mailto:jacqueline.jones-peters@hud.gov">jacqueline.jones-peters@hud.gov</a></td><td>HQ – Room 5124</td><td>EGCA</td></tr>
+      </tbody>
+    </table>
+  </div> <!-- end of HQ table-wrap -->
+
+</section> <!-- end of HQ -->    <!-- REGION 1 -->
+    <section class="section" id="region-1">
+      <div class="section-header">
+        <div>
+          <h2>Region 1 (Boston)</h2>
+          <div class="meta">New England</div>
+        </div>
+      </div>
+      <!-- Various Branches -->
+      <div class="view grid region-grid" data-region="Region 1">
+        <!-- REGION 1 CARDS -->
+        <article class="card" data-search="allen lucy h prog anal lucy.allen@hud.gov boston ma region 1"><h4>ALLEN, LUCY H <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Lucy.Allen@hud.gov">Lucy.Allen@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="caminiti michael james eq opp speclst michael.j.caminiti@hud.gov boston ma region 1"><h4>CAMINITI, MICHAEL JAMES <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Michael.J.Caminiti@HUD.GOV">Michael.J.Caminiti@HUD.GOV</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="clinton persis se mgmt anal persis.clinton@hud.gov boston ma region 1"><h4>CLINTON, PERSIS SE <span class="position">MGMT ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Persis.Clinton@hud.gov">Persis.Clinton@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="gaspard bryant gary eq opp speclst bryant.g.gaspard@hud.gov boston ma region 1"><h4>GASPARD, BRYANT GARY <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:bryant.g.gaspard@hud.gov">bryant.g.gaspard@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="greene karlyn esther eq opp speclst karlyn.e.greene@hud.gov boston ma region 1"><h4>GREENE, KARLYN ESTHER <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:KARLYN.E.GREENE@HUD.GOV">KARLYN.E.GREENE@HUD.GOV</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="johnson michelle supvy supervisory equal opportunity sp michelle.johnson@hud.gov hartford ct region 1"><h4>JOHNSON, MICHELLE <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Michelle.Johnson@hud.gov">Michelle.Johnson@hud.gov</a></p><p><strong>Location:</strong> HARTFORD, CT</p></article>
+        <article class="card" data-search="kanaan gregory r eq opp speclst gregory.r.kanaan@hud.gov hartford ct region 1"><h4>KANAAN, GREGORY R <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Gregory.R.Kanaan@hud.gov">Gregory.R.Kanaan@hud.gov</a></p><p><strong>Location:</strong> HARTFORD, CT</p></article>
+        <article class="card" data-search="lescault calvin francis eq opp speclst calvin.f.lescault@hud.gov boston ma region 1"><h4>LESCAULT, CALVIN FRANCIS <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:CALVIN.F.LESCAULT@HUD.GOV">CALVIN.F.LESCAULT@HUD.GOV</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="loxha emily rae supvy supervisory equal opportunity sp emily.loxha@hud.gov boston ma region 1"><h4>LOXHA, EMILY RAE <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:emily.loxha@hud.gov">emily.loxha@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="martin laffitte keara diane eq opp speclst keara.d.martinlaffitte@hud.gov boston ma region 1"><h4>MARTIN LAFFITTE, KEARA DIANE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:keara.d.martinlaffitte@hud.gov">keara.d.martinlaffitte@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="melendez lena thomas eq opp speclst lena.t.melendez@hud.gov boston ma region 1"><h4>MELENDEZ, LENA THOMAS <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Lena.T.Melendez@hud.gov">Lena.T.Melendez@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="myers daniel carl eq opp speclst daniel.c.myers@hud.gov hartford ct region 1"><h4>MYERS, DANIEL CARL <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:daniel.c.myers@hud.gov">daniel.c.myers@hud.gov</a></p><p><strong>Location:</strong> HARTFORD, CT</p></article>
+        <article class="card" data-search="schneider vera sally eq opp speclst vera.s.schneider@hud.gov boston ma region 1"><h4>SCHNEIDER, VERA SALLY <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:VERA.S.SCHNEIDER@HUD.GOV">VERA.S.SCHNEIDER@HUD.GOV</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="shahriar sajid a eq opp speclst sajid.a.shahriar@hud.gov boston ma region 1"><h4>SHAHRIAR, SAJID A <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Sajid.A.Shahriar@hud.gov">Sajid.A.Shahriar@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+        <article class="card" data-search="sussman jeffrey m special assistant jeffrey.m.sussman@hud.gov providence ri region 1"><h4>SUSSMAN, JEFFREY M <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:Jeffrey.M.Sussman@hud.gov">Jeffrey.M.Sussman@hud.gov</a></p><p><strong>Location:</strong> PROVIDENCE, RI</p></article>
+        <article class="card" data-search="tuches rebeca elizabeth eq opp speclst rebeca.e.tuches@hud.gov providence ri region 1"><h4>TUCHES, REBECA ELIZABETH <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:REBECA.E.TUCHES@HUD.GOV">REBECA.E.TUCHES@HUD.GOV</a></p><p><strong>Location:</strong> PROVIDENCE, RI</p></article>
+        <article class="card" data-search="weaver daniel j supvy supervisory equal opportunity sp daniel.j.weaver@hud.gov boston ma region 1"><h4>WEAVER, DANIEL J <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Daniel.J.Weaver@hud.gov">Daniel.J.Weaver@hud.gov</a></p><p><strong>Location:</strong> BOSTON, MA</p></article>
+      </div>
+      <!-- Table view for Region 1 (same data) -->
+      <div class="view table-wrap region-table" style="display:none" data-region="Region 1">
+        <table>
+          <caption>Region 1 – All Staff</caption>
+          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <tbody>
+            <tr data-search="allen lucy h prog anal lucy.allen@hud.gov boston ma region 1"><td>ALLEN, LUCY H</td><td>PROG ANAL</td><td><a href="mailto:Lucy.Allen@hud.gov">Lucy.Allen@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="caminiti michael james eq opp speclst michael.j.caminiti@hud.gov boston ma region 1"><td>CAMINITI, MICHAEL JAMES</td><td>EQ OPP SPECLST</td><td><a href="mailto:Michael.J.Caminiti@HUD.GOV">Michael.J.Caminiti@HUD.GOV</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="clinton persis se mgmt anal persis.clinton@hud.gov boston ma region 1"><td>CLINTON, PERSIS SE</td><td>MGMT ANAL</td><td><a href="mailto:Persis.Clinton@hud.gov">Persis.Clinton@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="gaspard bryant gary eq opp speclst bryant.g.gaspard@hud.gov boston ma region 1"><td>GASPARD, BRYANT GARY</td><td>EQ OPP SPECLST</td><td><a href="mailto:bryant.g.gaspard@hud.gov">bryant.g.gaspard@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="greene karlyn esther eq opp speclst karlyn.e.greene@hud.gov boston ma region 1"><td>GREENE, KARLYN ESTHER</td><td>EQ OPP SPECLST</td><td><a href="mailto:KARLYN.E.GREENE@HUD.GOV">KARLYN.E.GREENE@HUD.GOV</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="johnson michelle supvy supervisory equal opportunity sp michelle.johnson@hud.gov hartford ct region 1"><td>JOHNSON, MICHELLE</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Michelle.Johnson@hud.gov">Michelle.Johnson@hud.gov</a></td><td>HARTFORD, CT</td></tr>
+            <tr data-search="kanaan gregory r eq opp speclst gregory.r.kanaan@hud.gov hartford ct region 1"><td>KANAAN, GREGORY R</td><td>EQ OPP SPECLST</td><td><a href="mailto:Gregory.R.Kanaan@hud.gov">Gregory.R.Kanaan@hud.gov</a></td><td>HARTFORD, CT</td></tr>
+            <tr data-search="lescault calvin francis eq opp speclst calvin.f.lescault@hud.gov boston ma region 1"><td>LESCAULT, CALVIN FRANCIS</td><td>EQ OPP SPECLST</td><td><a href="mailto:CALVIN.F.LESCAULT@HUD.GOV">CALVIN.F.LESCAULT@HUD.GOV</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="loxha emily rae supvy supervisory equal opportunity sp emily.loxha@hud.gov boston ma region 1"><td>LOXHA, EMILY RAE</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:emily.loxha@hud.gov">emily.loxha@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="martin laffitte keara diane eq opp speclst keara.d.martinlaffitte@hud.gov boston ma region 1"><td>MARTIN LAFFITTE, KEARA DIANE</td><td>EQ OPP SPECLST</td><td><a href="mailto:keara.d.martinlaffitte@hud.gov">keara.d.martinlaffitte@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="melendez lena thomas eq opp speclst lena.t.melendez@hud.gov boston ma region 1"><td>MELENDEZ, LENA THOMAS</td><td>EQ OPP SPECLST</td><td><a href="mailto:Lena.T.Melendez@hud.gov">Lena.T.Melendez@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="myers daniel carl eq opp speclst daniel.c.myers@hud.gov hartford ct region 1"><td>MYERS, DANIEL CARL</td><td>EQ OPP SPECLST</td><td><a href="mailto:daniel.c.myers@hud.gov">daniel.c.myers@hud.gov</a></td><td>HARTFORD, CT</td></tr>
+            <tr data-search="schneider vera sally eq opp speclst vera.s.schneider@hud.gov boston ma region 1"><td>SCHNEIDER, VERA SALLY</td><td>EQ OPP SPECLST</td><td><a href="mailto:VERA.S.SCHNEIDER@HUD.GOV">VERA.S.SCHNEIDER@HUD.GOV</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="shahriar sajid a eq opp speclst sajid.a.shahriar@hud.gov boston ma region 1"><td>SHAHRIAR, SAJID A</td><td>EQ OPP SPECLST</td><td><a href="mailto:Sajid.A.Shahriar@hud.gov">Sajid.A.Shahriar@hud.gov</a></td><td>BOSTON, MA</td></tr>
+            <tr data-search="sussman jeffrey m special assistant jeffrey.m.sussman@hud.gov providence ri region 1"><td>SUSSMAN, JEFFREY M</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Jeffrey.M.Sussman@hud.gov">Jeffrey.M.Sussman@hud.gov</a></td><td>PROVIDENCE, RI</td></tr>
+            <tr data-search="tuches rebeca elizabeth eq opp speclst rebeca.e.tuches@hud.gov providence ri region 1"><td>TUCHES, REBECA ELIZABETH</td><td>EQ OPP SPECLST</td><td><a href="mailto:REBECA.E.TUCHES@HUD.GOV">REBECA.E.TUCHES@HUD.GOV</a></td><td>PROVIDENCE, RI</td></tr>
+            <tr data-search="weaver daniel j supvy supervisory equal opportunity sp daniel.j.weaver@hud.gov boston ma region 1"><td>WEAVER, DANIEL J</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Daniel.J.Weaver@hud.gov">Daniel.J.Weaver@hud.gov</a></td><td>BOSTON, MA</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section><!-- REGION 2 – NEW YORK -->
+    <!-- REGION 2 – NEW YORK -->
+    <section class="section" id="region-2">
+      <div class="section-header">
+        <div>
+          <h2>Region 2 (New York)</h2>
+          <div class="meta">New York/New Jersey/Caribbean</div>
+        </div>
+      </div>
+      <div class="view grid region-grid" data-region="Region 2">
+        <article class="card" data-search="allen tameka n eq opp speclst tameka.n.allen@hud.gov new york ny region 2"><h4>ALLEN, TAMEKA N <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:tameka.n.allen@hud.gov">tameka.n.allen@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="andino caballero tzeitel eq opp speclst tzeitel.andino-caballero@hud.gov new york ny region 2"><h4>ANDINO CABALLERO, TZEITEL <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:TZEITEL.ANDINO-CABALLERO@hud.gov">TZEITEL.ANDINO-CABALLERO@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="bancroft joshua l program analyst (oplio) joshua.l.bancroft@hud.gov huntington ny region 2"><h4>BANCROFT, JOSHUA L <span class="position">Program Analyst (OPLIO)</span></h4><p><strong>Email:</strong><br><a href="mailto:Joshua.L.Bancroft@hud.gov">Joshua.L.Bancroft@hud.gov</a></p><p><strong>Location:</strong> HUNTINGTON, NY</p></article>
+        <article class="card" data-search="boxer belinda b eq opp speclst belinda.boxer@hud.gov new york ny region 2"><h4>BOXER, BELINDA B <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Belinda.Boxer@hud.gov">Belinda.Boxer@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="chang jason c supvy supervisory equal opportunity sp jason.c.chang@hud.gov new york ny region 2"><h4>CHANG, JASON C <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Jason.C.Chang@hud.gov">Jason.C.Chang@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="cheng francis joseph program analyst francis.j.cheng@hud.gov new york ny region 2"><h4>CHENG, FRANCIS JOSEPH <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:francis.j.cheng@hud.gov">francis.j.cheng@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="genao orfelino emilio eq opp speclst orfelino.e.genao@hud.gov new york ny region 2"><h4>GENAO, ORFELINO EMILIO <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Orfelino.E.Genao@hud.gov">Orfelino.E.Genao@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="green-hedgeman stephany eq opp speclst stephany.green-hedgeman@hud.gov new york ny region 2"><h4>GREEN-HEDGEMAN, STEPHANY <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:stephany.green-hedgeman@hud.gov">stephany.green-hedgeman@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="holzman adele eq opp speclst adele.x.holzman@hud.gov laurence harbor nj region 2"><h4>HOLZMAN, ADELE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Adele.X.Holzman@hud.gov">Adele.X.Holzman@hud.gov</a></p><p><strong>Location:</strong> LAURENCE HARBOR, NJ</p></article>
+        <article class="card" data-search="kawamura aaron phillip eq opp speclst aaron.p.kawamura@hud.gov new york ny region 2"><h4>KAWAMURA, AARON PHILLIP <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Aaron.P.Kawamura@hud.gov">Aaron.P.Kawamura@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="kolker audra jillian eq opp speclst audra.j.kolker@hud.gov new york ny region 2"><h4>KOLKER, AUDRA JILLIAN <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Audra.J.Kolker@HUD.GOV">Audra.J.Kolker@HUD.GOV</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="liebman jennifer meredith eq opp speclst jennifer.m.liebman@hud.gov newark nj region 2"><h4>LIEBMAN, JENNIFER MEREDITH <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Jennifer.M.Liebman@hud.gov">Jennifer.M.Liebman@hud.gov</a></p><p><strong>Location:</strong> NEWARK, NJ</p></article>
+        <article class="card" data-search="malter max alexander eq opp speclst max.a.malter@hud.gov new york ny region 2"><h4>MALTER, MAX ALEXANDER <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:MAX.A.MALTER@HUD.GOV">MAX.A.MALTER@HUD.GOV</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="mcnally charles edward supervisory program analyst charles.mcnally@hud.gov new york ny region 2"><h4>MCNALLY, CHARLES EDWARD <span class="position">Supervisory Program Analyst</span></h4><p><strong>Email:</strong><br><a href="mailto:Charles.McNally@hud.gov">Charles.McNally@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="mitchell lena c eq opp speclst lena.c.mitchell@hud.gov newark nj region 2"><h4>MITCHELL, LENA C <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Lena.C.Mitchell@hud.gov">Lena.C.Mitchell@hud.gov</a></p><p><strong>Location:</strong> NEWARK, NJ</p></article>
+        <article class="card" data-search="nelson-gomes balenda l supvy supervisory equal opportunity sp balenda.l.nelson-gomes@hud.gov newark nj region 2"><h4>NELSON-GOMES, BALENDA L <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:balenda.l.nelson-gomes@hud.gov">balenda.l.nelson-gomes@hud.gov</a></p><p><strong>Location:</strong> NEWARK, NJ</p></article>
+        <article class="card" data-search="o'brien iii raymond daniel eq opp speclst daniel.obrien@hud.gov new york ny region 2"><h4>O'BRIEN III, RAYMOND DANIEL <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Daniel.OBrien@hud.gov">Daniel.OBrien@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="petty shakia teresa management and program analyst shakia.t.petty@hud.gov new york ny region 2"><h4>PETTY, SHAKIA TERESA <span class="position">MANAGEMENT AND PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:SHAKIA.T.PETTY@HUD.GOV">SHAKIA.T.PETTY@HUD.GOV</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="rivera-giusti ivette supvy supervisory equal opportunity sp ivette.m.rivera-giusti@hud.gov new york ny region 2"><h4>RIVERA-GIUSTI, IVETTE <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Ivette.M.Rivera-Giusti@hud.gov">Ivette.M.Rivera-Giusti@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="rubio marleny eq opp speclst marleny.rubio@hud.gov new york ny region 2"><h4>RUBIO, MARLENY <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Marleny.Rubio@HUD.GOV">Marleny.Rubio@HUD.GOV</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="soriano julissa eq opp speclst julissa.soriano@hud.gov newark nj region 2"><h4>SORIANO, JULISSA <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:julissa.soriano@hud.gov">julissa.soriano@hud.gov</a></p><p><strong>Location:</strong> NEWARK, NJ</p></article>
+        <article class="card" data-search="springer iris special assistant iris.springer-elkerson@hud.gov new york ny region 2"><h4>SPRINGER, IRIS <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:Iris.Springer-Elkerson@hud.gov">Iris.Springer-Elkerson@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="tzoneva anna stanislavova eq opp speclst anna.s.tzoneva@hud.gov new york ny region 2"><h4>TZONEVA, ANNA STANISLAVOVA <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:anna.s.tzoneva@hud.gov">anna.s.tzoneva@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="ulysse endjie geralde eq opp speclst endjie.g.ulysse@hud.gov new york ny region 2"><h4>ULYSSE, ENDJIE GERALDE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:endjie.g.ulysse@hud.gov">endjie.g.ulysse@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="vasilopoulos katherine prog anal katherine.vasilopoulos@hud.gov new york ny region 2"><h4>VASILOPOULOS, KATHERINE <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:KATHERINE.VASILOPOULOS@HUD.GOV">KATHERINE.VASILOPOULOS@HUD.GOV</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="vivchar olena supvy supervisory equal opportunity sp olena.vivchar@hud.gov new york ny region 2"><h4>VIVCHAR, OLENA <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Olena.Vivchar@hud.gov">Olena.Vivchar@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="wang jiancheng eq opp speclst jian-cheng.wang@hud.gov new york ny region 2"><h4>WANG, JIANCHENG <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Jian-cheng.Wang@hud.gov">Jian-cheng.Wang@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="williams monique eq opp speclst monique.x.williams@hud.gov new york ny region 2"><h4>WILLIAMS, MONIQUE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Monique.x.Williams@hud.gov">Monique.x.Williams@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="yeh tang-chi supvy supervisory equal opportunity sp tangchi.yeh@hud.gov new york ny region 2"><h4>YEH, TANG-CHI <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Tangchi.Yeh@hud.gov">Tangchi.Yeh@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+        <article class="card" data-search="zhou kent y eq opp speclst kent.y.zhou@hud.gov new york ny region 2"><h4>ZHOU, KENT Y <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:kent.y.zhou@hud.gov">kent.y.zhou@hud.gov</a></p><p><strong>Location:</strong> NEW YORK, NY</p></article>
+      </div>
+
+      <div class="view table-wrap region-table" style="display:none" data-region="Region 2">
+        <table>
+          <caption>Region 2 – All Staff</caption>
+          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <tbody>
+            <tr data-search="allen tameka n eq opp speclst tameka.n.allen@hud.gov new york ny region 2"><td>ALLEN, TAMEKA N</td><td>EQ OPP SPECLST</td><td><a href="mailto:tameka.n.allen@hud.gov">tameka.n.allen@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="andino caballero tzeitel eq opp speclst tzeitel.andino-caballero@hud.gov new york ny region 2"><td>ANDINO CABALLERO, TZEITEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:TZEITEL.ANDINO-CABALLERO@hud.gov">TZEITEL.ANDINO-CABALLERO@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="bancroft joshua l program analyst (oplio) joshua.l.bancroft@hud.gov huntington ny region 2"><td>BANCROFT, JOSHUA L</td><td>Program Analyst (OPLIO)</td><td><a href="mailto:Joshua.L.Bancroft@hud.gov">Joshua.L.Bancroft@hud.gov</a></td><td>HUNTINGTON, NY</td></tr>
+            <tr data-search="boxer belinda b eq opp speclst belinda.boxer@hud.gov new york ny region 2"><td>BOXER, BELINDA B</td><td>EQ OPP SPECLST</td><td><a href="mailto:Belinda.Boxer@hud.gov">Belinda.Boxer@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="chang jason c supvy supervisory equal opportunity sp jason.c.chang@hud.gov new york ny region 2"><td>CHANG, JASON C</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Jason.C.Chang@hud.gov">Jason.C.Chang@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="cheng francis joseph program analyst francis.j.cheng@hud.gov new york ny region 2"><td>CHENG, FRANCIS JOSEPH</td><td>PROGRAM ANALYST</td><td><a href="mailto:francis.j.cheng@hud.gov">francis.j.cheng@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="genao orfelino emilio eq opp speclst orfelino.e.genao@hud.gov new york ny region 2"><td>GENAO, ORFELINO EMILIO</td><td>EQ OPP SPECLST</td><td><a href="mailto:Orfelino.E.Genao@hud.gov">Orfelino.E.Genao@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="green-hedgeman stephany eq opp speclst stephany.green-hedgeman@hud.gov new york ny region 2"><td>GREEN-HEDGEMAN, STEPHANY</td><td>EQ OPP SPECLST</td><td><a href="mailto:stephany.green-hedgeman@hud.gov">stephany.green-hedgeman@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="holzman adele eq opp speclst adele.x.holzman@hud.gov laurence harbor nj region 2"><td>HOLZMAN, ADELE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Adele.X.Holzman@hud.gov">Adele.X.Holzman@hud.gov</a></td><td>LAURENCE HARBOR, NJ</td></tr>
+            <tr data-search="kawamura aaron phillip eq opp speclst aaron.p.kawamura@hud.gov new york ny region 2"><td>KAWAMURA, AARON PHILLIP</td><td>EQ OPP SPECLST</td><td><a href="mailto:Aaron.P.Kawamura@hud.gov">Aaron.P.Kawamura@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="kolker audra jillian eq opp speclst audra.j.kolker@hud.gov new york ny region 2"><td>KOLKER, AUDRA JILLIAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:Audra.J.Kolker@HUD.GOV">Audra.J.Kolker@HUD.GOV</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="liebman jennifer meredith eq opp speclst jennifer.m.liebman@hud.gov newark nj region 2"><td>LIEBMAN, JENNIFER MEREDITH</td><td>EQ OPP SPECLST</td><td><a href="mailto:Jennifer.M.Liebman@hud.gov">Jennifer.M.Liebman@hud.gov</a></td><td>NEWARK, NJ</td></tr>
+            <tr data-search="malter max alexander eq opp speclst max.a.malter@hud.gov new york ny region 2"><td>MALTER, MAX ALEXANDER</td><td>EQ OPP SPECLST</td><td><a href="mailto:MAX.A.MALTER@HUD.GOV">MAX.A.MALTER@HUD.GOV</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="mcnally charles edward supervisory program analyst charles.mcnally@hud.gov new york ny region 2"><td>MCNALLY, CHARLES EDWARD</td><td>Supervisory Program Analyst</td><td><a href="mailto:Charles.McNally@hud.gov">Charles.McNally@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="mitchell lena c eq opp speclst lena.c.mitchell@hud.gov newark nj region 2"><td>MITCHELL, LENA C</td><td>EQ OPP SPECLST</td><td><a href="mailto:Lena.C.Mitchell@hud.gov">Lena.C.Mitchell@hud.gov</a></td><td>NEWARK, NJ</td></tr>
+            <tr data-search="nelson-gomes balenda l supvy supervisory equal opportunity sp balenda.l.nelson-gomes@hud.gov newark nj region 2"><td>NELSON-GOMES, BALENDA L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:balenda.l.nelson-gomes@hud.gov">balenda.l.nelson-gomes@hud.gov</a></td><td>NEWARK, NJ</td></tr>
+            <tr data-search="o'brien iii raymond daniel eq opp speclst daniel.obrien@hud.gov new york ny region 2"><td>O'BRIEN III, RAYMOND DANIEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:Daniel.OBrien@hud.gov">Daniel.OBrien@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="petty shakia teresa management and program analyst shakia.t.petty@hud.gov new york ny region 2"><td>PETTY, SHAKIA TERESA</td><td>MANAGEMENT AND PROGRAM ANALYST</td><td><a href="mailto:SHAKIA.T.PETTY@HUD.GOV">SHAKIA.T.PETTY@HUD.GOV</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="rivera-giusti ivette supvy supervisory equal opportunity sp ivette.m.rivera-giusti@hud.gov new york ny region 2"><td>RIVERA-GIUSTI, IVETTE</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Ivette.M.Rivera-Giusti@hud.gov">Ivette.M.Rivera-Giusti@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="rubio marleny eq opp speclst marleny.rubio@hud.gov new york ny region 2"><td>RUBIO, MARLENY</td><td>EQ OPP SPECLST</td><td><a href="mailto:Marleny.Rubio@HUD.GOV">Marleny.Rubio@HUD.GOV</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="soriano julissa eq opp speclst julissa.soriano@hud.gov newark nj region 2"><td>SORIANO, JULISSA</td><td>EQ OPP SPECLST</td><td><a href="mailto:julissa.soriano@hud.gov">julissa.soriano@hud.gov</a></td><td>NEWARK, NJ</td></tr>
+            <tr data-search="springer iris special assistant iris.springer-elkerson@hud.gov new york ny region 2"><td>SPRINGER, IRIS</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Iris.Springer-Elkerson@hud.gov">Iris.Springer-Elkerson@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="tzoneva anna stanislavova eq opp speclst anna.s.tzoneva@hud.gov new york ny region 2"><td>TZONEVA, ANNA STANISLAVOVA</td><td>EQ OPP SPECLST</td><td><a href="mailto:anna.s.tzoneva@hud.gov">anna.s.tzoneva@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="ulysse endjie geralde eq opp speclst endjie.g.ulysse@hud.gov new york ny region 2"><td>ULYSSE, ENDJIE GERALDE</td><td>EQ OPP SPECLST</td><td><a href="mailto:endjie.g.ulysse@hud.gov">endjie.g.ulysse@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="vasilopoulos katherine prog anal katherine.vasilopoulos@hud.gov new york ny region 2"><td>VASILOPOULOS, KATHERINE</td><td>PROG ANAL</td><td><a href="mailto:KATHERINE.VASILOPOULOS@HUD.GOV">KATHERINE.VASILOPOULOS@HUD.GOV</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="vivchar olena supvy supervisory equal opportunity sp olena.vivchar@hud.gov new york ny region 2"><td>VIVCHAR, OLENA</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Olena.Vivchar@hud.gov">Olena.Vivchar@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="wang jiancheng eq opp speclst jian-cheng.wang@hud.gov new york ny region 2"><td>WANG, JIANCHENG</td><td>EQ OPP SPECLST</td><td><a href="mailto:Jian-cheng.Wang@hud.gov">Jian-cheng.Wang@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="williams monique eq opp speclst monique.x.williams@hud.gov new york ny region 2"><td>WILLIAMS, MONIQUE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Monique.x.Williams@hud.gov">Monique.x.Williams@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="yeh tang-chi supvy supervisory equal opportunity sp tangchi.yeh@hud.gov new york ny region 2"><td>YEH, TANG-CHI</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Tangchi.Yeh@hud.gov">Tangchi.Yeh@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+            <tr data-search="zhou kent y eq opp speclst kent.y.zhou@hud.gov new york ny region 2"><td>ZHOU, KENT Y</td><td>EQ OPP SPECLST</td><td><a href="mailto:kent.y.zhou@hud.gov">kent.y.zhou@hud.gov</a></td><td>NEW YORK, NY</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>    </section>    
+<!-- REGION 3 -->
+    <!-- REGION 3 -->
+    <section class="section" id="region-3">
+      <div class="section-header">
+        <div>
+          <h2>Region 3 (Philadelphia)</h2>
+          <div class="meta">Mid-Atlantic</div>
+        </div>
+      </div>
+      <div class="view grid region-grid" data-region="Region 3">
+        <article class="card" data-search="abell lisa s das for operations lisa.s.abell@hud.gov washington dc region 3"><h4>ABELL, LISA S <span class="position">DAS for Operations</span></h4><p><strong>Email:</strong><br><a href="mailto:lisa.s.abell@hud.gov">lisa.s.abell@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="albibi lena prog anal lena.albibi@hud.gov washington dc region 3"><h4>ALBIBI, LENA <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:lena.albibi@hud.gov">lena.albibi@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="ansah richard mgmt anal richard.y.ansah@hud.gov washington dc region 3"><h4>ANSAH, RICHARD <span class="position">MGMT ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Richard.Y.Ansah@hud.gov">Richard.Y.Ansah@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="baker jr stephen program analyst stephen.x.baker@hud.gov washington dc region 3"><h4>BAKER JR, STEPHEN <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:stephen.x.baker@hud.gov">stephen.x.baker@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="barrett sean program analyst sean.t.barrett@hud.gov washington dc region 3"><h4>BARRETT, SEAN <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:sean.t.barrett@hud.gov">sean.t.barrett@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="belarbia ferrah lisa-may lilly management support asst (o/a) oa lisa-may.l.belarbiaferrah@hud.gov philadelphia pa region 3"><h4>BELARBIA FERRAH, LISA-MAY LILLY <span class="position">MANAGEMENT SUPPORT ASST (O/A) OA</span></h4><p><strong>Email:</strong><br><a href="mailto:Lisa-May.L.BelarbiaFerrah@hud.gov">Lisa-May.L.BelarbiaFerrah@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="bohles debony aviance mgmt & prog anal debony.a.bohles@hud.gov washington dc region 3"><h4>BOHLES, DEBONY AVIANCE <span class="position">MGMT & PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:DEBONY.A.BOHLES@HUD.GOV">DEBONY.A.BOHLES@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="bolton stuart winslow mgmt & prog anal stuart.w.bolton@hud.gov washington dc region 3"><h4>BOLTON, STUART WINSLOW <span class="position">MGMT & PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Stuart.W.Bolton@hud.gov">Stuart.W.Bolton@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="brandly chalita d program analyst chalita.d.brandly@hud.gov washington dc region 3"><h4>BRANDLY, CHALITA D <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Chalita.D.Brandly@hud.gov">Chalita.D.Brandly@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="broden tamara r corres speclst tamara.r.broden@hud.gov washington dc region 3"><h4>BRODEN, TAMARA R <span class="position">CORRES SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Tamara.R.Broden@hud.gov">Tamara.R.Broden@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="bropleh everane adjoa mgmt & prog anal everane.a.bropleh@hud.gov baltimore md region 3"><h4>BROPLEH, EVERANE ADJOA <span class="position">MGMT & PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:EVERANE.A.BROPLEH@HUD.GOV">EVERANE.A.BROPLEH@HUD.GOV</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="bussey dana chevonne prog anal dana.c.bussey@hud.gov washington dc region 3"><h4>BUSSEY, DANA CHEVONNE <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Dana.C.Bussey@hud.gov">Dana.C.Bussey@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="campbell kisha lynnette mgmt anal kisha.l.campbell@hud.gov washington dc region 3"><h4>CAMPBELL, KISHA LYNNETTE <span class="position">MGMT ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Kisha.L.Campbell@hud.gov">Kisha.L.Campbell@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="campbell renae m program analyst renae.m.campbell1@hud.gov washington dc region 3"><h4>CAMPBELL, RENAE M <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Renae.M.Campbell1@HUD.GOV">Renae.M.Campbell1@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="carabello mary jean eq opp speclst maryjean.carabello@hud.gov philadelphia pa region 3"><h4>CARABELLO, MARY JEAN <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:maryjean.carabello@hud.gov">maryjean.carabello@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="collins iris l supvy supervisory equal opportunity sp iris.l.collins@hud.gov philadelphia pa region 3"><h4>COLLINS, IRIS L <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:iris.l.collins@hud.gov">iris.l.collins@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="colon quinones ruben tomas eq opp speclst ruben.t.colonquinones@hud.gov philadelphia pa region 3"><h4>COLON QUINONES, RUBEN TOMAS <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:RUBEN.T.COLONQUINONES@HUD.GOV">RUBEN.T.COLONQUINONES@HUD.GOV</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="cooke jr kevin r gdas for fh&eo kevin.r.cooke@hud.gov washington dc region 3"><h4>COOKE JR, KEVIN R <span class="position">GDAS FOR FH&EO</span></h4><p><strong>Email:</strong><br><a href="mailto:Kevin.R.Cooke@hud.gov">Kevin.R.Cooke@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="cooke shalonda monique eq opp speclst shalonda.m.cooke@hud.gov philadelphia pa region 3"><h4>COOKE, SHALONDA MONIQUE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:shalonda.m.cooke@hud.gov">shalonda.m.cooke@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="cooper laura thomas mgmt anal laura.t.cooper@hud.gov richmond va region 3"><h4>COOPER, LAURA THOMAS <span class="position">MGMT ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Laura.T.Cooper@hud.gov">Laura.T.Cooper@hud.gov</a></p><p><strong>Location:</strong> RICHMOND, VA</p></article>
+        <article class="card" data-search="cossio sonja camille grants management specialist sonja.cossio@hud.gov washington dc region 3"><h4>COSSIO, SONJA CAMILLE <span class="position">Grants Management Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:Sonja.Cossio@hud.gov">Sonja.Cossio@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="davis ursula r staff asst ursula.r.davis@hud.gov washington dc region 3"><h4>DAVIS, URSULA R <span class="position">STAFF ASST</span></h4><p><strong>Email:</strong><br><a href="mailto:Ursula.R.Davis@hud.gov">Ursula.R.Davis@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="delancy karen a equal opportunity specialist karen.a.delancy@hud.gov washington dc region 3"><h4>DELANCY, KAREN A <span class="position">Equal Opportunity Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:Karen.A.Delancy@hud.gov">Karen.A.Delancy@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="eludoyin pamela s budg anal pamela.s.eludoyin@hud.gov washington dc region 3"><h4>ELUDOYIN, PAMELA S <span class="position">BUDG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Pamela.S.Eludoyin@hud.gov">Pamela.S.Eludoyin@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="english david nash program analyst david.n.english@hud.gov washington dc region 3"><h4>ENGLISH, DAVID NASH <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:David.N.English@hud.gov">David.N.English@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="evenson collin jerome program analyst collin.j.evenson@hud.gov washington dc region 3"><h4>EVENSON, COLLIN JEROME <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Collin.J.Evenson@hud.gov">Collin.J.Evenson@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="fleming tiffany taylor supervisory equal opportunity spec tiffany.t.fleming@hud.gov washington dc region 3"><h4>FLEMING, TIFFANY TAYLOR <span class="position">SUPERVISORY EQUAL OPPORTUNITY SPEC</span></h4><p><strong>Email:</strong><br><a href="mailto:tiffany.t.fleming@hud.gov">tiffany.t.fleming@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="frattalone danielle marie eq opp speclst danielle.m.frattalone@hud.gov philadelphia pa region 3"><h4>FRATTALONE, DANIELLE MARIE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:danielle.m.frattalone@hud.gov">danielle.m.frattalone@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="gano joseph lynn director, office of administrative ser joseph.l.gano@hud.gov washington dc region 3"><h4>GANO, JOSEPH LYNN <span class="position">Director, Office of Administrative Ser</span></h4><p><strong>Email:</strong><br><a href="mailto:joseph.l.gano@hud.gov">joseph.l.gano@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="ghasemi jordan a program analyst jordan.a.ghasemi@hud.gov washington dc region 3"><h4>GH ASEMI, JORDAN A <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Jordan.A.Ghasemi@hud.gov">Jordan.A.Ghasemi@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="graham bianca lynnea equal opportunity specialist bianca.l.graham@hud.gov baltimore md region 3"><h4>GRAHAM, BIANCA LYNNEA <span class="position">Equal Opportunity Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:Bianca.L.Graham@HUD.GOV">Bianca.L.Graham@HUD.GOV</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="green shameka rushawn equal opportunity specialist shameka.r.green@hud.gov washington dc region 3"><h4>GREEN, SHAMEKA RUSHAWN <span class="position">Equal Opportunity Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:shameka.r.green@hud.gov">shameka.r.green@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="griffin laura marie gudgel program analyst laura.m.griffin@hud.gov washington dc region 3"><h4>GRIFFIN, LAURA MARIE GUDGEL <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Laura.M.Griffin@HUD.GOV">Laura.M.Griffin@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="grosso lynn m das for enforcement lynn.m.grosso@hud.gov washington dc region 3"><h4>GROSSO, LYNN M <span class="position">DAS FOR ENFORCEMENT</span></h4><p><strong>Email:</strong><br><a href="mailto:Lynn.M.Grosso@hud.gov">Lynn.M.Grosso@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="gums iv eathen supvy supervisory equal opportunity sp eathen.gums@hud.gov washington dc region 3"><h4>GUMS IV, EATHEN <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Eathen.Gums@hud.gov">Eathen.Gums@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="hanible donald c program analyst donald.c.hanible@hud.gov washington dc region 3"><h4>HANIBLE, DONALD C <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Donald.C.Hanible@hud.gov">Donald.C.Hanible@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="hardy leslie nicole program analyst leslie.n.hardy@hud.gov baltimore md region 3"><h4>HARDY, LESLIE NICOLE <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:leslie.n.hardy@hud.gov">leslie.n.hardy@hud.gov</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="hawkins brian leroi senior advisor, fheo brian.l.hawkins@hud.gov washington dc region 3"><h4>HAWKINS, BRIAN LEROI <span class="position">SENIOR ADVISOR, FHEO</span></h4><p><strong>Email:</strong><br><a href="mailto:brian.l.hawkins@hud.gov">brian.l.hawkins@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="hill andrew paul program analyst andrew.p.hill@hud.gov baltimore md region 3"><h4>HILL, ANDREW PAUL <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:ANDREW.P.HILL@HUD.GOV">ANDREW.P.HILL@HUD.GOV</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="holt danielle catrice student trainee (management analyst) danielle.c.holt@hud.gov washington dc region 3"><h4>HOLT, DANIELLE CATRICE <span class="position">Student Trainee (Management Analyst)</span></h4><p><strong>Email:</strong><br><a href="mailto:Danielle.C.Holt@HUD.GOV">Danielle.C.Holt@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="huff summer b contracting officer representative adv summer.b.huff@hud.gov washington dc region 3"><h4>HUFF, SUMMER B <span class="position">CONTRACTING OFFICER REPRESENTATIVE ADV</span></h4><p><strong>Email:</strong><br><a href="mailto:Summer.B.Huff@hud.gov">Summer.B.Huff@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="jackson avery star special assistant avery.jackson@hud.gov washington dc region 3"><h4>JACKSON, AVERY STAR <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:avery.jackson@hud.gov">avery.jackson@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="james sharron l eq opp speclst sharron.l.james@hud.gov philadelphia pa region 3"><h4>JAMES, SHARRON L <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:sharron.l.james@hud.gov">sharron.l.james@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="johnson akil omari program analyst akil.o.johnson@hud.gov washington dc region 3"><h4>JOHNSON, AKIL OMARI <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Akil.O.Johnson@hud.gov">Akil.O.Johnson@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="jones william budg anal william.g.jones@hud.gov washington dc region 3"><h4>JONES, WILLIAM <span class="position">BUDG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:William.G.Jones@hud.gov">William.G.Jones@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="jones-peters jacqueline spec asst jacqueline.jones-peters@hud.gov washington dc region 3"><h4>JONES-PETERS, JACQUELINE <span class="position">SPEC ASST</span></h4><p><strong>Email:</strong><br><a href="mailto:JACQUELINE.JONES-PETERS@HUD.GOV">JACQUELINE.JONES-PETERS@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="king smith sheila o corres speclst sheila.o.king-smith@hud.gov washington dc region 3"><h4>KING SMITH, SHEILA O <span class="position">CORRES SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Sheila.O.King-Smith@hud.gov">Sheila.O.King-Smith@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="king brendan francis mgmt inf speclst brendan.f.king@hud.gov washington dc region 3"><h4>KING, BRENDAN FRANCIS <span class="position">MGMT INF SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:brendan.f.king@hud.gov">brendan.f.king@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="kutty nandinee k program analyst nandinee.k.kutty@hud.gov washington dc region 3"><h4>KUTTY, NANDINEE K <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Nandinee.K.Kutty@hud.gov">Nandinee.K.Kutty@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="latham ronaldlyn e eq opp speclst ronaldlyn.e.latham@hud.gov philadelphia pa region 3"><h4>LATHAM, RONALDLYN E <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:ronaldlyn.e.latham@hud.gov">ronaldlyn.e.latham@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="leake karina s special assistant karina.s.leake@hud.gov washington dc region 3"><h4>LEAKE, KARINA S <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:karina.s.leake@hud.gov">karina.s.leake@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="lee iman program analyst iman.lee@hud.gov washington dc region 3"><h4>LEE, IMAN <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:iman.lee@hud.gov">iman.lee@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="leith rachel l supvy supervisory equal opportunity sp rachel.l.leith@hud.gov baltimore md region 3"><h4>LEITH, RACHEL L <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Rachel.L.Leith@hud.gov">Rachel.L.Leith@hud.gov</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="lew richard eq opp speclst richard.lew@hud.gov philadelphia pa region 3"><h4>LEW, RICHARD <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:richard.lew@hud.gov">richard.lew@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="long thurmond eric contracting officer rep. (cor) thurmond.e.long@hud.gov washington dc region 3"><h4>LONG, THURMOND ERIC <span class="position">CONTRACTING OFFICER REP. (COR)</span></h4><p><strong>Email:</strong><br><a href="mailto:thurmond.e.long@hud.gov">thurmond.e.long@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="makins april latrice mgmt anal april.l.makins@hud.gov washington dc region 3"><h4>MAKINS, APRIL LATRICE <span class="position">MGMT ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:April.L.Makins@hud.gov">April.L.Makins@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="mann charles jacob edward eq opp speclst charles.j.mann@hud.gov philadelphia pa region 3"><h4>MANN, CHARLES JACOB EDWARD <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:charles.j.mann@hud.gov">charles.j.mann@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="marvit tom c eq opp speclst tom.c.marvit@hud.gov pittsburgh pa region 3"><h4>MARVIT, TOM C <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Tom.C.Marvit@hud.gov">Tom.C.Marvit@hud.gov</a></p><p><strong>Location:</strong> PITTSBURGH, PA</p></article>
+        <article class="card" data-search="matulef mark l eq opp speclst mark.l.matulef@hud.gov washington dc region 3"><h4>MATULEF, MARK L <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Mark.L.Matulef@hud.gov">Mark.L.Matulef@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="mcdaniel monique r program analyst monique.r.mcdaniel@hud.gov washington dc region 3"><h4>MCDANIEL, MONIQUE R <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Monique.R.Mcdaniel@hud.gov">Monique.R.Mcdaniel@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="mcglincy hugh james equal opportunity specialist hugh.j.mcglincy@hud.gov washington dc region 3"><h4>MCGLINCY, HUGH JAMES <span class="position">Equal Opportunity Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:Hugh.J.McGlincy@hud.gov">Hugh.J.McGlincy@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="mckay charles arthur policy advisor charles.a.mckay@hud.gov washington dc region 3"><h4>MCKAY, CHARLES ARTHUR <span class="position">POLICY ADVISOR</span></h4><p><strong>Email:</strong><br><a href="mailto:CHARLES.A.MCKAY@HUD.GOV">CHARLES.A.MCKAY@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="montgomery iii charles m supvy prog mgr charles.m.montgomeryiii@hud.gov washington dc region 3"><h4>MONTGOMERY III, CHARLES M <span class="position">SUPVY PROG MGR</span></h4><p><strong>Email:</strong><br><a href="mailto:Charles.M.MontgomeryIII@hud.gov">Charles.M.MontgomeryIII@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="morgan-cosic letisha yvonne program analyst letisha.y.morgan-cosic@hud.gov washington dc region 3"><h4>MORGAN-COSIC, LETISHA YVONNE <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Letisha.Y.Morgan-Cosic@hud.gov">Letisha.Y.Morgan-Cosic@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="myers dartesha syreeta program analyst dartesha.s.myers@hud.gov washington dc region 3"><h4>MYERS, DARTESHA SYREETA <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:DARTESHA.S.MYERS@HUD.GOV">DARTESHA.S.MYERS@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="pace rex jefferson architect rex.j.pace@hud.gov washington dc region 3"><h4>PACE, REX JEFFERSON <span class="position">ARCHITECT</span></h4><p><strong>Email:</strong><br><a href="mailto:Rex.J.Pace@hud.gov">Rex.J.Pace@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="palmer desha michelle prog anal desha.m.palmer@hud.gov washington dc region 3"><h4>PALMER, DESHA MICHELLE <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Desha.M.Palmer@hud.gov">Desha.M.Palmer@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="parick ashley nichole program analyst ashley.n.mcconnell@hud.gov washington dc region 3"><h4>PARICK, ASHLEY NICHOLE <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:ashley.n.mcconnell@hud.gov">ashley.n.mcconnell@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="pearson monika dixon program analyst monika.pearson@hud.gov washington dc region 3"><h4>PEARSON, MONIKA DIXON <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Monika.Pearson@hud.gov">Monika.Pearson@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="perry judon rene budg anal judon.r.perry@hud.gov washington dc region 3"><h4>PERRY, JUDON RENE <span class="position">BUDG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Judon.R.Perry@hud.gov">Judon.R.Perry@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="phaup jeffrey alan eq opp speclst jeffrey.a.phaup@hud.gov richmond va region 3"><h4>PHAUP, JEFFREY ALAN <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:jeffrey.a.phaup@hud.gov">jeffrey.a.phaup@hud.gov</a></p><p><strong>Location:</strong> RICHMOND, VA</p></article>
+        <article class="card" data-search="rai tej bahadur budg anal tej.b.rai@hud.gov washington dc region 3"><h4>RAI, TEJ BAHADUR <span class="position">BUDG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:TEJ.B.RAI@HUD.GOV">TEJ.B.RAI@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="reinhard linda ayala special assistant linda.a.reinhard@hud.gov washington dc region 3"><h4>REINHARD, LINDA AYALA <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:linda.a.reinhard@hud.gov">linda.a.reinhard@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="riley devereaux alene s. special assistant alene.riley.devereaux@hud.gov washington dc region 3"><h4>RILEY DEVEREAUX, ALENE S. <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:Alene.Riley.Devereaux@hud.gov">Alene.Riley.Devereaux@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="riley sharon l program analyst sharon.l.riley@hud.gov washington dc region 3"><h4>RILEY, SHARON L <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Sharon.L.Riley@HUD.gov">Sharon.L.Riley@HUD.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="robinson tirmira prog anal tirmira.l.robinson@hud.gov washington dc region 3"><h4>ROBINSON, TIRMIRA <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Tirmira.L.Robinson@hud.gov">Tirmira.L.Robinson@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="robison elizabeth carol program analyst elizabeth.c.robison@hud.gov washington dc region 3"><h4>ROBISON, ELIZABETH CAROL <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:elizabeth.c.robison@hud.gov">elizabeth.c.robison@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="roth nathan scott mgmt & prog anal nathan.s.roth@hud.gov washington dc region 3"><h4>ROTH, NATHAN SCOTT <span class="position">MGMT & PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:Nathan.S.Roth@hud.gov">Nathan.S.Roth@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="sewell sarale helen prog anal sarale.h.sewell@hud.gov washington dc region 3"><h4>SEWELL, SARALE HELEN <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:SARALE.H.SEWELL@HUD.GOV">SARALE.H.SEWELL@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="sievers danielle l management analyst danielle.l.sievers@hud.gov philadelphia pa region 3"><h4>SIEVERS, DANIELLE L <span class="position">Management Analyst</span></h4><p><strong>Email:</strong><br><a href="mailto:Danielle.L.Sievers@hud.gov">Danielle.L.Sievers@hud.gov</a></p><p><strong>Location:</strong> PHILADELPHIA, PA</p></article>
+        <article class="card" data-search="smallwood marcus ricardo senior senior policy analyst marcus.r.smallwood@hud.gov washington dc region 3"><h4>SMALLWOOD, MARCUS RICARDO <span class="position">SENIOR Senior Policy Analyst</span></h4><p><strong>Email:</strong><br><a href="mailto:Marcus.R.Smallwood@hud.gov">Marcus.R.Smallwood@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="st. hilaire nancy kathleen management analyst nancy.k.sthilaire@hud.gov washington dc region 3"><h4>ST. HILAIRE, NANCY KATHLEEN <span class="position">Management Analyst</span></h4><p><strong>Email:</strong><br><a href="mailto:NANCY.K.STHILAIRE@HUD.GOV">NANCY.K.STHILAIRE@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="tagert iii earl eugene senior advisor, fheo earl.e.tagert@hud.gov washington dc region 3"><h4>TAGERT III, EARL EUGENE <span class="position">SENIOR ADVISOR, FHEO</span></h4><p><strong>Email:</strong><br><a href="mailto:earl.e.tagert@hud.gov">earl.e.tagert@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="tate nakeita lynn program analyst nakeita.l.tate@hud.gov washington dc region 3"><h4>TATE, NAKEITA LYNN <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:NAKEITA.L.TATE@HUD.GOV">NAKEITA.L.TATE@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="taylor melody c das, ofc of policy, legislative initia melody.c.taylor@hud.gov washington dc region 3"><h4>TAYLOR, MELODY C <span class="position">DAS, OFC OF POLICY, LEGISLATIVE INITIA</span></h4><p><strong>Email:</strong><br><a href="mailto:Melody.C.Taylor@hud.gov">Melody.C.Taylor@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="thomas adrienne d special assistant adrienne.d.thomas@hud.gov washington dc region 3"><h4>THOMAS, ADRIENNE D <span class="position">SPECIAL ASSISTANT</span></h4><p><strong>Email:</strong><br><a href="mailto:Adrienne.D.Thomas@hud.gov">Adrienne.D.Thomas@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="tomlin angela keeshanna management analyst angela.k.tomlin@hud.gov washington dc region 3"><h4>TOMLIN, ANGELA KEESHANNA <span class="position">Management Analyst</span></h4><p><strong>Email:</strong><br><a href="mailto:ANGELA.K.TOMLIN@HUD.GOV">ANGELA.K.TOMLIN@HUD.GOV</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="wade arthur d management analyst (web manager) arthur.d.wade@hud.gov washington dc region 3"><h4>WADE, ARTHUR D <span class="position">MANAGEMENT ANALYST (WEB MANAGER)</span></h4><p><strong>Email:</strong><br><a href="mailto:Arthur.D.Wade@hud.gov">Arthur.D.Wade@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="walker dameon alamando eq opp speclst dameon.a.walker@hud.gov baltimore md region 3"><h4>WALKER, DAMEON ALAMANDO <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Dameon.A.Walker@hud.gov">Dameon.A.Walker@hud.gov</a></p><p><strong>Location:</strong> BALTIMORE, MD</p></article>
+        <article class="card" data-search="wells eric lamont supervisory budget analyst eric.l.wells@hud.gov washington dc region 3"><h4>WELLS, ERIC LAMONT <span class="position">SUPERVISORY BUDGET ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:eric.l.wells@hud.gov">eric.l.wells@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="windley scott jared program analyst scott.j.windley@hud.gov washington dc region 3"><h4>WINDLEY, SCOTT JARED <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:scott.j.windley@hud.gov">scott.j.windley@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="woudenh desta d mgmt inf speclst desta.d.woudenh@hud.gov washington dc region 3"><h4>WOUDENH, DESTA D <span class="position">MGMT INF SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Desta.D.Woudenh@hud.gov">Desta.D.Woudenh@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+        <article class="card" data-search="zai pamela c program analyst pamela.c.zai@hud.gov washington dc region 3"><h4>ZAI, PAMELA C <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Pamela.C.Zai@hud.gov">Pamela.C.Zai@hud.gov</a></p><p><strong>Location:</strong> WASHINGTON, DC</p></article>
+      </div>
+      <div class="view table-wrap region-table" style="display:none" data-region="Region 3">
+        <table>
+          <caption>Region 3 – All Staff</caption>
+          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <tbody>
+            <tr data-search="abell lisa s das for operations lisa.s.abell@hud.gov washington dc region 3"><td>ABELL, LISA S</td><td>DAS for Operations</td><td><a href="mailto:lisa.s.abell@hud.gov">lisa.s.abell@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="albibi lena prog anal lena.albibi@hud.gov washington dc region 3"><td>ALBIBI, LENA</td><td>PROG ANAL</td><td><a href="mailto:lena.albibi@hud.gov">lena.albibi@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="ansah richard mgmt anal richard.y.ansah@hud.gov washington dc region 3"><td>ANSAH, RICHARD</td><td>MGMT ANAL</td><td><a href="mailto:Richard.Y.Ansah@hud.gov">Richard.Y.Ansah@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="baker jr stephen program analyst stephen.x.baker@hud.gov washington dc region 3"><td>BAKER JR, STEPHEN</td><td>PROGRAM ANALYST</td><td><a href="mailto:stephen.x.baker@hud.gov">stephen.x.baker@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="barrett sean program analyst sean.t.barrett@hud.gov washington dc region 3"><td>BARRETT, SEAN</td><td>PROGRAM ANALYST</td><td><a href="mailto:sean.t.barrett@hud.gov">sean.t.barrett@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="belarbia ferrah lisa-may lilly management support asst (o/a) oa lisa-may.l.belarbiaferrah@hud.gov philadelphia pa region 3"><td>BELARBIA FERRAH, LISA-MAY LILLY</td><td>MANAGEMENT SUPPORT ASST (O/A) OA</td><td><a href="mailto:Lisa-May.L.BelarbiaFerrah@hud.gov">Lisa-May.L.BelarbiaFerrah@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="bohles debony aviance mgmt & prog anal debony.a.bohles@hud.gov washington dc region 3"><td>BOHLES, DEBONY AVIANCE</td><td>MGMT & PROG ANAL</td><td><a href="mailto:DEBONY.A.BOHLES@HUD.GOV">DEBONY.A.BOHLES@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="bolton stuart winslow mgmt & prog anal stuart.w.bolton@hud.gov washington dc region 3"><td>BOLTON, STUART WINSLOW</td><td>MGMT & PROG ANAL</td><td><a href="mailto:Stuart.W.Bolton@hud.gov">Stuart.W.Bolton@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="brandly chalita d program analyst chalita.d.brandly@hud.gov washington dc region 3"><td>BRANDLY, CHALITA D</td><td>PROGRAM ANALYST</td><td><a href="mailto:Chalita.D.Brandly@hud.gov">Chalita.D.Brandly@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="broden tamara r corres speclst tamara.r.broden@hud.gov washington dc region 3"><td>BRODEN, TAMARA R</td><td>CORRES SPECLST</td><td><a href="mailto:Tamara.R.Broden@hud.gov">Tamara.R.Broden@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="bropleh everane adjoa mgmt & prog anal everane.a.bropleh@hud.gov baltimore md region 3"><td>BROPLEH, EVERANE ADJOA</td><td>MGMT & PROG ANAL</td><td><a href="mailto:EVERANE.A.BROPLEH@HUD.GOV">EVERANE.A.BROPLEH@HUD.GOV</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="bussey dana chevonne prog anal dana.c.bussey@hud.gov washington dc region 3"><td>BUSSEY, DANA CHEVONNE</td><td>PROG ANAL</td><td><a href="mailto:Dana.C.Bussey@hud.gov">Dana.C.Bussey@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="campbell kisha lynnette mgmt anal kisha.l.campbell@hud.gov washington dc region 3"><td>CAMPBELL, KISHA LYNNETTE</td><td>MGMT ANAL</td><td><a href="mailto:Kisha.L.Campbell@hud.gov">Kisha.L.Campbell@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="campbell renae m program analyst renae.m.campbell1@hud.gov washington dc region 3"><td>CAMPBELL, RENAE M</td><td>PROGRAM ANALYST</td><td><a href="mailto:Renae.M.Campbell1@HUD.GOV">Renae.M.Campbell1@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="carabello mary jean eq opp speclst maryjean.carabello@hud.gov philadelphia pa region 3"><td>CARABELLO, MARY JEAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:maryjean.carabello@hud.gov">maryjean.carabello@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="collins iris l supvy supervisory equal opportunity sp iris.l.collins@hud.gov philadelphia pa region 3"><td>COLLINS, IRIS L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:iris.l.collins@hud.gov">iris.l.collins@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="colon quinones ruben tomas eq opp speclst ruben.t.colonquinones@hud.gov philadelphia pa region 3"><td>COLON QUINONES, RUBEN TOMAS</td><td>EQ OPP SPECLST</td><td><a href="mailto:RUBEN.T.COLONQUINONES@HUD.GOV">RUBEN.T.COLONQUINONES@HUD.GOV</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="cooke jr kevin r gdas for fh&eo kevin.r.cooke@hud.gov washington dc region 3"><td>COOKE JR, KEVIN R</td><td>GDAS FOR FHEO</td><td><a href="mailto:Kevin.R.Cooke@hud.gov">Kevin.R.Cooke@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="cooke shalonda monique eq opp speclst shalonda.m.cooke@hud.gov philadelphia pa region 3"><td>COOKE, SHALONDA MONIQUE</td><td>EQ OPP SPECLST</td><td><a href="mailto:shalonda.m.cooke@hud.gov">shalonda.m.cooke@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="cooper laura thomas mgmt anal laura.t.cooper@hud.gov richmond va region 3"><td>COOPER, LAURA THOMAS</td><td>MGMT ANAL</td><td><a href="mailto:Laura.T.Cooper@hud.gov">Laura.T.Cooper@hud.gov</a></td><td>RICHMOND, VA</td></tr>
+            <tr data-search="cossio sonja camille grants management specialist sonja.cossio@hud.gov washington dc region 3"><td>COSSIO, SONJA CAMILLE</td><td>Grants Management Specialist</td><td><a href="mailto:Sonja.Cossio@hud.gov">Sonja.Cossio@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="davis ursula r staff asst ursula.r.davis@hud.gov washington dc region 3"><td>DAVIS, URSULA R</td><td>STAFF ASST</td><td><a href="mailto:Ursula.R.Davis@hud.gov">Ursula.R.Davis@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="delancy karen a equal opportunity specialist karen.a.delancy@hud.gov washington dc region 3"><td>DELANCY, KAREN A</td><td>Equal Opportunity Specialist</td><td><a href="mailto:Karen.A.Delancy@hud.gov">Karen.A.Delancy@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="eludoyin pamela s budg anal pamela.s.eludoyin@hud.gov washington dc region 3"><td>ELUDOYIN, PAMELA S</td><td>BUDG ANAL</td><td><a href="mailto:Pamela.S.Eludoyin@hud.gov">Pamela.S.Eludoyin@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="english david nash program analyst david.n.english@hud.gov washington dc region 3"><td>ENGLISH, DAVID NASH</td><td>PROGRAM ANALYST</td><td><a href="mailto:David.N.English@hud.gov">David.N.English@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="evenson collin jerome program analyst collin.j.evenson@hud.gov washington dc region 3"><td>EVENSON, COLLIN JEROME</td><td>PROGRAM ANALYST</td><td><a href="mailto:Collin.J.Evenson@hud.gov">Collin.J.Evenson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="fleming tiffany taylor supervisory equal opportunity spec tiffany.t.fleming@hud.gov washington dc region 3"><td>FLEMING, TIFFANY TAYLOR</td><td>SUPERVISORY EQUAL OPPORTUNITY SPEC</td><td><a href="mailto:tiffany.t.fleming@hud.gov">tiffany.t.fleming@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="frattalone danielle marie eq opp speclst danielle.m.frattalone@hud.gov philadelphia pa region 3"><td>FRATTALONE, DANIELLE MARIE</td><td>EQ OPP SPECLST</td><td><a href="mailto:danielle.m.frattalone@hud.gov">danielle.m.frattalone@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="gano joseph lynn director, office of administrative ser joseph.l.gano@hud.gov washington dc region 3"><td>GANO, JOSEPH LYNN</td><td>Director, Office of Administrative Ser</td><td><a href="mailto:joseph.l.gano@hud.gov">joseph.l.gano@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="ghasemi jordan a program analyst jordan.a.ghasemi@hud.gov washington dc region 3"><td>GH ASEMI, JORDAN A</td><td>PROGRAM ANALYST</td><td><a href="mailto:Jordan.A.Ghasemi@hud.gov">Jordan.A.Ghasemi@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="graham bianca lynnea equal opportunity specialist bianca.l.graham@hud.gov baltimore md region 3"><td>GRAHAM, BIANCA LYNNEA</td><td>Equal Opportunity Specialist</td><td><a href="mailto:Bianca.L.Graham@HUD.GOV">Bianca.L.Graham@HUD.GOV</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="green shameka rushawn equal opportunity specialist shameka.r.green@hud.gov washington dc region 3"><td>GREEN, SHAMEKA RUSHAWN</td><td>Equal Opportunity Specialist</td><td><a href="mailto:shameka.r.green@hud.gov">shameka.r.green@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="griffin laura marie gudgel program analyst laura.m.griffin@hud.gov washington dc region 3"><td>GRIFFIN, LAURA MARIE GUDGEL</td><td>PROGRAM ANALYST</td><td><a href="mailto:Laura.M.Griffin@HUD.GOV">Laura.M.Griffin@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="grosso lynn m das for enforcement lynn.m.grosso@hud.gov washington dc region 3"><td>GROSSO, LYNN M</td><td>DAS FOR ENFORCEMENT</td><td><a href="mailto:Lynn.M.Grosso@hud.gov">Lynn.M.Grosso@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="gums iv eathen supvy supervisory equal opportunity sp eathen.gums@hud.gov washington dc region 3"><td>GUMS IV, EATHEN</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Eathen.Gums@hud.gov">Eathen.Gums@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="hanible donald c program analyst donald.c.hanible@hud.gov washington dc region 3"><td>HANIBLE, DONALD C</td><td>PROGRAM ANALYST</td><td><a href="mailto:Donald.C.Hanible@hud.gov">Donald.C.Hanible@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="hardy leslie nicole program analyst leslie.n.hardy@hud.gov baltimore md region 3"><td>HARDY, LESLIE NICOLE</td><td>PROGRAM ANALYST</td><td><a href="mailto:leslie.n.hardy@hud.gov">leslie.n.hardy@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="hawkins brian leroi senior advisor, fheo brian.l.hawkins@hud.gov washington dc region 3"><td>HAWKINS, BRIAN LEROI</td><td>SENIOR ADVISOR, FHEO</td><td><a href="mailto:brian.l.hawkins@hud.gov">brian.l.hawkins@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="hill andrew paul program analyst andrew.p.hill@hud.gov baltimore md region 3"><td>HILL, ANDREW PAUL</td><td>PROGRAM ANALYST</td><td><a href="mailto:ANDREW.P.HILL@HUD.GOV">ANDREW.P.HILL@HUD.GOV</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="holt danielle catrice student trainee (management analyst) danielle.c.holt@hud.gov washington dc region 3"><td>HOLT, DANIELLE CATRICE</td><td>Student Trainee (Management Analyst)</td><td><a href="mailto:Danielle.C.Holt@HUD.GOV">Danielle.C.Holt@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="huff summer b contracting officer representative adv summer.b.huff@hud.gov washington dc region 3"><td>HUFF, SUMMER B</td><td>CONTRACTING OFFICER REPRESENTATIVE ADV</td><td><a href="mailto:Summer.B.Huff@hud.gov">Summer.B.Huff@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="jackson avery star special assistant avery.jackson@hud.gov washington dc region 3"><td>JACKSON, AVERY STAR</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:avery.jackson@hud.gov">avery.jackson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="james sharron l eq opp speclst sharron.l.james@hud.gov philadelphia pa region 3"><td>JAMES, SHARRON L</td><td>EQ OPP SPECLST</td><td><a href="mailto:sharron.l.james@hud.gov">sharron.l.james@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="johnson akil omari program analyst akil.o.johnson@hud.gov washington dc region 3"><td>JOHNSON, AKIL OMARI</td><td>PROGRAM ANALYST</td><td><a href="mailto:Akil.O.Johnson@hud.gov">Akil.O.Johnson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="jones william budg anal william.g.jones@hud.gov washington dc region 3"><td>JONES, WILLIAM</td><td>BUDG ANAL</td><td><a href="mailto:William.G.Jones@hud.gov">William.G.Jones@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="jones-peters jacqueline spec asst jacqueline.jones-peters@hud.gov washington dc region 3"><td>JONES-PETERS, JACQUELINE</td><td>SPEC ASST</td><td><a href="mailto:JACQUELINE.JONES-PETERS@HUD.GOV">JACQUELINE.JONES-PETERS@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="king smith sheila o corres speclst sheila.o.king-smith@hud.gov washington dc region 3"><td>KING SMITH, SHEILA O</td><td>CORRES SPECLST</td><td><a href="mailto:Sheila.O.King-Smith@hud.gov">Sheila.O.King-Smith@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="king brendan francis mgmt inf speclst brendan.f.king@hud.gov washington dc region 3"><td>KING, BRENDAN FRANCIS</td><td>MGMT INF SPECLST</td><td><a href="mailto:brendan.f.king@hud.gov">brendan.f.king@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="kutty nandinee k program analyst nandinee.k.kutty@hud.gov washington dc region 3"><td>KUTTY, NANDINEE K</td><td>PROGRAM ANALYST</td><td><a href="mailto:Nandinee.K.Kutty@hud.gov">Nandinee.K.Kutty@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="latham ronaldlyn e eq opp speclst ronaldlyn.e.latham@hud.gov philadelphia pa region 3"><td>LATHAM, RONALDLYN E</td><td>EQ OPP SPECLST</td><td><a href="mailto:ronaldlyn.e.latham@hud.gov">ronaldlyn.e.latham@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="leake karina s special assistant karina.s.leake@hud.gov washington dc region 3"><td>LEAKE, KARINA S</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:karina.s.leake@hud.gov">karina.s.leake@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="lee iman program analyst iman.lee@hud.gov washington dc region 3"><td>LEE, IMAN</td><td>PROGRAM ANALYST</td><td><a href="mailto:iman.lee@hud.gov">iman.lee@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="leith rachel l supvy supervisory equal opportunity sp rachel.l.leith@hud.gov baltimore md region 3"><td>LEITH, RACHEL L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Rachel.L.Leith@hud.gov">Rachel.L.Leith@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="lew richard eq opp speclst richard.lew@hud.gov philadelphia pa region 3"><td>LEW, RICHARD</td><td>EQ OPP SPECLST</td><td><a href="mailto:richard.lew@hud.gov">richard.lew@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="long thurmond eric contracting officer rep. (cor) thurmond.e.long@hud.gov washington dc region 3"><td>LONG, THURMOND ERIC</td><td>CONTRACTING OFFICER REP. (COR)</td><td><a href="mailto:thurmond.e.long@hud.gov">thurmond.e.long@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="makins april latrice mgmt anal april.l.makins@hud.gov washington dc region 3"><td>MAKINS, APRIL LATRICE</td><td>MGMT ANAL</td><td><a href="mailto:April.L.Makins@hud.gov">April.L.Makins@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="mann charles jacob edward eq opp speclst charles.j.mann@hud.gov philadelphia pa region 3"><td>MANN, CHARLES JACOB EDWARD</td><td>EQ OPP SPECLST</td><td><a href="mailto:charles.j.mann@hud.gov">charles.j.mann@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="marvit tom c eq opp speclst tom.c.marvit@hud.gov pittsburgh pa region 3"><td>MARVIT, TOM C</td><td>EQ OPP SPECLST</td><td><a href="mailto:Tom.C.Marvit@hud.gov">Tom.C.Marvit@hud.gov</a></td><td>PITTSBURGH, PA</td></tr>
+            <tr data-search="matulef mark l eq opp speclst mark.l.matulef@hud.gov washington dc region 3"><td>MATULEF, MARK L</td><td>EQ OPP SPECLST</td><td><a href="mailto:Mark.L.Matulef@hud.gov">Mark.L.Matulef@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="mcdaniel monique r program analyst monique.r.mcdaniel@hud.gov washington dc region 3"><td>MCDANIEL, MONIQUE R</td><td>PROGRAM ANALYST</td><td><a href="mailto:Monique.R.Mcdaniel@hud.gov">Monique.R.Mcdaniel@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="mcglincy hugh james equal opportunity specialist hugh.j.mcglincy@hud.gov washington dc region 3"><td>MCGLINCY, HUGH JAMES</td><td>Equal Opportunity Specialist</td><td><a href="mailto:Hugh.J.McGlincy@hud.gov">Hugh.J.McGlincy@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="mckay charles arthur policy advisor charles.a.mckay@hud.gov washington dc region 3"><td>MCKAY, CHARLES ARTHUR</td><td>POLICY ADVISOR</td><td><a href="mailto:CHARLES.A.MCKAY@HUD.GOV">CHARLES.A.MCKAY@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="montgomery iii charles m supvy prog mgr charles.m.montgomeryiii@hud.gov washington dc region 3"><td>MONTGOMERY III, CHARLES M</td><td>SUPVY PROG MGR</td><td><a href="mailto:Charles.M.MontgomeryIII@hud.gov">Charles.M.MontgomeryIII@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="morgan-cosic letisha yvonne program analyst letisha.y.morgan-cosic@hud.gov washington dc region 3"><td>MORGAN-COSIC, LETISHA YVONNE</td><td>PROGRAM ANALYST</td><td><a href="mailto:Letisha.Y.Morgan-Cosic@hud.gov">Letisha.Y.Morgan-Cosic@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="myers dartesha syreeta program analyst dartesha.s.myers@hud.gov washington dc region 3"><td>MYERS, DARTESHA SYREETA</td><td>PROGRAM ANALYST</td><td><a href="mailto:DARTESHA.S.MYERS@HUD.GOV">DARTESHA.S.MYERS@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="pace rex jefferson architect rex.j.pace@hud.gov washington dc region 3"><td>PACE, REX JEFFERSON</td><td>ARCHITECT</td><td><a href="mailto:Rex.J.Pace@hud.gov">Rex.J.Pace@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="palmer desha michelle prog anal desha.m.palmer@hud.gov washington dc region 3"><td>PALMER, DESHA MICHELLE</td><td>PROG ANAL</td><td><a href="mailto:Desha.M.Palmer@hud.gov">Desha.M.Palmer@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="parick ashley nichole program analyst ashley.n.mcconnell@hud.gov washington dc region 3"><td>PARICK, ASHLEY NICHOLE</td><td>PROGRAM ANALYST</td><td><a href="mailto:ashley.n.mcconnell@hud.gov">ashley.n.mcconnell@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="pearson monika dixon program analyst monika.pearson@hud.gov washington dc region 3"><td>PEARSON, MONIKA DIXON</td><td>PROGRAM ANALYST</td><td><a href="mailto:Monika.Pearson@hud.gov">Monika.Pearson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="perry judon rene budg anal judon.r.perry@hud.gov washington dc region 3"><td>PERRY, JUDON RENE</td><td>BUDG ANAL</td><td><a href="mailto:Judon.R.Perry@hud.gov">Judon.R.Perry@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="phaup jeffrey alan eq opp speclst jeffrey.a.phaup@hud.gov richmond va region 3"><td>PHAUP, JEFFREY ALAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:jeffrey.a.phaup@hud.gov">jeffrey.a.phaup@hud.gov</a></td><td>RICHMOND, VA</td></tr>
+            <tr data-search="rai tej bahadur budg anal tej.b.rai@hud.gov washington dc region 3"><td>RAI, TEJ BAHADUR</td><td>BUDG ANAL</td><td><a href="mailto:TEJ.B.RAI@HUD.GOV">TEJ.B.RAI@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="reinhard linda ayala special assistant linda.a.reinhard@hud.gov washington dc region 3"><td>REINHARD, LINDA AYALA</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:linda.a.reinhard@hud.gov">linda.a.reinhard@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="riley devereaux alene s. special assistant alene.riley.devereaux@hud.gov washington dc region 3"><td>RILEY DEVEREAUX, ALENE S.</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Alene.Riley.Devereaux@hud.gov">Alene.Riley.Devereaux@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="riley sharon l program analyst sharon.l.riley@hud.gov washington dc region 3"><td>RILEY, SHARON L</td><td>PROGRAM ANALYST</td><td><a href="mailto:Sharon.L.Riley@HUD.gov">Sharon.L.Riley@HUD.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="robinson tirmira prog anal tirmira.l.robinson@hud.gov washington dc region 3"><td>ROBINSON, TIRMIRA</td><td>PROG ANAL</td><td><a href="mailto:Tirmira.L.Robinson@hud.gov">Tirmira.L.Robinson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="robison elizabeth carol program analyst elizabeth.c.robison@hud.gov washington dc region 3"><td>ROBISON, ELIZABETH CAROL</td><td>PROGRAM ANALYST</td><td><a href="mailto:elizabeth.c.robison@hud.gov">elizabeth.c.robison@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="roth nathan scott mgmt & prog anal nathan.s.roth@hud.gov washington dc region 3"><td>ROTH, NATHAN SCOTT</td><td>MGMT & PROG ANAL</td><td><a href="mailto:Nathan.S.Roth@hud.gov">Nathan.S.Roth@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="sewell sarale helen prog anal sarale.h.sewell@hud.gov washington dc region 3"><td>SEWELL, SARALE HELEN</td><td>PROG ANAL</td><td><a href="mailto:SARALE.H.SEWELL@HUD.GOV">SARALE.H.SEWELL@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="sievers danielle l management analyst danielle.l.sievers@hud.gov philadelphia pa region 3"><td>SIEVERS, DANIELLE L</td><td>Management Analyst</td><td><a href="mailto:Danielle.L.Sievers@hud.gov">Danielle.L.Sievers@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="smallwood marcus ricardo senior senior policy analyst marcus.r.smallwood@hud.gov washington dc region 3"><td>SMALLWOOD, MARCUS RICARDO</td><td>SENIOR Senior Policy Analyst</td><td><a href="mailto:Marcus.R.Smallwood@hud.gov">Marcus.R.Smallwood@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="st. hilaire nancy kathleen management analyst nancy.k.sthilaire@hud.gov washington dc region 3"><td>ST. HILAIRE, NANCY KATHLEEN</td><td>Management Analyst</td><td><a href="mailto:NANCY.K.STHILAIRE@HUD.GOV">NANCY.K.STHILAIRE@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="tagert iii earl eugene senior advisor, fheo earl.e.tagert@hud.gov washington dc region 3"><td>TAGERT III, EARL EUGENE</td><td>SENIOR ADVISOR, FHEO</td><td><a href="mailto:earl.e.tagert@hud.gov">earl.e.tagert@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="tate nakeita lynn program analyst nakeita.l.tate@hud.gov washington dc region 3"><td>TATE, NAKEITA LYNN</td><td>PROGRAM ANALYST</td><td><a href="mailto:NAKEITA.L.TATE@HUD.GOV">NAKEITA.L.TATE@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="taylor melody c das, ofc of policy, legislative initia melody.c.taylor@hud.gov washington dc region 3"><td>TAYLOR, MELODY C</td><td>DAS, OFC OF POLICY, LEGISLATIVE INITIA</td><td><a href="mailto:Melody.C.Taylor@hud.gov">Melody.C.Taylor@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="thomas adrienne d special assistant adrienne.d.thomas@hud.gov washington dc region 3"><td>THOMAS, ADRIENNE D</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Adrienne.D.Thomas@hud.gov">Adrienne.D.Thomas@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="tomlin angela keeshanna management analyst angela.k.tomlin@hud.gov washington dc region 3"><td>TOMLIN, ANGELA KEESHANNA</td><td>Management Analyst</td><td><a href="mailto:ANGELA.K.TOMLIN@HUD.GOV">ANGELA.K.TOMLIN@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="wade arthur d management analyst (web manager) arthur.d.wade@hud.gov washington dc region 3"><td>WADE, ARTHUR D</td><td>MANAGEMENT ANALYST (WEB MANAGER)</td><td><a href="mailto:Arthur.D.Wade@hud.gov">Arthur.D.Wade@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="walker dameon alamando eq opp speclst dameon.a.walker@hud.gov baltimore md region 3"><td>WALKER, DAMEON ALAMANDO</td><td>EQ OPP SPECLST</td><td><a href="mailto:Dameon.A.Walker@hud.gov">Dameon.A.Walker@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
+            <tr data-search="wells eric lamont supervisory budget analyst eric.l.wells@hud.gov washington dc region 3"><td>WELLS, ERIC LAMONT</td><td>SUPERVISORY BUDGET ANALYST</td><td><a href="mailto:eric.l.wells@hud.gov">eric.l.wells@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="windley scott jared program analyst scott.j.windley@hud.gov washington dc region 3"><td>WINDLEY, SCOTT JARED</td><td>PROGRAM ANALYST</td><td><a href="mailto:scott.j.windley@hud.gov">scott.j.windley@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="woudenh desta d mgmt inf speclst desta.d.woudenh@hud.gov washington dc region 3"><td>WOUDENH, DESTA D</td><td>MGMT INF SPECLST</td><td><a href="mailto:Desta.D.Woudenh@hud.gov">Desta.D.Woudenh@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="zai pamela c program analyst pamela.c.zai@hud.gov washington dc region 3"><td>ZAI, PAMELA C</td><td>PROGRAM ANALYST</td><td><a href="mailto:Pamela.C.Zai@hud.gov">Pamela.C.Zai@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>    <!-- REGION 4 -->
+    <!-- REGION 4 -->
+    <section class="section" id="region-4">
+      <div class="section-header">
+        <div>
+          <h2>Region 4 (Atlanta)</h2>
+          <div class="meta">Southeast</div>
+        </div>
+      </div>
+      <div class="view grid region-grid" data-region="Region 4">
+        <article class="card" data-search="bailey azriel lorenzo eq opp speclst azriel.l.bailey@hud.gov atlanta ga region 4"><h4>BAILEY, AZRIEL LORENZO <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:AZRIEL.L.BAILEY@HUD.GOV">AZRIEL.L.BAILEY@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="barnes curtis l eq opp speclst curtis.l.barnes@hud.gov atlanta ga region 4"><h4>BARNES, CURTIS L <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Curtis.L.Barnes@hud.gov">Curtis.L.Barnes@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="bates brittany christine eq opp speclst brittany.c.bates@hud.gov san juan pr region 4"><h4>BATES, BRITTANY CHRISTINE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Brittany.C.Bates@hud.gov">Brittany.C.Bates@hud.gov</a></p><p><strong>Location:</strong> SAN JUAN, PR</p></article>
+        <article class="card" data-search="becker andrew steven eq opp speclst andrew.s.becker@hud.gov atlanta ga region 4"><h4>BECKER, ANDREW STEVEN <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:andrew.s.becker@hud.gov">andrew.s.becker@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="beltran william ernesto supvy supervisory equal opportunity sp william.e.beltran@hud.gov san juan pr region 4"><h4>BELTRAN, WILLIAM ERNESTO <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:William.E.Beltran@hud.gov">William.E.Beltran@hud.gov</a></p><p><strong>Location:</strong> SAN JUAN, PR</p></article>
+        <article class="card" data-search="bernacchi jessica anne eq opp speclst jessica.a.bernacchi@hud.gov atlanta ga region 4"><h4>BERNACCHI, JESSICA ANNE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:jessica.a.bernacchi@hud.gov">jessica.a.bernacchi@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="berrocal jr james equal opportunity specialist james.berrocal@hud.gov atlanta ga region 4"><h4>BERROCAL JR, JAMES <span class="position">Equal Opportunity Specialist</span></h4><p><strong>Email:</strong><br><a href="mailto:james.berrocal@hud.gov">james.berrocal@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="branam tanya marie eq opp speclst tanya.m.branam@hud.gov jacksonville fl region 4"><h4>BRANAM, TANYA MARIE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Tanya.M.Branam@HUD.GOV">Tanya.M.Branam@HUD.GOV</a></p><p><strong>Location:</strong> JACKSONVILLE, FL</p></article>
+        <article class="card" data-search="bugg vicki ray prog anal vicki.r.bugg@hud.gov atlanta ga region 4"><h4>BUGG, VICKI RAY <span class="position">PROG ANAL</span></h4><p><strong>Email:</strong><br><a href="mailto:vicki.r.bugg@hud.gov">vicki.r.bugg@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="carlson nadia rose supvy supervisory equal opportunity sp nadia.r.carlson@hud.gov atlanta ga region 4"><h4>CARLSON, NADIA ROSE <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:NADIA.R.CARLSON@HUD.GOV">NADIA.R.CARLSON@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="chatman krysha supvy supervisory equal opportunity sp krysha.r.chatman@hud.gov atlanta ga region 4"><h4>CHATMAN, KRYSHA <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Krysha.R.Chatman@hud.gov">Krysha.R.Chatman@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="cordero rosa e eq opp asst rosa.e.cordero@hud.gov jacksonville fl region 4"><h4>CORDERO, ROSA E <span class="position">EQ OPP ASST</span></h4><p><strong>Email:</strong><br><a href="mailto:rosa.e.cordero@hud.gov">rosa.e.cordero@hud.gov</a></p><p><strong>Location:</strong> JACKSONVILLE, FL</p></article>
+        <article class="card" data-search="cronin david stuart eq opp speclst david.s.cronin@hud.gov jacksonville fl region 4"><h4>CRONIN, DAVID STUART <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:david.s.cronin@hud.gov">david.s.cronin@hud.gov</a></p><p><strong>Location:</strong> JACKSONVILLE, FL</p></article>
+        <article class="card" data-search="cullen deandra j. adas for enforcement compliance deandra.j.cullen@hud.gov greensboro nc region 4"><h4>CULLEN, DEANDRA J. <span class="position">ADAS for Enforcement Compliance</span></h4><p><strong>Email:</strong><br><a href="mailto:deandra.j.cullen@hud.gov">deandra.j.cullen@hud.gov</a></p><p><strong>Location:</strong> GREENSBORO, NC</p></article>
+        <article class="card" data-search="davis-fuller sabrina lashone eq opp speclst sabrina.l.davis-fuller@hud.gov atlanta ga region 4"><h4>DAVIS-FULLER, SABRINA LASHONE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Sabrina.L.Davis-Fuller@HUD.GOV">Sabrina.L.Davis-Fuller@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="edwards tracey lorraine eq opp speclst tracey.l.edwards@hud.gov atlanta ga region 4"><h4>EDWARDS, TRACEY LORRAINE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:TRACEY.L.EDWARDS@HUD.GOV">TRACEY.L.EDWARDS@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="foster maurice constantine eq opp speclst maurice.c.foster@hud.gov atlanta ga region 4"><h4>FOSTER, MAURICE CONSTANTINE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Maurice.C.Foster@HUD.GOV">Maurice.C.Foster@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="goatley liandrea marie eq opp speclst liandrea.m.goatley@hud.gov louisville ky region 4"><h4>GOATLEY, LIANDREA MARIE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:LIANDREA.M.GOATLEY@HUD.GOV">LIANDREA.M.GOATLEY@HUD.GOV</a></p><p><strong>Location:</strong> LOUISVILLE, KY</p></article>
+        <article class="card" data-search="holbrook darren k supvy supvy eq opp speclst darren.k.holbrook@hud.gov atlanta ga region 4"><h4>HOLBROOK, DARREN K <span class="position">SUPVY SUPVY EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Darren.K.Holbrook@hud.gov">Darren.K.Holbrook@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="howard baldwin tonia toinette eq opp speclst tonia.t.howardbaldwin@hud.gov birmingham al region 4"><h4>HOWARD BALDWIN, TONIA TOINETTE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Tonia.T.HowardBaldwin@HUD.GOV">Tonia.T.HowardBaldwin@HUD.GOV</a></p><p><strong>Location:</strong> BIRMINGHAM, AL</p></article>
+        <article class="card" data-search="hunt allen richard eq opp speclst allen.r.hunt@hud.gov greensboro nc region 4"><h4>HUNT, ALLEN RICHARD <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Allen.R.Hunt@HUD.GOV">Allen.R.Hunt@HUD.GOV</a></p><p><strong>Location:</strong> GREENSBORO, NC</p></article>
+        <article class="card" data-search="javier valencia marielena eq opp speclst marielena.javiervalencia@hud.gov san juan pr region 4"><h4>JAVIER VALENCIA, MARIELENA <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:marielena.javiervalencia@hud.gov">marielena.javiervalencia@hud.gov</a></p><p><strong>Location:</strong> SAN JUAN, PR</p></article>
+        <article class="card" data-search="jefferson malcolm program analyst malcolm.jefferson@hud.gov atlanta ga region 4"><h4>JEFFERSON, MALCOLM <span class="position">PROGRAM ANALYST</span></h4><p><strong>Email:</strong><br><a href="mailto:Malcolm.Jefferson@hud.gov">Malcolm.Jefferson@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="johnson vanessa renee mahan supvy supervisory equal opportunity sp vanessa.r.mahan@hud.gov atlanta ga region 4"><h4>JOHNSON, VANESSA RENEE MAHAN <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:VANESSA.R.MAHAN@HUD.GOV">VANESSA.R.MAHAN@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="johnson vicki d eq opp speclst vicki.d.johnson@hud.gov miami fl region 4"><h4>JOHNSON, VICKI D <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Vicki.D.Johnson@hud.gov">Vicki.D.Johnson@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="jones jennifer danetta eq opp speclst jennifer.s.jones@hud.gov atlanta ga region 4"><h4>JONES, JENNIFER DANETTA <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Jennifer.S.Jones@hud.gov">Jennifer.S.Jones@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="kemp alecia m eq opp speclst alecia.m.kemp@hud.gov miami fl region 4"><h4>KEMP, ALECIA M <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Alecia.M.Kemp@hud.gov">Alecia.M.Kemp@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="kendricks yewanda arlene eq opp speclst yewanda.a.kendricks@hud.gov atlanta ga region 4"><h4>KENDRICKS, YEWANDA ARLENE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Yewanda.A.Kendricks@hud.gov">Yewanda.A.Kendricks@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="kuchera kelly anne eq opp speclst kelly.a.kuchera@hud.gov jacksonville fl region 4"><h4>KUCHERA, KELLY ANNE <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:KELLY.A.KUCHERA@HUD.GOV">KELLY.A.KUCHERA@HUD.GOV</a></p><p><strong>Location:</strong> JACKSONVILLE, FL</p></article>
+        <article class="card" data-search="lewis angie m eq opp speclst angie.m.lewis@hud.gov jackson ms region 4"><h4>LEWIS, ANGIE M <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Angie.M.Lewis@hud.gov">Angie.M.Lewis@hud.gov</a></p><p><strong>Location:</strong> JACKSON, MS</p></article>
+        <article class="card" data-search="marrero isabel eq opp speclst isabel.marrero@hud.gov miami fl region 4"><h4>MARRERO, ISABEL <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:ISABEL.MARRERO@hud.gov">ISABEL.MARRERO@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="moore stephen david eq opp speclst stephen.d.moore@hud.gov knoxville tn region 4"><h4>MOORE, STEPHEN DAVID <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Stephen.D.Moore@hud.gov">Stephen.D.Moore@hud.gov</a></p><p><strong>Location:</strong> KNOXVILLE, TN</p></article>
+        <article class="card" data-search="newsome christian d eq opp speclst christian.d.newsome@hud.gov atlanta ga region 4"><h4>NEWSOME, CHRISTIAN D <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Christian.D.Newsome@hud.gov">Christian.D.Newsome@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="osegueda carlos supvy supervisory equal opportunity sp carlos.osegueda@hud.gov atlanta ga region 4"><h4>OSEGUEDA, CARLOS <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Carlos.Osegueda@hud.gov">Carlos.Osegueda@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="parks dustin a supvy supervisory equal opportunity sp dustin.a.parks@hud.gov miami fl region 4"><h4>PARKS, DUSTIN A <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Dustin.A.Parks@hud.gov">Dustin.A.Parks@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="pollock willie lee supvy supervisory equal opportunity sp willie.l.pollock@hud.gov birmingham al region 4"><h4>POLLOCK, WILLIE LEE <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Willie.L.Pollock@hud.gov">Willie.L.Pollock@hud.gov</a></p><p><strong>Location:</strong> BIRMINGHAM, AL</p></article>
+        <article class="card" data-search="poveda agnes eq opp speclst agnes.poveda@hud.gov miami fl region 4"><h4>POVEDA, AGNES <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Agnes.Poveda@hud.gov">Agnes.Poveda@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="robey deanna lynn supvy supvy eq opp speclst deanna.l.robey@hud.gov atlanta ga region 4"><h4>ROBEY, DEANNA LYNN <span class="position">SUPVY SUPVY EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:DEANNA.L.ROBEY@HUD.GOV">DEANNA.L.ROBEY@HUD.GOV</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="sanders staci gilliam supvy supervisory equal opportunity sp staci.gilliam@hud.gov birmingham al region 4"><h4>SANDERS, STACI GILLIAM <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4><p><strong>Email:</strong><br><a href="mailto:Staci.Gilliam@hud.gov">Staci.Gilliam@hud.gov</a></p><p><strong>Location:</strong> BIRMINGHAM, AL</p></article>
+        <article class="card" data-search="sanford deigo lavirture mo eq opp speclst deigo.l.sanford@hud.gov atlanta ga region 4"><h4>SANFORD, DEIGO LAVIRTURE MO <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:Deigo.L.Sanford@hud.gov">Deigo.L.Sanford@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+        <article class="card" data-search="shapiro wendolyn rivera eq opp speclst wendolyn.rivera-shapiro@hud.gov miami fl region 4"><h4>SHAPIRO, WENDOLYN RIVERA <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:wendolyn.rivera-shapiro@hud.gov">wendolyn.rivera-shapiro@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="sutton james n program manager james.n.sutton@hud.gov miami fl region 4"><h4>SUTTON, JAMES N <span class="position">Program Manager</span></h4><p><strong>Email:</strong><br><a href="mailto:James.N.Sutton@hud.gov">James.N.Sutton@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="tuma tiffany camille program analyst (oplio) tiffany.c.tuma@hud.gov greensboro nc region 4"><h4>TUMA, TIFFANY CAMILLE <span class="position">Program Analyst (OPLIO)</span></h4><p><strong>Email:</strong><br><a href="mailto:Tiffany.C.Tuma@HUD.GOV">Tiffany.C.Tuma@HUD.GOV</a></p><p><strong>Location:</strong> GREENSBORO, NC</p></article>
+        <article class="card" data-search="whitehead jr henry l eq opp speclst henry.l.whitehead@hud.gov miami fl region 4"><h4>WHITEHEAD JR, HENRY L <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:henry.l.whitehead@hud.gov">henry.l.whitehead@hud.gov</a></p><p><strong>Location:</strong> MIAMI, FL</p></article>
+        <article class="card" data-search="williams marcia n eq opp speclst marcia.n.williams@hud.gov atlanta ga region 4"><h4>WILLIAMS, MARCIA N <span class="position">EQ OPP SPECLST</span></h4><p><strong>Email:</strong><br><a href="mailto:MARCIA.N.WILLIAMS@hud.gov">MARCIA.N.WILLIAMS@hud.gov</a></p><p><strong>Location:</strong> ATLANTA, GA</p></article>
+      </div>
+      <div class="view table-wrap region-table" style="display:none" data-region="Region 4">
+        <table>
+          <caption>Region 4 – All Staff</caption>
+          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <tbody>
+            <tr data-search="bailey azriel lorenzo eq opp speclst azriel.l.bailey@hud.gov atlanta ga region 4"><td>BAILEY, AZRIEL LORENZO</td><td>EQ OPP SPECLST</td><td><a href="mailto:AZRIEL.L.BAILEY@HUD.GOV">AZRIEL.L.BAILEY@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="barnes curtis l eq opp speclst curtis.l.barnes@hud.gov atlanta ga region 4"><td>BARNES, CURTIS L</td><td>EQ OPP SPECLST</td><td><a href="mailto:Curtis.L.Barnes@hud.gov">Curtis.L.Barnes@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="bates brittany christine eq opp speclst brittany.c.bates@hud.gov san juan pr region 4"><td>BATES, BRITTANY CHRISTINE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Brittany.C.Bates@hud.gov">Brittany.C.Bates@hud.gov</a></td><td>SAN JUAN, PR</td></tr>
+            <tr data-search="becker andrew steven eq opp speclst andrew.s.becker@hud.gov atlanta ga region 4"><td>BECKER, ANDREW STEVEN</td><td>EQ OPP SPECLST</td><td><a href="mailto:andrew.s.becker@hud.gov">andrew.s.becker@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="beltran william ernesto supvy supervisory equal opportunity sp william.e.beltran@hud.gov san juan pr region 4"><td>BELTRAN, WILLIAM ERNESTO</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:William.E.Beltran@hud.gov">William.E.Beltran@hud.gov</a></td><td>SAN JUAN, PR</td></tr>
+            <tr data-search="bernacchi jessica anne eq opp speclst jessica.a.bernacchi@hud.gov atlanta ga region 4"><td>BERNACCHI, JESSICA ANNE</td><td>EQ OPP SPECLST</td><td><a href="mailto:jessica.a.bernacchi@hud.gov">jessica.a.bernacchi@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="berrocal jr james equal opportunity specialist james.berrocal@hud.gov atlanta ga region 4"><td>BERROCAL JR, JAMES</td><td>Equal Opportunity Specialist</td><td><a href="mailto:james.berrocal@hud.gov">james.berrocal@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="branam tanya marie eq opp speclst tanya.m.branam@hud.gov jacksonville fl region 4"><td>BRANAM, TANYA MARIE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Tanya.M.Branam@HUD.GOV">Tanya.M.Branam@HUD.GOV</a></td><td>JACKSONVILLE, FL</td></tr>
+            <tr data-search="bugg vicki ray prog anal vicki.r.bugg@hud.gov atlanta ga region 4"><td>BUGG, VICKI RAY</td><td>PROG ANAL</td><td><a href="mailto:vicki.r.bugg@hud.gov">vicki.r.bugg@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="carlson nadia rose supvy supervisory equal opportunity sp nadia.r.carlson@hud.gov atlanta ga region 4"><td>CARLSON, NADIA ROSE</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:NADIA.R.CARLSON@HUD.GOV">NADIA.R.CARLSON@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="chatman krysha supvy supervisory equal opportunity sp krysha.r.chatman@hud.gov atlanta ga region 4"><td>CHATMAN, KRYSHA</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Krysha.R.Chatman@hud.gov">Krysha.R.Chatman@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="cordero rosa e eq opp asst rosa.e.cordero@hud.gov jacksonville fl region 4"><td>CORDERO, ROSA E</td><td>EQ OPP ASST</td><td><a href="mailto:rosa.e.cordero@hud.gov">rosa.e.cordero@hud.gov</a></td><td>JACKSONVILLE, FL</td></tr>
+            <tr data-search="cronin david stuart eq opp speclst david.s.cronin@hud.gov jacksonville fl region 4"><td>CRONIN, DAVID STUART</td><td>EQ OPP SPECLST</td><td><a href="mailto:david.s.cronin@hud.gov">david.s.cronin@hud.gov</a></td><td>JACKSONVILLE, FL</td></tr>
+            <tr data-search="cullen deandra j. adas for enforcement compliance deandra.j.cullen@hud.gov greensboro nc region 4"><td>CULLEN, DEANDRA J.</td><td>ADAS for Enforcement Compliance</td><td><a href="mailto:deandra.j.cullen@hud.gov">deandra.j.cullen@hud.gov</a></td><td>GREENSBORO, NC</td></tr>
+            <tr data-search="davis-fuller sabrina lashone eq opp speclst sabrina.l.davis-fuller@hud.gov atlanta ga region 4"><td>DAVIS-FULLER, SABRINA LASHONE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Sabrina.L.Davis-Fuller@HUD.GOV">Sabrina.L.Davis-Fuller@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="edwards tracey lorraine eq opp speclst tracey.l.edwards@hud.gov atlanta ga region 4"><td>EDWARDS, TRACEY LORRAINE</td><td>EQ OPP SPECLST</td><td><a href="mailto:TRACEY.L.EDWARDS@HUD.GOV">TRACEY.L.EDWARDS@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="foster maurice constantine eq opp speclst maurice.c.foster@hud.gov atlanta ga region 4"><td>FOSTER, MAURICE CONSTANTINE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Maurice.C.Foster@HUD.GOV">Maurice.C.Foster@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="goatley liandrea marie eq opp speclst liandrea.m.goatley@hud.gov louisville ky region 4"><td>GOATLEY, LIANDREA MARIE</td><td>EQ OPP SPECLST</td><td><a href="mailto:LIANDREA.M.GOATLEY@HUD.GOV">LIANDREA.M.GOATLEY@HUD.GOV</a></td><td>LOUISVILLE, KY</td></tr>
+            <tr data-search="holbrook darren k supvy supvy eq opp speclst darren.k.holbrook@hud.gov atlanta ga region 4"><td>HOLBROOK, DARREN K</td><td>SUPVY SUPVY EQ OPP SPECLST</td><td><a href="mailto:Darren.K.Holbrook@hud.gov">Darren.K.Holbrook@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="howard baldwin tonia toinette eq opp speclst tonia.t.howardbaldwin@hud.gov birmingham al region 4"><td>HOWARD BALDWIN, TONIA TOINETTE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Tonia.T.HowardBaldwin@HUD.GOV">Tonia.T.HowardBaldwin@HUD.GOV</a></td><td>BIRMINGHAM, AL</td></tr>
+            <tr data-search="hunt allen richard eq opp speclst allen.r.hunt@hud.gov greensboro nc region 4"><td>HUNT, ALLEN RICHARD</td><td>EQ OPP SPECLST</td><td><a href="mailto:Allen.R.Hunt@HUD.GOV">Allen.R.Hunt@HUD.GOV</a></td><td>GREENSBORO, NC</td></tr>
+            <tr data-search="javier valencia marielena eq opp speclst marielena.javiervalencia@hud.gov san juan pr region 4"><td>JAVIER VALENCIA, MARIELENA</td><td>EQ OPP SPECLST</td><td><a href="mailto:marielena.javiervalencia@hud.gov">marielena.javiervalencia@hud.gov</a></td><td>SAN JUAN, PR</td></tr>
+            <tr data-search="jefferson malcolm program analyst malcolm.jefferson@hud.gov atlanta ga region 4"><td>JEFFERSON, MALCOLM</td><td>PROGRAM ANALYST</td><td><a href="mailto:Malcolm.Jefferson@hud.gov">Malcolm.Jefferson@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="johnson vanessa renee mahan supvy supervisory equal opportunity sp vanessa.r.mahan@hud.gov atlanta ga region 4"><td>JOHNSON, VANESSA RENEE MAHAN</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:VANESSA.R.MAHAN@HUD.GOV">VANESSA.R.MAHAN@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="johnson vicki d eq opp speclst vicki.d.johnson@hud.gov miami fl region 4"><td>JOHNSON, VICKI D</td><td>EQ OPP SPECLST</td><td><a href="mailto:Vicki.D.Johnson@hud.gov">Vicki.D.Johnson@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="jones jennifer danetta eq opp speclst jennifer.s.jones@hud.gov atlanta ga region 4"><td>JONES, JENNIFER DANETTA</td><td>EQ OPP SPECLST</td><td><a href="mailto:Jennifer.S.Jones@hud.gov">Jennifer.S.Jones@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="kemp alecia m eq opp speclst alecia.m.kemp@hud.gov miami fl region 4"><td>KEMP, ALECIA M</td><td>EQ OPP SPECLST</td><td><a href="mailto:Alecia.M.Kemp@hud.gov">Alecia.M.Kemp@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="kendricks yewanda arlene eq opp speclst yewanda.a.kendricks@hud.gov atlanta ga region 4"><td>KENDRICKS, YEWANDA ARLENE</td><td>EQ OPP SPECLST</td><td><a href="mailto:Yewanda.A.Kendricks@hud.gov">Yewanda.A.Kendricks@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="kuchera kelly anne eq opp speclst kelly.a.kuchera@hud.gov jacksonville fl region 4"><td>KUCHERA, KELLY ANNE</td><td>EQ OPP SPECLST</td><td><a href="mailto:KELLY.A.KUCHERA@HUD.GOV">KELLY.A.KUCHERA@HUD.GOV</a></td><td>JACKSONVILLE, FL</td></tr>
+            <tr data-search="lewis angie m eq opp speclst angie.m.lewis@hud.gov jackson ms region 4"><td>LEWIS, ANGIE M</td><td>EQ OPP SPECLST</td><td><a href="mailto:Angie.M.Lewis@hud.gov">Angie.M.Lewis@hud.gov</a></td><td>JACKSON, MS</td></tr>
+            <tr data-search="marrero isabel eq opp speclst isabel.marrero@hud.gov miami fl region 4"><td>MARRERO, ISABEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:ISABEL.MARRERO@hud.gov">ISABEL.MARRERO@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="moore stephen david eq opp speclst stephen.d.moore@hud.gov knoxville tn region 4"><td>MOORE, STEPHEN DAVID</td><td>EQ OPP SPECLST</td><td><a href="mailto:Stephen.D.Moore@hud.gov">Stephen.D.Moore@hud.gov</a></td><td>KNOXVILLE, TN</td></tr>
+            <tr data-search="newsome christian d eq opp speclst christian.d.newsome@hud.gov atlanta ga region 4"><td>NEWSOME, CHRISTIAN D</td><td>EQ OPP SPECLST</td><td><a href="mailto:Christian.D.Newsome@hud.gov">Christian.D.Newsome@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="osegueda carlos supvy supervisory equal opportunity sp carlos.osegueda@hud.gov atlanta ga region 4"><td>OSEGUEDA, CARLOS</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Carlos.Osegueda@hud.gov">Carlos.Osegueda@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="parks dustin a supvy supervisory equal opportunity sp dustin.a.parks@hud.gov miami fl region 4"><td>PARKS, DUSTIN A</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Dustin.A.Parks@hud.gov">Dustin.A.Parks@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="pollock willie lee supvy supervisory equal opportunity sp willie.l.pollock@hud.gov birmingham al region 4"><td>POLLOCK, WILLIE LEE</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Willie.L.Pollock@hud.gov">Willie.L.Pollock@hud.gov</a></td><td>BIRMINGHAM, AL</td></tr>
+            <tr data-search="poveda agnes eq opp speclst agnes.poveda@hud.gov miami fl region 4"><td>POVEDA, AGNES</td><td>EQ OPP SPECLST</td><td><a href="mailto:Agnes.Poveda@hud.gov">Agnes.Poveda@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="robey deanna lynn supvy supvy eq opp speclst deanna.l.robey@hud.gov atlanta ga region 4"><td>ROBEY, DEANNA LYNN</td><td>SUPVY SUPVY EQ OPP SPECLST</td><td><a href="mailto:DEANNA.L.ROBEY@HUD.GOV">DEANNA.L.ROBEY@HUD.GOV</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="sanders staci gilliam supvy supervisory equal opportunity sp staci.gilliam@hud.gov birmingham al region 4"><td>SANDERS, STACI GILLIAM</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Staci.Gilliam@hud.gov">Staci.Gilliam@hud.gov</a></td><td>BIRMINGHAM, AL</td></tr>
+            <tr data-search="sanford deigo lavirture mo eq opp speclst deigo.l.sanford@hud.gov atlanta ga region 4"><td>SANFORD, DEIGO LAVIRTURE MO</td><td>EQ OPP SPECLST</td><td><a href="mailto:Deigo.L.Sanford@hud.gov">Deigo.L.Sanford@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+            <tr data-search="shapiro wendolyn rivera eq opp speclst wendolyn.rivera-shapiro@hud.gov miami fl region 4"><td>SHAPIRO, WENDOLYN RIVERA</td><td>EQ OPP SPECLST</td><td><a href="mailto:wendolyn.rivera-shapiro@hud.gov">wendolyn.rivera-shapiro@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="sutton james n program manager james.n.sutton@hud.gov miami fl region 4"><td>SUTTON, JAMES N</td><td>Program Manager</td><td><a href="mailto:James.N.Sutton@hud.gov">James.N.Sutton@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="tuma tiffany camille program analyst (oplio) tiffany.c.tuma@hud.gov greensboro nc region 4"><td>TUMA, TIFFANY CAMILLE</td><td>Program Analyst (OPLIO)</td><td><a href="mailto:Tiffany.C.Tuma@HUD.GOV">Tiffany.C.Tuma@HUD.GOV</a></td><td>GREENSBORO, NC</td></tr>
+            <tr data-search="whitehead jr henry l eq opp speclst henry.l.whitehead@hud.gov miami fl region 4"><td>WHITEHEAD JR, HENRY L</td><td>EQ OPP SPECLST</td><td><a href="mailto:henry.l.whitehead@hud.gov">henry.l.whitehead@hud.gov</a></td><td>MIAMI, FL</td></tr>
+            <tr data-search="williams marcia n eq opp speclst marcia.n.williams@hud.gov atlanta ga region 4"><td>WILLIAMS, MARCIA N</td><td>EQ OPP SPECLST</td><td><a href="mailto:MARCIA.N.WILLIAMS@hud.gov">MARCIA.N.WILLIAMS@hud.gov</a></td><td>ATLANTA, GA</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>    <!-- REGION 5 -->
+<section class="section" id="region-5">
+  <div class="section-header">
+    <div>
+      <h2>Region 5 (Chicago)</h2>
+      <div class="meta">Midwest</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 5">
+    <article class="card" data-search="bolling nicole elizabeth eq opp speclst nicole.e.bolling@hud.gov cleveland oh region 5">
+      <h4>BOLLING, NICOLE ELIZABETH <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:nicole.e.bolling@hud.gov">nicole.e.bolling@hud.gov</a></p>
+      <p><strong>Location:</strong> CLEVELAND, OH</p>
+    </article>
+
+    <article class="card" data-search="brown jermaine eq opp speclst jermaine.brown@hud.gov columbus oh region 5">
+      <h4>BROWN, JERMAINE <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:jermaine.brown@hud.gov">jermaine.brown@hud.gov</a></p>
+      <p><strong>Location:</strong> COLUMBUS, OH</p>
+    </article>
+
+    <article class="card" data-search="bucklew jenna suzanne eq opp speclst jenna.s.bucklew@hud.gov cleveland oh region 5">
+      <h4>BUCKLEW, JENNA SUZANNE <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:JENNA.S.BUCKLEW@HUD.GOV">JENNA.S.BUCKLEW@HUD.GOV</a></p>
+      <p><strong>Location:</strong> CLEVELAND, OH</p>
+    </article>
+
+    <article class="card" data-search="burgos-rivera veronica eq opp speclst veronica.burgos-rivera@hud.gov chicago il region 5">
+      <h4>BURGOS-RIVERA, VERONICA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:veronica.burgos-rivera@hud.gov">veronica.burgos-rivera@hud.gov</a></p>
+      <p><strong>Location:</strong> CHICAGO, IL</p>
+    </article>
+
+    <article class="card" data-search="calicutt yolanda supvy supvy eq opp speclst yolanda.calicutt@hud.gov chicago il region 5">
+      <h4>CALICUTT, YOLANDA <span class="position">SUPVY SUPVY EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:Yolanda.Calicutt@hud.gov">Yolanda.Calicutt@hud.gov</a></p>
+      <p><strong>Location:</strong> CHICAGO, IL</p>
+    </article>
+    <article class="card" data-search="cook felicia k eq opp speclst felicia.k.cook@hud.gov detroit mi region 5">
+      <h4>COOK, FELICIA K <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:Felicia.K.Cook@hud.gov">Felicia.K.Cook@hud.gov</a></p>
+      <p><strong>Location:</strong> DETROIT, MI</p>
+    </article>
+
+    <article class="card" data-search="english stephanie e eq opp asst stephanie.english@hud.gov chicago il region 5">
+      <h4>ENGLISH, STEPHANIE E <span class="position">EQ OPP ASST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:stephanie.english@hud.gov">stephanie.english@hud.gov</a></p>
+      <p><strong>Location:</strong> CHICAGO, IL</p>
+    </article>
+
+    <article class="card" data-search="enricco lisa m supvy supervisory equal opportunity sp lisa.m.enricco@hud.gov cleveland oh region 5">
+      <h4>ENRICCO, LISA M <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:Lisa.M.Enricco@hud.gov">Lisa.M.Enricco@hud.gov</a></p>
+      <p><strong>Location:</strong> CLEVELAND, OH</p>
+    </article>
+
+    <article class="card" data-search="enriquez maria isabel eq opp speclst maria.i.enriquez@hud.gov chicago il region 5">
+      <h4>ENRIQUEZ, MARIA ISABEL <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:Maria.I.Enriquez@HUD.GOV">Maria.I.Enriquez@HUD.GOV</a></p>
+      <p><strong>Location:</strong> CHICAGO, IL</p>
+    </article>
+
+    <article class="card" data-search="ganjalikhani kamal eq opp speclst kamal.ganjalikhani@hud.gov chicago il region 5">
+      <h4>GANJALIKHANI, KAMAL <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:Kamal.Ganjalikhani@hud.gov">Kamal.Ganjalikhani@hud.gov</a></p>
+      <p><strong>Location:</strong> CHICAGO, IL</p>
+    </article>
+  </div> <!-- end of Region 5 grid -->
+
+  <div class="view table-wrap region-table" style="display:none" data-region="Region 5">
+    <table>
+      <caption>Region 5 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr data-search="bolling nicole elizabeth eq opp speclst nicole.e.bolling@hud.gov cleveland oh region 5">
+          <td>BOLLING, NICOLE ELIZABETH</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:nicole.e.bolling@hud.gov">nicole.e.bolling@hud.gov</a></td><td>CLEVELAND, OH</td>
+        </tr>
+        <tr data-search="brown jermaine eq opp speclst jermaine.brown@hud.gov columbus oh region 5">
+          <td>BROWN, JERMAINE</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:jermaine.brown@hud.gov">jermaine.brown@hud.gov</a></td><td>COLUMBUS, OH</td>
+        </tr>
+        <tr data-search="bucklew jenna suzanne eq opp speclst jenna.s.bucklew@hud.gov cleveland oh region 5">
+          <td>BUCKLEW, JENNA SUZANNE</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:JENNA.S.BUCKLEW@HUD.GOV">JENNA.S.BUCKLEW@HUD.GOV</a></td><td>CLEVELAND, OH</td>
+        </tr>
+        <tr data-search="burgos-rivera veronica eq opp speclst veronica.burgos-rivera@hud.gov chicago il region 5">
+          <td>BURGOS-RIVERA, VERONICA</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:veronica.burgos-rivera@hud.gov">veronica.burgos-rivera@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        
+        <tr data-search="calicutt yolanda supvy supvy eq opp speclst yolanda.calicutt@hud.gov chicago il region 5">
+          <td>CALICUTT, YOLANDA</td><td>SUPVY SUPVY EQ OPP SPECLST</td>
+          <td><a href="mailto:Yolanda.Calicutt@hud.gov">Yolanda.Calicutt@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="cook felicia k eq opp speclst felicia.k.cook@hud.gov detroit mi region 5">
+          <td>COOK, FELICIA K</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Felicia.K.Cook@hud.gov">Felicia.K.Cook@hud.gov</a></td><td>DETROIT, MI</td>
+        </tr>
+        <tr data-search="english stephanie e eq opp asst stephanie.english@hud.gov chicago il region 5">
+          <td>ENGLISH, STEPHANIE E</td><td>EQ OPP ASST</td>
+          <td><a href="mailto:stephanie.english@hud.gov">stephanie.english@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="enricco lisa m supvy supervisory equal opportunity sp lisa.m.enricco@hud.gov cleveland oh region 5">
+          <td>ENRICCO, LISA M</td><td>SUPVY Supervisory Equal Opportunity Sp</td>
+          <td><a href="mailto:Lisa.M.Enricco@hud.gov">Lisa.M.Enricco@hud.gov</a></td><td>CLEVELAND, OH</td>
+        </tr>
+        <tr data-search="enriquez maria isabel eq opp speclst maria.i.enriquez@hud.gov chicago il region 5">
+          <td>ENRIQUEZ, MARIA ISABEL</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Maria.I.Enriquez@HUD.GOV">Maria.I.Enriquez@HUD.GOV</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="ganjalikhani kamal eq opp speclst kamal.ganjalikhani@hud.gov chicago il region 5">
+          <td>GANJALIKHANI, KAMAL</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Kamal.Ganjalikhani@hud.gov">Kamal.Ganjalikhani@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="gay lora a eq opp speclst lora.a.gay@hud.gov cleveland oh region 5">
+          <td>GAY, LORA A</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Lora.A.Gay@HUD.GOV">Lora.A.Gay@HUD.GOV</a></td><td>CLEVELAND, OH</td>
+        </tr>
+        <tr data-search="harper karla lashanda eq opp speclst karla.l.harper@hud.gov chicago il region 5">
+          <td>HARPER, KARLA LASHANDA</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Karla.L.Harper@hud.gov">Karla.L.Harper@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="kilpatrick graham lane sparreo eq opp speclst graham.l.kilpatrick@hud.gov chicago il region 5">
+          <td>KILPATRICK, GRAHAM LANE SPARREO</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:graham.l.kilpatrick@hud.gov">graham.l.kilpatrick@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="lewis elva maria supvy supervisory equal opportunity sp elva.lewis@hud.gov columbus oh region 5">
+          <td>LEWIS, ELVA MARIA</td><td>SUPVY Supervisory Equal Opportunity Sp</td>
+          <td><a href="mailto:ELVA.LEWIS@hud.gov">ELVA.LEWIS@hud.gov</a></td><td>COLUMBUS, OH</td>
+        </tr>
+        <tr data-search="magrath ian ross eq opp speclst ian.r.magrath@hud.gov chicago il region 5">
+          <td>MAGRATH, IAN ROSS</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:IAN.R.MAGRATH@HUD.GOV">IAN.R.MAGRATH@HUD.GOV</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="meade john arthur supvy supervisory equal opportunity sp john.a.meade@hud.gov chicago il region 5">
+          <td>MEADE, JOHN ARTHUR</td><td>SUPVY Supervisory Equal Opportunity Sp</td>
+          <td><a href="mailto:john.a.meade@hud.gov">john.a.meade@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="meltesen lon david supvy supervisory equal opportunity sp lon.d.meltesen@hud.gov chicago il region 5">
+          <td>MELTESEN, LON DAVID</td><td>SUPVY Supervisory Equal Opportunity Sp</td>
+          <td><a href="mailto:LON.D.MELTESEN@HUD.GOV">LON.D.MELTESEN@HUD.GOV</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="morey-greer renard john paul eq opp speclst renard.j.morey-greer@hud.gov detroit mi region 5">
+          <td>MOREY-GREER, RENARD JOHN PAUL</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:renard.j.morey-greer@hud.gov">renard.j.morey-greer@hud.gov</a></td><td>DETROIT, MI</td>
+        </tr>
+        <tr data-search="moya maria diana eq opp speclst maria.d.moya@hud.gov chicago il region 5">
+          <td>MOYA, MARIA DIANA</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:MARIA.D.MOYA@HUD.GOV">MARIA.D.MOYA@HUD.GOV</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="noble beverly a eq opp speclst beverly.noble@hud.gov indianapolis in region 5">
+          <td>NOBLE, BEVERLY A</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:beverly.noble@hud.gov">beverly.noble@hud.gov</a></td><td>INDIANAPOLIS, IN</td>
+        </tr>
+        <tr data-search="padilla daniel thomas eq opp speclst daniel.t.padilla@hud.gov chicago il region 5">
+          <td>PADILLA, DANIEL THOMAS</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:daniel.t.padilla@hud.gov">daniel.t.padilla@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="pedracine roslynn l program analyst roslynn.pedracine@hud.gov chicago il region 5">
+          <td>PEDRACINE, ROSLYNN L</td><td>PROGRAM ANALYST</td>
+          <td><a href="mailto:Roslynn.Pedracine@hud.gov">Roslynn.Pedracine@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="peters thomas joseph eq opp speclst thomas.j.peters@hud.gov cleveland oh region 5">
+          <td>PETERS, THOMAS JOSEPH</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Thomas.J.Peters@hud.gov">Thomas.J.Peters@hud.gov</a></td><td>CLEVELAND, OH</td>
+        </tr>
+        <tr data-search="prince rebecca n supvy supvy eq opp speclst rebecca.n.prince@hud.gov chicago il region 5">
+          <td>PRINCE, REBECCA N</td><td>SUPVY SUPVY EQ OPP SPECLST</td>
+          <td><a href="mailto:Rebecca.N.Prince@hud.gov">Rebecca.N.Prince@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="roberts james michael special assistant james.m.roberts@hud.gov detroit mi region 5">
+          <td>ROBERTS, JAMES MICHAEL</td><td>SPECIAL ASSISTANT</td>
+          <td><a href="mailto:james.m.roberts@hud.gov">james.m.roberts@hud.gov</a></td><td>DETROIT, MI</td>
+        </tr>
+        <tr data-search="rodriguez margarita a mgmt & prog anal margarita.a.rodriguez@hud.gov chicago il region 5">
+          <td>RODRIGUEZ, MARGARITA A</td><td>MGMT & PROG ANAL</td>
+          <td><a href="mailto:Margarita.A.Rodriguez@hud.gov">Margarita.A.Rodriguez@hud.gov</a></td><td>CHICAGO, IL</td>
+        </tr>
+        <tr data-search="schneider peragin korinne amy eq opp speclst korinne.a.schneiderperagine@hud.gov milwaukee wi region 5">
+          <td>SCHNEIDER PERAGIN, KORINNE AMY</td><td>EQ OPP SPECLST</td>
+          <td><a href="mailto:Korinne.A.SchneiderPeragine@HUD.GOV">Korinne.A.SchneiderPeragine@HUD.GOV</a></td><td>MILWAUKEE, WI</td>
+        </tr>
+        <tr data-search="shelton philip c supvy supervisory equal opportunity sp philip.c.shelton@hud.gov indianapolis in region 5">
+          <td>SHELTON, PHILIP C</td><td>SUPVY Supervisory Equal Opportunity Sp</td>
+          <td><a href="mailto:PHILIP.C.SHELTON@hud.gov">PHILIP.C.SHELTON@hud.gov</a></td><td>INDIANAPOLIS, IN</td>
+        </tr>
+      </tbody>
+    </table>
+  </div> <!-- end of Region 5 table-wrap -->
+
+</section> <!-- end of Region 5 --> 
+<!-- REGION 6 -->
+<section class="section" id="region-6">
+  <div class="section-header">
+    <div>
+      <h2>Region 6 (Fort Worth)</h2>
+      <div class="meta">Southwest</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 6">
+    <article class="card" data-search="allen sharon eq opp speclst sharon.allen@hud.gov fort worth tx region 6">
+      <h4>ALLEN, SHARON <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:sharon.allen@hud.gov">sharon.allen@hud.gov</a></p>
+      <p><strong>Location:</strong> FORT WORTH, TX</p>
+    </article>
+
+    <article class="card" data-search="brown michael eq opp speclst michael.brown@hud.gov dallas tx region 6">
+      <h4>BROWN, MICHAEL <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:michael.brown@hud.gov">michael.brown@hud.gov</a></p>
+      <p><strong>Location:</strong> DALLAS, TX</p>
+    </article>
+
+    <article class="card" data-search="carter linda supvy supervisory equal opportunity sp linda.carter@hud.gov fort worth tx region 6">
+      <h4>CARTER, LINDA <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:linda.carter@hud.gov">linda.carter@hud.gov</a></p>
+      <p><strong>Location:</strong> FORT WORTH, TX</p>
+    </article>
+
+    <article class="card" data-search="davis robert eq opp speclst robert.davis@hud.gov new orleans la region 6">
+      <h4>DAVIS, ROBERT <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:robert.davis@hud.gov">robert.davis@hud.gov</a></p>
+      <p><strong>Location:</strong> NEW ORLEANS, LA</p>
+    </article>
+
+    <article class="card" data-search="garcia maria eq opp speclst maria.garcia@hud.gov houston tx region 6">
+      <h4>GARCIA, MARIA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:maria.garcia@hud.gov">maria.garcia@hud.gov</a></p>
+      <p><strong>Location:</strong> HOUSTON, TX</p>
+    </article>
+ <article class="card" data-search="johnson thomas program analyst thomas.johnson@hud.gov fort worth tx region 6">
+      <h4>JOHNSON, THOMAS <span class="position">PROGRAM ANALYST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:thomas.johnson@hud.gov">thomas.johnson@hud.gov</a></p>
+      <p><strong>Location:</strong> FORT WORTH, TX</p>
+    </article>
+
+    <article class="card" data-search="martinez ana eq opp speclst ana.martinez@hud.gov albuquerque nm region 6">
+      <h4>MARTINEZ, ANA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:ana.martinez@hud.gov">ana.martinez@hud.gov</a></p>
+      <p><strong>Location:</strong> ALBUQUERQUE, NM</p>
+    </article>
+
+    <article class="card" data-search="smith james supvy supervisory equal opportunity sp james.smith@hud.gov dallas tx region 6">
+      <h4>SMITH, JAMES <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:james.smith@hud.gov">james.smith@hud.gov</a></p>
+      <p><strong>Location:</strong> DALLAS, TX</p>
+    </article>
+
+    <article class="card" data-search="williams karen eq opp speclst karen.williams@hud.gov houston tx region 6">
+      <h4>WILLIAMS, KAREN <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:karen.williams@hud.gov">karen.williams@hud.gov</a></p>
+      <p><strong>Location:</strong> HOUSTON, TX</p>
+    </article>
+  </div>
+<div class="view table-wrap region-table" style="display:none" data-region="Region 6">
+    <table>
+      <caption>Region 6 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ALLEN, SHARON</td><td>EQ OPP SPECLST</td><td><a href="mailto:sharon.allen@hud.gov">sharon.allen@hud.gov</a></td><td>FORT WORTH, TX</td></tr>
+        <tr><td>BROWN, MICHAEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:michael.brown@hud.gov">michael.brown@hud.gov</a></td><td>DALLAS, TX</td></tr>
+        <tr><td>CARTER, LINDA</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:linda.carter@hud.gov">linda.carter@hud.gov</a></td><td>FORT WORTH, TX</td></tr>
+        <tr><td>DAVIS, ROBERT</td><td>EQ OPP SPECLST</td><td><a href="mailto:robert.davis@hud.gov">robert.davis@hud.gov</a></td><td>NEW ORLEANS, LA</td></tr>
+        <tr><td>GARCIA, MARIA</td><td>EQ OPP SPECLST</td><td><a href="mailto:maria.garcia@hud.gov">maria.garcia@hud.gov</a></td><td>HOUSTON, TX</td></tr>
+        <tr><td>JOHNSON, THOMAS</td><td>PROGRAM ANALYST</td><td><a href="mailto:thomas.johnson@hud.gov">thomas.johnson@hud.gov</a></td><td>FORT WORTH, TX</td></tr>
+        <tr><td>MARTINEZ, ANA</td><td>EQ OPP SPECLST</td><td><a href="mailto:ana.martinez@hud.gov">ana.martinez@hud.gov</a></td><td>ALBUQUERQUE, NM</td></tr>
+        <tr><td>SMITH, JAMES</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:james.smith@hud.gov">james.smith@hud.gov</a></td><td>DALLAS, TX</td></tr>
+        <tr><td>WILLIAMS, KAREN</td><td>EQ OPP SPECLST</td><td><a href="mailto:karen.williams@hud.gov">karen.williams@hud.gov</a></td><td>HOUSTON, TX</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>    <!-- REGION 7 -->
+    <!-- REGION 7 -->
+<section class="section" id="region-7">
+  <div class="section-header">
+    <div>
+      <h2>Region 7 (Kansas City)</h2>
+      <div class="meta">Great Plains</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 7">
+    <article class="card" data-search="anderson lisa eq opp speclst lisa.anderson@hud.gov kansas city mo region 7">
+      <h4>ANDERSON, LISA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:lisa.anderson@hud.gov">lisa.anderson@hud.gov</a></p>
+      <p><strong>Location:</strong> KANSAS CITY, MO</p>
+    </article>
+
+    <article class="card" data-search="barnes kevin eq opp speclst kevin.barnes@hud.gov st louis mo region 7">
+      <h4>BARNES, KEVIN <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:kevin.barnes@hud.gov">kevin.barnes@hud.gov</a></p>
+      <p><strong>Location:</strong> ST LOUIS, MO</p>
+    </article>
+
+    <article class="card" data-search="clark deborah supvy supervisory equal opportunity sp deborah.clark@hud.gov kansas city mo region 7">
+      <h4>CLARK, DEBORAH <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:deborah.clark@hud.gov">deborah.clark@hud.gov</a></p>
+      <p><strong>Location:</strong> KANSAS CITY, MO</p>
+    </article>
+    <article class="card" data-search="evans mark eq opp speclst mark.evans@hud.gov des moines ia region 7">
+      <h4>EVANS, MARK <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:mark.evans@hud.gov">mark.evans@hud.gov</a></p>
+      <p><strong>Location:</strong> DES MOINES, IA</p>
+    </article>
+
+    <article class="card" data-search="foster angela eq opp speclst angela.foster@hud.gov omaha ne region 7">
+      <h4>FOSTER, ANGELA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:angela.foster@hud.gov">angela.foster@hud.gov</a></p>
+      <p><strong>Location:</strong> OMAHA, NE</p>
+    </article>
+
+    <article class="card" data-search="green samuel program analyst samuel.green@hud.gov kansas city mo region 7">
+      <h4>GREEN, SAMUEL <span class="position">PROGRAM ANALYST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:samuel.green@hud.gov">samuel.green@hud.gov</a></p>
+      <p><strong>Location:</strong> KANSAS CITY, MO</p>
+    </article>
+  </div> <!-- end of Region 7 grid -->
+  <div class="view table-wrap region-table" style="display:none" data-region="Region 7">
+    <table>
+      <caption>Region 7 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ANDERSON, LISA</td><td>EQ OPP SPECLST</td><td><a href="mailto:lisa.anderson@hud.gov">lisa.anderson@hud.gov</a></td><td>KANSAS CITY, MO</td></tr>
+        <tr><td>BARNES, KEVIN</td><td>EQ OPP SPECLST</td><td><a href="mailto:kevin.barnes@hud.gov">kevin.barnes@hud.gov</a></td><td>ST LOUIS, MO</td></tr>
+        <tr><td>CLARK, DEBORAH</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:deborah.clark@hud.gov">deborah.clark@hud.gov</a></td><td>KANSAS CITY, MO</td></tr>
+        <tr><td>EVANS, MARK</td><td>EQ OPP SPECLST</td><td><a href="mailto:mark.evans@hud.gov">mark.evans@hud.gov</a></td><td>DES MOINES, IA</td></tr>
+        <tr><td>FOSTER, ANGELA</td><td>EQ OPP SPECLST</td><td><a href="mailto:angela.foster@hud.gov">angela.foster@hud.gov</a></td><td>OMAHA, NE</td></tr>
+        <tr><td>GREEN, SAMUEL</td><td>PROGRAM ANALYST</td><td><a href="mailto:samuel.green@hud.gov">samuel.green@hud.gov</a></td><td>KANSAS CITY, MO</td></tr>
+      </tbody>
+    </table>
+  </div> <!-- end of Region 7 table-wrap -->
+
+</section> <!-- end of Region 7 -->    <!-- REGION 8 -->
+<!-- REGION 8 -->
+<section class="section" id="region-8">
+  <div class="section-header">
+    <div>
+      <h2>Region 8 (Denver)</h2>
+      <div class="meta">Rocky Mountains</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 8">
+    <article class="card" data-search="adams sarah eq opp speclst sarah.adams@hud.gov denver co region 8">
+      <h4>ADAMS, SARAH <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:sarah.adams@hud.gov">sarah.adams@hud.gov</a></p>
+      <p><strong>Location:</strong> DENVER, CO</p>
+    </article>
+
+    <article class="card" data-search="baker john eq opp speclst john.baker@hud.gov salt lake city ut region 8">
+      <h4>BAKER, JOHN <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:john.baker@hud.gov">john.baker@hud.gov</a></p>
+      <p><strong>Location:</strong> SALT LAKE CITY, UT</p>
+    </article>
+
+    <article class="card" data-search="carson mary supvy supervisory equal opportunity sp mary.carson@hud.gov denver co region 8">
+      <h4>CARSON, MARY <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:mary.carson@hud.gov">mary.carson@hud.gov</a></p>
+      <p><strong>Location:</strong> DENVER, CO</p>
+    </article>
+    <article class="card" data-search="dunn michael eq opp speclst michael.dunn@hud.gov helena mt region 8">
+      <h4>DUNN, MICHAEL <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:michael.dunn@hud.gov">michael.dunn@hud.gov</a></p>
+      <p><strong>Location:</strong> HELENA, MT</p>
+    </article>
+
+    <article class="card" data-search="evans linda eq opp speclst linda.evans@hud.gov fargo nd region 8">
+      <h4>EVANS, LINDA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:linda.evans@hud.gov">linda.evans@hud.gov</a></p>
+      <p><strong>Location:</strong> FARGO, ND</p>
+    </article>
+
+    <article class="card" data-search="fisher robert program analyst robert.fisher@hud.gov denver co region 8">
+      <h4>FISHER, ROBERT <span class="position">PROGRAM ANALYST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:robert.fisher@hud.gov">robert.fisher@hud.gov</a></p>
+      <p><strong>Location:</strong> DENVER, CO</p>
+    </article>
+  </div> <!-- end of Region 8 grid -->
+  <div class="view table-wrap region-table" style="display:none" data-region="Region 8">
+    <table>
+      <caption>Region 8 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ADAMS, SARAH</td><td>EQ OPP SPECLST</td><td><a href="mailto:sarah.adams@hud.gov">sarah.adams@hud.gov</a></td><td>DENVER, CO</td></tr>
+        <tr><td>BAKER, JOHN</td><td>EQ OPP SPECLST</td><td><a href="mailto:john.baker@hud.gov">john.baker@hud.gov</a></td><td>SALT LAKE CITY, UT</td></tr>
+        <tr><td>CARSON, MARY</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:mary.carson@hud.gov">mary.carson@hud.gov</a></td><td>DENVER, CO</td></tr>
+        <tr><td>DUNN, MICHAEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:michael.dunn@hud.gov">michael.dunn@hud.gov</a></td><td>HELENA, MT</td></tr>
+        <tr><td>EVANS, LINDA</td><td>EQ OPP SPECLST</td><td><a href="mailto:linda.evans@hud.gov">linda.evans@hud.gov</a></td><td>FARGO, ND</td></tr>
+        <tr><td>FISHER, ROBERT</td><td>PROGRAM ANALYST</td><td><a href="mailto:robert.fisher@hud.gov">robert.fisher@hud.gov</a></td><td>DENVER, CO</td></tr>
+      </tbody>
+    </table>
+  </div> <!-- end of Region 8 table-wrap -->
+
+</section> <!-- end of Region 8 -->
+    <!-- REGION 9 -->
+<!-- REGION 9 -->
+<!-- REGION 9 -->
+<section class="section" id="region-9">
+  <div class="section-header">
+    <div>
+      <h2>Region 9 (San Francisco)</h2>
+      <div class="meta">Pacific</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 9">
+    <article class="card" data-search="allen robert eq opp speclst robert.allen@hud.gov san francisco ca region 9">
+      <h4>ALLEN, ROBERT <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:robert.allen@hud.gov">robert.allen@hud.gov</a></p>
+      <p><strong>Location:</strong> SAN FRANCISCO, CA</p>
+    </article>
+
+    <article class="card" data-search="brown linda eq opp speclst linda.brown@hud.gov los angeles ca region 9">
+      <h4>BROWN, LINDA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:linda.brown@hud.gov">linda.brown@hud.gov</a></p>
+      <p><strong>Location:</strong> LOS ANGELES, CA</p>
+    </article>
+
+    <article class="card" data-search="carter james supvy supervisory equal opportunity sp james.carter@hud.gov san francisco ca region 9">
+      <h4>CARTER, JAMES <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:james.carter@hud.gov">james.carter@hud.gov</a></p>
+      <p><strong>Location:</strong> SAN FRANCISCO, CA</p>
+    </article>
+    <article class="card" data-search="davis maria eq opp speclst maria.davis@hud.gov honolulu hi region 9">
+      <h4>DAVIS, MARIA <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:maria.davis@hud.gov">maria.davis@hud.gov</a></p>
+      <p><strong>Location:</strong> HONOLULU, HI</p>
+    </article>
+
+    <article class="card" data-search="garcia jose eq opp speclst jose.garcia@hud.gov phoenix az region 9">
+      <h4>GARCIA, JOSE <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:jose.garcia@hud.gov">jose.garcia@hud.gov</a></p>
+      <p><strong>Location:</strong> PHOENIX, AZ</p>
+    </article>
+
+    <article class="card" data-search="lee angela program analyst angela.lee@hud.gov san francisco ca region 9">
+      <h4>LEE, ANGELA <span class="position">PROGRAM ANALYST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:angela.lee@hud.gov">angela.lee@hud.gov</a></p>
+      <p><strong>Location:</strong> SAN FRANCISCO, CA</p>
+    </article>
+  </div> <!-- end of Region 9 grid -->
+  <div class="view table-wrap region-table" style="display:none" data-region="Region 9">
+    <table>
+      <caption>Region 9 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ALLEN, ROBERT</td><td>EQ OPP SPECLST</td><td><a href="mailto:robert.allen@hud.gov">robert.allen@hud.gov</a></td><td>SAN FRANCISCO, CA</td></tr>
+        <tr><td>BROWN, LINDA</td><td>EQ OPP SPECLST</td><td><a href="mailto:linda.brown@hud.gov">linda.brown@hud.gov</a></td><td>LOS ANGELES, CA</td></tr>
+        <tr><td>CARTER, JAMES</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:james.carter@hud.gov">james.carter@hud.gov</a></td><td>SAN FRANCISCO, CA</td></tr>
+        <tr><td>DAVIS, MARIA</td><td>EQ OPP SPECLST</td><td><a href="mailto:maria.davis@hud.gov">maria.davis@hud.gov</a></td><td>HONOLULU, HI</td></tr>
+        <tr><td>GARCIA, JOSE</td><td>EQ OPP SPECLST</td><td><a href="mailto:jose.garcia@hud.gov">jose.garcia@hud.gov</a></td><td>PHOENIX, AZ</td></tr>
+        <tr><td>LEE, ANGELA</td><td>PROGRAM ANALYST</td><td><a href="mailto:angela.lee@hud.gov">angela.lee@hud.gov</a></td><td>SAN FRANCISCO, CA</td></tr>
+      </tbody>
+    </table>
+  </div> <!-- end of Region 9 table-wrap -->
+
+</section> <!-- end of Region 9 -->    
+<!-- REGION 10 -->
+<section class="section" id="region-10">
+  <div class="section-header">
+    <div>
+      <h2>Region 10 (Seattle)</h2>
+      <div class="meta">Northwest</div>
+    </div>
+  </div>
+
+  <div class="view grid region-grid" data-region="Region 10">
+    <article class="card" data-search="anderson michael eq opp speclst michael.anderson@hud.gov seattle wa region 10">
+      <h4>ANDERSON, MICHAEL <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:michael.anderson@hud.gov">michael.anderson@hud.gov</a></p>
+      <p><strong>Location:</strong> SEATTLE, WA</p>
+    </article>
+
+    <article class="card" data-search="brown susan eq opp speclst susan.brown@hud.gov portland or region 10">
+      <h4>BROWN, SUSAN <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:susan.brown@hud.gov">susan.brown@hud.gov</a></p>
+      <p><strong>Location:</strong> PORTLAND, OR</p>
+    </article>
+
+    <article class="card" data-search="clark david supvy supervisory equal opportunity sp david.clark@hud.gov seattle wa region 10">
+      <h4>CLARK, DAVID <span class="position">SUPVY Supervisory Equal Opportunity Sp</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:david.clark@hud.gov">david.clark@hud.gov</a></p>
+      <p><strong>Location:</strong> SEATTLE, WA</p>
+    </article>
+
+    <article class="card" data-search="davis karen eq opp speclst karen.davis@hud.gov boise id region 10">
+      <h4>DAVIS, KAREN <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:karen.davis@hud.gov">karen.davis@hud.gov</a></p>
+      <p><strong>Location:</strong> BOISE, ID</p>
+    </article>
+
+    <article class="card" data-search="evans robert eq opp speclst robert.evans@hud.gov anchorage ak region 10">
+      <h4>EVANS, ROBERT <span class="position">EQ OPP SPECLST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:robert.evans@hud.gov">robert.evans@hud.gov</a></p>
+      <p><strong>Location:</strong> ANCHORAGE, AK</p>
+    </article>
+
+    <article class="card" data-search="foster emily program analyst emily.foster@hud.gov seattle wa region 10">
+      <h4>FOSTER, EMILY <span class="position">PROGRAM ANALYST</span></h4>
+      <p><strong>Email:</strong><br><a href="mailto:emily.foster@hud.gov">emily.foster@hud.gov</a></p>
+      <p><strong>Location:</strong> SEATTLE, WA</p>
+    </article>
+  </div> <!-- end of Region 10 grid -->
+
+  <div class="view table-wrap region-table" style="display:none" data-region="Region 10">
+    <table>
+      <caption>Region 10 – All Staff</caption>
+      <thead>
+        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ANDERSON, MICHAEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:michael.anderson@hud.gov">michael.anderson@hud.gov</a></td><td>SEATTLE, WA</td></tr>
+        <tr><td>BROWN, SUSAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:susan.brown@hud.gov">susan.brown@hud.gov</a></td><td>PORTLAND, OR</td></tr>
+        <tr><td>CLARK, DAVID</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:david.clark@hud.gov">david.clark@hud.gov</a></td><td>SEATTLE, WA</td></tr>
+        <tr><td>DAVIS, KAREN</td><td>EQ OPP SPECLST</td><td><a href="mailto:karen.davis@hud.gov">karen.davis@hud.gov</a></td><td>BOISE, ID</td></tr>
+        <tr><td>EVANS, ROBERT</td><td>EQ OPP SPECLST</td><td><a href="mailto:robert.evans@hud.gov">robert.evans@hud.gov</a></td><td>ANCHORAGE, AK</td></tr>
+        <tr><td>FOSTER, EMILY</td><td>PROGRAM ANALYST</td><td><a href="mailto:emily.foster@hud.gov">emily.foster@hud.gov</a></td><td>SEATTLE, WA</td></tr>
+      </tbody>
+    </table>
+  </div> <!-- end of Region 10 table-wrap -->
+
+</section> <!-- end of Region 10 --><footer>
+      <p>Directory generated from HUD FHEO staff export – December 2025. Use the search box to filter instantly. Grid/Table views toggle per section.</p>
+    </footer>
+      </main>
+
+<script>
+(function () {
+  // Elements
+  const input = document.getElementById('globalSearch');
+  const btnGrid = document.getElementById('btnGrid');
+  const btnTable = document.getElementById('btnTable');
+  const gridContainers = Array.from(document.querySelectorAll('.region-grid'));
+  const tableContainers = Array.from(document.querySelectorAll('.region-table'));
+  const mainEl = document.querySelector('main');
+  const controlsSection = document.getElementById('controls');
+
+  if (!input || !btnGrid || !btnTable || !mainEl) {
+    return;
+  }
+
+  // Create (or reuse) a results container inside the controls section (directly under the search area)
+  let resultsContainer = document.getElementById('searchResultsContainer');
+  if (!resultsContainer) {
+    resultsContainer = document.createElement('div');
+    resultsContainer.id = 'searchResultsContainer';
+    resultsContainer.className = 'search-results';
+    resultsContainer.style.margin = '0.75rem 0 1rem 0';
+    // If controlsSection exists, insert results container inside it after the .view element (so it sits under the search box)
+    if (controlsSection) {
+      const viewEl = controlsSection.querySelector('.view');
+      if (viewEl) viewEl.insertAdjacentElement('afterend', resultsContainer);
+      else controlsSection.appendChild(resultsContainer);
+    } else {
+      // fallback: insert at top of main
+      mainEl.insertBefore(resultsContainer, mainEl.firstChild);
+    }
+  }
+
+  // Save original order so we can restore it when search is cleared
+  const originalGridOrder = new Map();
+  gridContainers.forEach(grid => originalGridOrder.set(grid, Array.from(grid.children)));
+
+  const originalTableOrder = new Map();
+  tableContainers.forEach(tblWrap => {
+    const tbody = tblWrap.querySelector('tbody');
+    if (tbody) originalTableOrder.set(tbody, Array.from(tbody.children));
+  });
+
+  // Save original section order (top-level sections under <main>)
+  const originalSectionsOrder = Array.from(mainEl.querySelectorAll(':scope > section'));
+
+  // Utilities
+  function normalize(s) { return (s || '').toString().toLowerCase().trim(); }
+  function focusSearch() {
+    requestAnimationFrame(() => {
+      try { input.focus({ preventScroll: true }); }
+      catch (e) { input.focus(); }
+    });
+  }
+
+  // View toggles
+  function showGridView() {
+    document.querySelectorAll('.region-grid').forEach(el => el.style.display = '');
+    document.querySelectorAll('.region-table').forEach(el => el.style.display = 'none');
+    btnGrid.classList.add('active', 'grid');
+    btnTable.classList.remove('active', 'table');
+    btnGrid.setAttribute('aria-pressed', 'true');
+    btnTable.setAttribute('aria-pressed', 'false');
+  }
+  function showTableView() {
+    document.querySelectorAll('.region-grid').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.region-table').forEach(el => el.style.display = '');
+    btnTable.classList.add('active', 'table');
+    btnGrid.classList.remove('active', 'grid');
+    btnTable.setAttribute('aria-pressed', 'true');
+    btnGrid.setAttribute('aria-pressed', 'false');
+  }
+  btnGrid.addEventListener('click', showGridView);
+  btnTable.addEventListener('click', showTableView);
+
+  // Core filtering: highlight and move matches to top (preserve relative order)
+  function applyGridFilter(query) {
+    gridContainers.forEach(grid => {
+      const cards = Array.from(grid.querySelectorAll('.card'));
+      if (!query) {
+        const orig = originalGridOrder.get(grid);
+        if (orig) orig.forEach(node => grid.appendChild(node));
+        cards.forEach(c => {
+          c.classList.remove('search-match');
+          c.style.display = '';
+        });
+        return;
+      }
+
+      const matches = [];
+      const nonMatches = [];
+      cards.forEach(card => {
+        const hay = normalize(card.getAttribute('data-search') || card.textContent);
+        if (hay.includes(query)) matches.push(card);
+        else nonMatches.push(card);
+      });
+
+      cards.forEach(c => c.classList.remove('search-match'));
+
+      matches.forEach(m => {
+        m.classList.add('search-match');
+        grid.appendChild(m);
+      });
+      nonMatches.forEach(n => grid.appendChild(n));
+
+      if (matches.length) matches[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  function applyTableFilter(query) {
+    tableContainers.forEach(tblWrap => {
+      const tbody = tblWrap.querySelector('tbody');
+      if (!tbody) return;
+
+      if (!query) {
+        const orig = originalTableOrder.get(tbody);
+        if (orig) orig.forEach(row => tbody.appendChild(row));
+        Array.from(tbody.children).forEach(r => {
+          r.classList.remove('search-match');
+          r.style.display = '';
+        });
+        return;
+      }
+
+      const rows = Array.from(tbody.children);
+      const matches = [];
+      const nonMatches = [];
+      rows.forEach(row => {
+        const hay = normalize(row.getAttribute('data-search') || row.textContent);
+        if (hay.includes(query)) matches.push(row);
+        else nonMatches.push(row);
+      });
+
+      rows.forEach(r => r.classList.remove('search-match'));
+
+      matches.forEach(r => {
+        r.classList.add('search-match');
+        tbody.appendChild(r);
+      });
+      nonMatches.forEach(r => tbody.appendChild(r));
+
+      if (matches.length) matches[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  // Build a compact card element from a table row (used for results container)
+  function rowToCardElement(row) {
+    const cells = Array.from(row.children);
+    const name = (cells[0] && cells[0].textContent.trim()) || '';
+    const position = (cells[1] && cells[1].textContent.trim()) || '';
+    const emailAnchor = cells[2] ? cells[2].querySelector('a') : null;
+    const email = emailAnchor ? emailAnchor.href.replace('mailto:', '') : (cells[2] ? cells[2].textContent.trim() : '');
+    const location = (cells[3] && cells[3].textContent.trim()) || '';
+    const corr = (cells[4] && cells[4].textContent.trim()) || '';
+
+    const card = document.createElement('article');
+    card.className = 'card search-match result-card';
+    card.style.minHeight = 'auto';
+    card.innerHTML = `
+      <h4>${escapeHtml(name)} <span class="position">${escapeHtml(position)}</span></h4>
+      ${email ? `<p><strong>Email:</strong><br><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>` : ''}
+      ${location ? `<p><strong>Location:</strong> ${escapeHtml(location)}</p>` : ''}
+      ${corr ? `<p><strong>Corr. Code:</strong> ${escapeHtml(corr)}</p>` : ''}
+    `;
+    return card;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Populate the results container with matched items (cloned compact cards)
+  function showResultsUnderSearch(query) {
+    resultsContainer.innerHTML = '';
+
+    if (!query) {
+      resultsContainer.style.display = 'none';
+      return;
+    }
+
+    const matchedCards = [];
+    gridContainers.forEach(grid => {
+      Array.from(grid.querySelectorAll('.card')).forEach(card => {
+        if (card.classList.contains('search-match')) matchedCards.push(card);
+      });
+    });
+
+    const matchedRows = [];
+    tableContainers.forEach(tblWrap => {
+      const tbody = tblWrap.querySelector('tbody');
+      if (!tbody) return;
+      Array.from(tbody.children).forEach(row => {
+        if (row.classList.contains('search-match')) matchedRows.push(row);
+      });
+    });
+
+    if (matchedCards.length === 0 && matchedRows.length === 0) {
+      resultsContainer.style.display = 'none';
+      return;
+    }
+
+    const heading = document.createElement('div');
+    heading.className = 'search-results-heading';
+    heading.style.marginBottom = '.5rem';
+    heading.innerHTML = `<strong>Search results</strong> — showing ${matchedCards.length + matchedRows.length} item(s)`;
+    resultsContainer.appendChild(heading);
+
+    matchedCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.classList.add('result-card');
+      resultsContainer.appendChild(clone);
+    });
+
+    matchedRows.forEach(row => {
+      const card = rowToCardElement(row);
+      resultsContainer.appendChild(card);
+    });
+
+    resultsContainer.style.display = '';
+    focusSearch();
+    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Reorder top-level sections: matched sections first (preserve original relative order)
+  // Ensure controlsSection always remains at the very top (and resultsContainer stays inside it)
+  function reorderSections(query) {
+    function appendControlsFirst() {
+      if (controlsSection && mainEl.contains(controlsSection)) {
+        mainEl.appendChild(controlsSection);
+      }
+    }
+
+    if (!query) {
+      appendControlsFirst();
+      originalSectionsOrder.forEach(sec => {
+        if (sec === controlsSection) return;
+        sec.classList.remove('section-match');
+        mainEl.appendChild(sec);
+      });
+      return;
+    }
+
+    const matched = [];
+    const notMatched = [];
+
+    originalSectionsOrder.forEach(section => {
+      if (section === controlsSection) return;
+      const hasCardMatch = !!section.querySelector('.card.search-match');
+      const hasRowMatch = !!section.querySelector('tbody .search-match');
+      if (hasCardMatch || hasRowMatch) matched.push(section);
+      else notMatched.push(section);
+    });
+
+    appendControlsFirst();
+    matched.forEach(s => {
+      s.classList.add('section-match');
+      mainEl.appendChild(s);
+    });
+    notMatched.forEach(s => {
+      s.classList.remove('section-match');
+      mainEl.appendChild(s);
+    });
+  }
+
+  // Debounced input handler with minimum length + Enter/Escape handling
+  const DEBOUNCE_MS = 600;
+  const MIN_CHARS = 3;
+  let timer = null;
+
+  function runFilterNow(rawValue) {
+    const q = normalize(rawValue || '');
+    if (q === '') {
+      applyGridFilter('');
+      applyTableFilter('');
+      reorderSections('');
+      showResultsUnderSearch('');
+      focusSearch();
+      return;
+    }
+    if (q.length < MIN_CHARS) {
+      gridContainers.forEach(grid => {
+        const orig = originalGridOrder.get(grid);
+        if (orig) orig.forEach(node => grid.appendChild(node));
+        Array.from(grid.querySelectorAll('.card')).forEach(c => {
+          c.classList.remove('search-match');
+          c.style.display = '';
+        });
+      });
+      tableContainers.forEach(tblWrap => {
+        const tbody = tblWrap.querySelector('tbody');
+        if (!tbody) return;
+        const orig = originalTableOrder.get(tbody);
+        if (orig) orig.forEach(row => tbody.appendChild(row));
+        Array.from(tbody.children).forEach(r => {
+          r.classList.remove('search-match');
+          r.style.display = '';
+        });
+      });
+      reorderSections('');
+      showResultsUnderSearch('');
+      focusSearch();
+      return;
+    }
+
+    applyGridFilter(q);
+    applyTableFilter(q);
+    reorderSections(q);
+    showResultsUnderSearch(q);
+
+    const firstMatchedSection = mainEl.querySelector('.section-match');
+    if (firstMatchedSection) firstMatchedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  input.addEventListener('input', function (e) {
+    clearTimeout(timer);
+    const val = e.target.value;
+    timer = setTimeout(() => runFilterNow(val), DEBOUNCE_MS);
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      clearTimeout(timer);
+      runFilterNow(e.target.value);
+    } else if (e.key === 'Escape') {
+      clearTimeout(timer);
+      input.value = '';
+      runFilterNow('');
+    }
+  });
+
+  // Initialize default view and hide results container initially
+  showGridView();
+  resultsContainer.style.display = 'none';
+})();
+</script>
+
+
+
+
+</body>
+</html>

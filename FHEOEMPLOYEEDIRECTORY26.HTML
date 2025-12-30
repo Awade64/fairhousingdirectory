@@ -4,42 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HUD FHEO Staff Directory — Full (All Regions & Offices)</title>
-  <style>.section-match { outline: 2px solid rgba(255,77,77,0.12); }
-/* Strong, high-contrast highlight for matched grid cards */
-.search-match { z-index: 5 !important; border: 2px solid #ff4d4d !important; background: #fff7f7 !important; transform: translateY(-2px); } .search-match h4 { color: #b30000 !important; } .search-match .position { color: #8b0000 !important; } .hidden { display: none !important; } /* Needed for search/toggle */
- /* background: #fff7f7 !important;              /* subtle warm background so border stands out 
-  transform: translateY(-2px);
-  transition: transform .12s ease, box-shadow .18s ease, background .12s ease; */
-
-/* Make heading and position text clearly red on matched cards */
-.search-match h4 { color: #b30000 !important; }
-.search-match .position { color: #8b0000 !important; }
-.hidden { display: none !important; } /* Needed for search/toggle */
-
-/* Fallback outline for browsers that may clip borders */
-.search-match::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: -4px;
-  border-radius: 10px;
-  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.06);
-.search-match h4 { color: #b30000; }
-.search-match .position { color: #8b0000; }
-
-}
-.search-match h4 { color: #b30000; }
-.search-match .position { color: #8b0000; }
-
-    :root{
-      --bg:#f4f6f9;
-      --brand:#003366;
-      --accent:#0066cc;
-      --accent-strong:#005bb5;
-      --text:#333;
-      --muted:#555;
-      --card:#fff;
-      --border:#e5e7eb;
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --brand: #003366;
+      --accent: #0066cc;
+      --accent-strong: #005bb5;
+      --text: #333;
+      --muted: #555;
+      --card: #fff;
+      --border: #e5e7eb;
       --focus: #ffb84d;
       --grid-btn-bg: #e6f0ff;
       --table-btn-bg: #fff4e6;
@@ -48,102 +22,73 @@
       --grid-btn-active-color: #fff;
       --table-btn-active-color: #fff;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-      line-height:1.5;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    header{
-      background:var(--brand); color:#fff; padding:1.5rem; text-align:center;
-    }
-    header h1{ margin:0 0 .5rem 0; font-size:1.75rem }
-    header p{ margin:.25rem 0; font-size:.95rem }
-    main{ max-width:1200px; margin:2rem auto; padding:0 1rem; }
-    .section{
-      margin:2rem 0; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.08);
-      border:1px solid var(--border);
-    }
-    .section-header{
-      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
-      padding:1rem 1rem .75rem 1rem; border-bottom:1px solid var(--border);
-      background:#f9fbff;
-    }
-    .section-header h2{
-      margin:0; font-size:1.25rem; color:var(--brand);
-    }
-    .office-header{
-      padding:.75rem 1rem; border-bottom:1px dashed var(--border); background:#fff;
-    }
-    .office-header h3{ margin:0; font-size:1.05rem; color:var(--brand) }
-    .meta{ color:var(--muted); font-size:.95rem; margin-top:.25rem }
-    .controls{
-      display:flex; gap:.5rem; align-items:center;
-    }
-    .btn{
-      appearance:none; border:1px solid var(--border); background:var(--grid-btn-bg); color:var(--text);
-      padding:.45rem .8rem; border-radius:6px; cursor:pointer; font-size:.95rem;
-      transition:all .12s ease; display:inline-flex; align-items:center; gap:.5rem;
-    }
-    .btn:hover{ transform:translateY(-1px) }
-    .btn:focus{ outline:3px solid var(--focus); outline-offset:2px }
-    .btn.grid{ background:var(--grid-btn-bg); border-color:var(--accent); color:var(--accent) }
-    .btn.table{ background:var(--table-btn-bg); border-color:#ffcc99; color:#b35a00 }
-    .btn.active.grid{ background:var(--grid-btn-active-bg); color:var(--grid-btn-active-color); border-color:var(--grid-btn-active-bg) }
-    .btn.active.table{ background:var(--table-btn-active-bg); color:var(--table-btn-active-color); border-color:var(--table-btn-active-bg) }
-    .view{ padding:1rem; }
-    .grid{
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem;
-    }
-    .card{
-      background:var(--card); border:1px solid var(--border); border-radius:8px; padding:1rem;
-      min-height:90px;
-    }
-    .card h4{ margin:.1rem 0 .35rem 0;color:var(--brand);font-size:1rem;line-height:1.2 }
-    .card .position{ display:block; font-weight:600; color:var(--muted); font-size:.9rem; margin-top:.15rem }
-    .card p{ margin:.2rem 0; color:var(--muted) }
-    .card .label{ font-weight:600; color:var(--text) }
-    .card a{ color:var(--accent); text-decoration:none }
-    .card a:hover{ text-decoration:underline }
-    .table-wrap{ overflow:auto; padding:0 1rem 1rem 1rem }
-    table{ width:100%; border-collapse:collapse; font-size:.95rem; background:#fff }
-    caption{ text-align:left; font-weight:600; padding:.5rem 0; color:var(--brand) }
-    thead th{
-      position:sticky; top:0; background:#eef4ff; color:#1f3b66;
-      border-bottom:1px solid var(--border); text-align:left; padding:.6rem;
-    }
-    tbody td{ border-top:1px solid var(--border); padding:.55rem; vertical-align:top }
-    th,td{ white-space:nowrap }
-    .searchbar{ display:flex; gap:.5rem; align-items:center; padding:1rem }
-    .searchbar input{ flex:1; padding:.6rem; border:1px solid var(--border); border-radius:6px }
-    .small-muted{ font-size:.9rem; color:var(--muted) }
-    .sr-only{
-      position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;
-    }
-    footer{ text-align:center; color:#666; margin:2rem 0; font-size:.95rem }
-    @media print{
-      body{ background:#fff; color:#000 }
-      header, .controls, .btn, .searchbar{ display:none !important }
-      .section{ box-shadow:none; border:1px solid #ddd }
-      table{ font-size:12px }
-    }
-  /* existing styles ... */
-  .corr-code {
-    display:inline-block;
-    margin-left:.5rem;
-    font-weight:600;
-    color:var(--accent-strong);
-    font-size:.85rem;
-    background:#eef4ff;
-    padding:.1rem .4rem;
-    border-radius:4px;
-  }
 
-  </style>
-</head>
+    /* --- Global & Layout --- */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Header --- */
+    header { background: var(--brand); color: #fff; padding: 1.5rem; text-align: center; }
+    header h1 { margin: 0 0 .5rem 0; font-size: 1.75rem; }
+    header p { margin: .25rem 0; font-size: .95rem; opacity: 0.9; }
+
+    /* --- Search & Match States --- */
+    .section-match { outline: 2px solid rgba(0, 102, 204, 0.2); }
+    .search-match { 
+      z-index: 5 !important; 
+      border: 2px solid #ff4d4d !important; 
+      background: #fff7f7 !important; 
+      transform: translateY(-2px); 
+    }
+    .search-match h4 { color: #b30000 !important; }
+    .search-match .position { color: #8b0000 !important; }
+    .hidden { display: none !important; }
+
+    /* --- Main UI Elements --- */
+    main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    .section { margin: 2rem 0; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.08); border: 1px solid var(--border); overflow: hidden; }
+    .section-header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      padding: 1rem; border-bottom: 1px solid var(--border); background: #f9fbff;
+    }
+    .section-header h2 { margin: 0; font-size: 1.25rem; color: var(--brand); }
+    .meta { color: var(--muted); font-size: .95rem; margin-top: .25rem; }
+    
+    .controls { display: flex; gap: .5rem; align-items: center; }
+    .btn {
+      appearance: none; border: 1px solid var(--border); background: var(--grid-btn-bg); color: var(--text);
+      padding: .45rem .8rem; border-radius: 6px; cursor: pointer; font-size: .95rem; transition: all .12s ease;
+    }
+    .btn.active.grid { background: var(--grid-btn-active-bg); color: var(--grid-btn-active-color); }
+    .btn.active.table { background: var(--table-btn-active-bg); color: var(--table-btn-active-color); }
+
+    /* --- Grid & Cards --- */
+    .view { padding: 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; position: relative; }
+    .card h4 { margin: 0 0 .35rem 0; color: var(--brand); font-size: 1rem; }
+    .position { display: block; font-weight: 600; color: var(--muted); font-size: .9rem; }
+    .corr-code { font-weight: 600; color: var(--accent-strong); font-size: .85rem; background: #eef4ff; padding: .1rem .4rem; border-radius: 4px; }
+
+    /* --- Tables --- */
+    .table-wrap { overflow-x: auto; padding: 0 1rem 1rem 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    thead th { position: sticky; top: 0; background: #eef4ff; color: #1f3b66; text-align: left; padding: .6rem; border-bottom: 2px solid var(--border); }
+    tbody td { border-top: 1px solid var(--border); padding: .55rem; vertical-align: top; white-space: nowrap; }
+
+    .searchbar { display: flex; gap: .5rem; align-items: center; padding: 1rem; }
+    .searchbar input { flex: 1; padding: .6rem; border: 1px solid var(--border); border-radius: 6px; }
+    
+    @media print {
+      header, .controls, .searchbar { display: none !important; }
+      .section { border: 1px solid #ccc; box-shadow: none; }
+    }
+  </style></head>
 <body>
   <a class="sr-only" href="#main-content">Skip to main content</a>
   <header>
@@ -169,7 +114,6 @@
         </div>
       </div>
     </section> </main>
-<!-- HQ -->
 <section class="section" id="hq">
   <div class="section-header">
     <div>
@@ -197,33 +141,6 @@
       <p><strong>Location:</strong> HQ – Room 5100</p>
     </article>
 
-    <article class="card" data-search="COOKE, KEVIN R General Deputy Assistant Secretary (SES) kevin.cooke@hud.gov HQ – Room 5100 HQ CAN BE FOUND HERE.">
-      <h4>COOKE, KEVIN R 
-        <span class="position">General Deputy Assistant Secretary (SES)</span>
-        <span class="corr-code">E1</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:kevin.cooke@hud.gov">kevin.cooke@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5100</p>
-    </article>
-
-    <article class="card" data-search="ABELL, LISA DAS for Operations and Management (SES) lisa.abell@hud.gov HQ – Room 5128 HQ CAN BE FOUND HERE.">
-      <h4>ABELL, LISA 
-        <span class="position">DAS for Operations and Management (SES)</span>
-        <span class="corr-code">EG</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:lisa.abell@hud.gov">lisa.abell@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5128</p>
-    </article>
-
-    <article class="card" data-search="TAYLOR, MELODY DAS for Policy, Legislative Initiatives and Outreach (SES) melody.taylor@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
-      <h4>TAYLOR, MELODY 
-        <span class="position">DAS for Policy, Legislative Initiatives and Outreach (SES)</span>
-        <span class="corr-code">EC</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:melody.taylor@hud.gov">melody.taylor@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
-    </article>
-
     <article class="card" data-search="DOLES, ROBERT (Acting) DAS for Enforcement (SES) robert.doles@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
       <h4>DOLES, ROBERT (Acting) 
         <span class="position">DAS for Enforcement (SES)</span>
@@ -241,116 +158,30 @@
       <p><strong>Email:</strong><br><a href="mailto:deandra.cullen@hud.gov">deandra.cullen@hud.gov</a></p>
       <p><strong>Location:</strong> HQ – New FHEO Suite</p>
     </article>
+  </div> 
 
-    <article class="card" data-search="MCNALLY, CHARLES Director, Program Standards and Compliance Division charles.mcnally@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
-      <h4>MCNALLY, CHARLES 
-        <span class="position">Director, Program Standards and Compliance Division</span>
-        <span class="corr-code">EDPP</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:charles.mcnally@hud.gov">charles.mcnally@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
-    </article>
-
-    <article class="card" data-search="VASILOPOULOS, KATHERINE (Acting) Director, Fair Housing Initiatives Program (FHIP) Division katherine.vasilopoulos@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
-      <h4>VASILOPOULOS, KATHERINE (Acting) 
-        <span class="position">Director, Fair Housing Initiatives Program (FHIP) Division</span>
-        <span class="corr-code">EDPP</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:katherine.vasilopoulos@hud.gov">katherine.vasilopoulos@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
-    </article>
-
-    <article class="card" data-search="SPRINGER-ELKERSON, IRIS (Acting) Director, Policy and Legislative Initiatives Division iris.springer-elkerson@hud.gov HQ – New FHEO Suite HQ CAN BE FOUND HERE.">
-      <h4>SPRINGER-ELKERSON, IRIS (Acting) 
-        <span class="position">Director, Policy and Legislative Initiatives Division</span>
-        <span class="corr-code">EC</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:iris.springer-elkerson@hud.gov">iris.springer-elkerson@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – New FHEO Suite</p>
-    </article>
-
-    <article class="card" data-search="SUTTON, JAMES N Director, Field Oversight james.sutton@hud.gov HQ – Room 5130 HQ CAN BE FOUND HERE.">
-      <h4>SUTTON, JAMES N 
-        <span class="position">Director, Field Oversight</span>
-        <span class="corr-code">E1A</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:james.sutton@hud.gov">james.sutton@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5130</p>
-    </article>
-
-    <article class="card" data-search="SMALLWOOD, MARCUS Director, Office of Information Services and Communications marcus.smallwood@hud.gov HQ – Room 5118 HQ CAN BE FOUND HERE.">
-      <h4>SMALLWOOD, MARCUS 
-        <span class="position">Director, Office of Information Services and Communications</span>
-        <span class="corr-code">EGID</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:marcus.smallwood@hud.gov">marcus.smallwood@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5118</p>
-    </article>
-
-    <article class="card" data-search="MONTGOMERY, CHARLES M III Director, Office of Management, Planning and Budget charles.montgomery@hud.gov HQ – Room 5110 HQ CAN BE FOUND HERE.">
-      <h4>MONTGOMERY, CHARLES M III 
-        <span class="position">Director, Office of Management, Planning and Budget</span>
-        <span class="corr-code">EGP</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:charles.montgomery@hud.gov">charles.montgomery@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5110</p>
-    </article>
-
-    <article class="card" data-search="WELLS, ERIC Director, Budget Division eric.wells@hud.gov HQ – Room 5110 HQ CAN BE FOUND HERE.">
-      <h4>WELLS, ERIC 
-        <span class="position">Director, Budget Division</span>
-        <span class="corr-code">EGPD</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:eric.wells@hud.gov">eric.wells@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5110</p>
-    </article>
-
-    <article class="card" data-search="GANO, JOSEPH L Director, Administrative Services joseph.gano@hud.gov HQ – Room 5124 HQ CAN BE FOUND HERE.">
-      <h4>GANO, JOSEPH L 
-        <span class="position">Director, Administrative Services</span>
-        <span class="corr-code">EGC</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:joseph.gano@hud.gov">joseph.gano@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5124</p>
-    </article>
-
-    <article class="card" data-search="JONES-PETERS, JACQUELINE Director, Resource Management Division jacqueline.jones-peters@hud.gov HQ – Room 5124 HQ CAN BE FOUND HERE.">
-      <h4>JONES-PETERS, JACQUELINE 
-        <span class="position">Director, Resource Management Division</span>
-        <span class="corr-code">EGCA</span>
-      </h4>
-      <p><strong>Email:</strong><br><a href="mailto:jacqueline.jones-peters@hud.gov">jacqueline.jones-peters@hud.gov</a></p>
-      <p><strong>Location:</strong> HQ – Room 5124</p>
-    </article>
-  </div> <!-- end of HQ grid -->
   <div class="view table-wrap region-table" style="display:none" data-region="HQ">
     <table>
-      <caption>HQ – All Staff</caption>
       <thead>
-        <tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th><th>Corr. Code</th></tr>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>HQ Leader</th>
+          <th>Email</th>
+          <th>Location</th>
+          <th>Corr. Code</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>TRAINOR, CRAIG</td><td>Assistant Secretary</td><td><a href="mailto:craig.trainor@hud.gov">craig.trainor@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
-        <tr><td>GIBBS, JOHN (Acting)</td><td>Principal Deputy Assistant Secretary</td><td><a href="mailto:john.gibbs@hud.gov">john.gibbs@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
-        <tr><td>COOKE, KEVIN R</td><td>General Deputy Assistant Secretary (SES)</td><td><a href="mailto:kevin.cooke@hud.gov">kevin.cooke@hud.gov</a></td><td>HQ – Room 5100</td><td>E1</td></tr>
-        <tr><td>ABELL, LISA</td><td>DAS for Operations and Management (SES)</td><td><a href="mailto:lisa.abell@hud.gov">lisa.abell@hud.gov</a></td><td>HQ – Room 5128</td><td>EG</td></tr>
-        <tr><td>TAYLOR, MELODY</td><td>DAS for Policy, Legislative Initiatives and Outreach (SES)</td><td><a href="mailto:melody.taylor@hud.gov">melody.taylor@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EC</td></tr>
-        <tr><td>DOLES, ROBERT (Acting)</td><td>DAS for Enforcement (SES)</td><td><a href="mailto:robert.doles@hud.gov">robert.doles@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>ED</td></tr>
-        <tr><td>CULLEN, DEANDRA (Acting)</td><td>Executive Director for Field Operations (SES)</td><td><a href="mailto:deandra.cullen@hud.gov">deandra.cullen@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>E1</td></tr>
-        <tr><td>MCNALLY, CHARLES</td><td>Director, Program Standards and Compliance Division</td><td><a href="mailto:charles.mcnally@hud.gov">charles.mcnally@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EDPP</td></tr>
-        <tr><td>VASILOPOULOS, KATHERINE (Acting)</td><td>Director, Fair Housing Initiatives Program (FHIP) Division</td><td><a href="mailto:katherine.vasilopoulos@hud.gov">katherine.vasilopoulos@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EDPP</td></tr>
-        <tr><td>SPRINGER-ELKERSON, IRIS (Acting)</td><td>Director, Policy and Legislative Initiatives Division</td><td><a href="mailto:iris.springer-elkerson@hud.gov">iris.springer-elkerson@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>EC</td></tr>
-        <tr><td>SUTTON, JAMES N</td><td>Director, Field Oversight</td><td><a href="mailto:james.sutton@hud.gov">james.sutton@hud.gov</a></td><td>HQ – Room 5130</td><td>E1A</td></tr>
-        <tr><td>SMALLWOOD, MARCUS</td><td>Director, Office of Information Services and Communications</td><td><a href="mailto:marcus.smallwood@hud.gov">marcus.smallwood@hud.gov</a></td><td>HQ – Room 5118</td><td>EGID</td></tr>
-        <tr><td>MONTGOMERY, CHARLES M III</td><td>Director, Office of Management, Planning and Budget</td><td><a href="mailto:charles.montgomery@hud.gov">charles.montgomery@hud.gov</a></td><td>HQ – Room 5110</td><td>EGP</td></tr>
-        <tr><td>WELLS, ERIC</td><td>Director, Budget Division</td><td><a href="mailto:eric.wells@hud.gov">eric.wells@hud.gov</a></td><td>HQ – Room 5110</td><td>EGPD</td></tr>
-        <tr><td>GANO, JOSEPH L</td><td>Director, Administrative Services</td><td><a href="mailto:joseph.gano@hud.gov">joseph.gano@hud.gov</a></td><td>HQ – Room 5124</td><td>EGC</td></tr>
-        <tr><td>JONES-PETERS, JACQUELINE</td><td>Director, Resource Management Division</td><td><a href="mailto:jacqueline.jones-peters@hud.gov">jacqueline.jones-peters@hud.gov</a></td><td>HQ – Room 5124</td><td>EGCA</td></tr>
+        <tr><td>TRAINOR, CRAIG</td><td>Assistant Secretary</td><td>HQ Leader</td><td><a href="mailto:craig.trainor@hud.gov">craig.trainor@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
+        <tr><td>GIBBS, JOHN (Acting)</td><td>Principal Deputy Assistant Secretary</td><td>HQ Leader</td><td><a href="mailto:john.gibbs@hud.gov">john.gibbs@hud.gov</a></td><td>HQ – Room 5100</td><td>E</td></tr>
+        <tr><td>DOLES, ROBERT (Acting)</td><td>DAS for Enforcement (SES)</td><td>HQ Leader</td><td><a href="mailto:robert.doles@hud.gov">robert.doles@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>ED</td></tr>
+        <tr><td>CULLEN, DEANDRA (Acting)</td><td>Executive Director for Field Operations (SES)</td><td>HQ Leader</td><td><a href="mailto:deandra.cullen@hud.gov">deandra.cullen@hud.gov</a></td><td>HQ – New FHEO Suite</td><td>E1</td></tr>
       </tbody>
     </table>
-  </div> <!-- end of HQ table-wrap -->
-
-</section> <!-- end of HQ -->    <!-- REGION 1 -->
+  </div> 
+</section>
+<!-- REGION 1 -->
     <section class="section" id="region-1">
       <div class="section-header">
         <div>
@@ -383,7 +214,8 @@
       <div class="view table-wrap region-table" style="display:none" data-region="Region 1">
         <table>
           <caption>Region 1 – All Staff</caption>
-          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <thead><tr><th>Name</th><th>Position</th>
+              <th>Email</th><th>Location</th></tr></thead>
           <tbody>
             <tr data-search="allen lucy h prog anal lucy.allen@hud.gov boston ma region 1"><td>ALLEN, LUCY H</td><td>PROG ANAL</td><td><a href="mailto:Lucy.Allen@hud.gov">Lucy.Allen@hud.gov</a></td><td>BOSTON, MA</td></tr>
             <tr data-search="caminiti michael james eq opp speclst michael.j.caminiti@hud.gov boston ma region 1"><td>CAMINITI, MICHAEL JAMES</td><td>EQ OPP SPECLST</td><td><a href="mailto:Michael.J.Caminiti@HUD.GOV">Michael.J.Caminiti@HUD.GOV</a></td><td>BOSTON, MA</td></tr>
@@ -450,7 +282,8 @@
       <div class="view table-wrap region-table" style="display:none" data-region="Region 2">
         <table>
           <caption>Region 2 – All Staff</caption>
-          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <thead><tr><th>Name</th><th>Position</th>
+              <th>Email</th><th>Location</th></tr></thead>
           <tbody>
             <tr data-search="allen tameka n eq opp speclst tameka.n.allen@hud.gov new york ny region 2"><td>ALLEN, TAMEKA N</td><td>EQ OPP SPECLST</td><td><a href="mailto:tameka.n.allen@hud.gov">tameka.n.allen@hud.gov</a></td><td>NEW YORK, NY</td></tr>
             <tr data-search="andino caballero tzeitel eq opp speclst tzeitel.andino-caballero@hud.gov new york ny region 2"><td>ANDINO CABALLERO, TZEITEL</td><td>EQ OPP SPECLST</td><td><a href="mailto:TZEITEL.ANDINO-CABALLERO@hud.gov">TZEITEL.ANDINO-CABALLERO@hud.gov</a></td><td>NEW YORK, NY</td></tr>
@@ -485,13 +318,13 @@
           </tbody>
         </table>
       </div>
-    </section>    </section>    
+    </section>        
 <!-- REGION 3 -->
     <!-- REGION 3 -->
     <section class="section" id="region-3">
       <div class="section-header">
         <div>
-          <h2>Region 3 (Philadelphia)</h2>
+          <h2>Region 3 (Delaware,District of Columbia,Maryland,Pennsylvania,Virginia,West Virginia)</h2>
           <div class="meta">Mid-Atlantic</div>
         </div>
       </div>
@@ -593,9 +426,10 @@
       <div class="view table-wrap region-table" style="display:none" data-region="Region 3">
         <table>
           <caption>Region 3 – All Staff</caption>
-          <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
+          <thead><tr><th>Name</th><th>Position</th>
+              <th>HQ Leader</th><th>Email</th><th>Location</th></tr></thead>
           <tbody>
-            <tr data-search="abell lisa s das for operations lisa.s.abell@hud.gov washington dc region 3"><td>ABELL, LISA S</td><td>DAS for Operations</td><td><a href="mailto:lisa.s.abell@hud.gov">lisa.s.abell@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+           
             <tr data-search="albibi lena prog anal lena.albibi@hud.gov washington dc region 3"><td>ALBIBI, LENA</td><td>PROG ANAL</td><td><a href="mailto:lena.albibi@hud.gov">lena.albibi@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="ansah richard mgmt anal richard.y.ansah@hud.gov washington dc region 3"><td>ANSAH, RICHARD</td><td>MGMT ANAL</td><td><a href="mailto:Richard.Y.Ansah@hud.gov">Richard.Y.Ansah@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="baker jr stephen program analyst stephen.x.baker@hud.gov washington dc region 3"><td>BAKER JR, STEPHEN</td><td>PROGRAM ANALYST</td><td><a href="mailto:stephen.x.baker@hud.gov">stephen.x.baker@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
@@ -610,9 +444,9 @@
             <tr data-search="campbell kisha lynnette mgmt anal kisha.l.campbell@hud.gov washington dc region 3"><td>CAMPBELL, KISHA LYNNETTE</td><td>MGMT ANAL</td><td><a href="mailto:Kisha.L.Campbell@hud.gov">Kisha.L.Campbell@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="campbell renae m program analyst renae.m.campbell1@hud.gov washington dc region 3"><td>CAMPBELL, RENAE M</td><td>PROGRAM ANALYST</td><td><a href="mailto:Renae.M.Campbell1@HUD.GOV">Renae.M.Campbell1@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="carabello mary jean eq opp speclst maryjean.carabello@hud.gov philadelphia pa region 3"><td>CARABELLO, MARY JEAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:maryjean.carabello@hud.gov">maryjean.carabello@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
-            <tr data-search="collins iris l supvy supervisory equal opportunity sp iris.l.collins@hud.gov philadelphia pa region 3"><td>COLLINS, IRIS L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:iris.l.collins@hud.gov">iris.l.collins@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
+            <tr data-search="collins iris l supvy supervisory equal opportunity sp iris.l.collins@hud.gov philadelphia pa region 3"><td>COLLINS, IRIS L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:iris.l.collins@hud.gov">iris.l.collins@hud.gov</a></td><td>leadership</td><td>PHILADELPHIA, PA</td></tr>
             <tr data-search="colon quinones ruben tomas eq opp speclst ruben.t.colonquinones@hud.gov philadelphia pa region 3"><td>COLON QUINONES, RUBEN TOMAS</td><td>EQ OPP SPECLST</td><td><a href="mailto:RUBEN.T.COLONQUINONES@HUD.GOV">RUBEN.T.COLONQUINONES@HUD.GOV</a></td><td>PHILADELPHIA, PA</td></tr>
-            <tr data-search="cooke jr kevin r gdas for fh&eo kevin.r.cooke@hud.gov washington dc region 3"><td>COOKE JR, KEVIN R</td><td>GDAS FOR FHEO</td><td><a href="mailto:Kevin.R.Cooke@hud.gov">Kevin.R.Cooke@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="cooke jr kevin r gdas for fheo kevin.r.cooke@hud.gov washington dc region 3"><td>COOKE JR, KEVIN R</td><td>GDAS FOR FHEO</td><td>leadership</td><td><a href="mailto:Kevin.R.Cooke@hud.gov">Kevin.R.Cooke@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="cooke shalonda monique eq opp speclst shalonda.m.cooke@hud.gov philadelphia pa region 3"><td>COOKE, SHALONDA MONIQUE</td><td>EQ OPP SPECLST</td><td><a href="mailto:shalonda.m.cooke@hud.gov">shalonda.m.cooke@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
             <tr data-search="cooper laura thomas mgmt anal laura.t.cooper@hud.gov richmond va region 3"><td>COOPER, LAURA THOMAS</td><td>MGMT ANAL</td><td><a href="mailto:Laura.T.Cooper@hud.gov">Laura.T.Cooper@hud.gov</a></td><td>RICHMOND, VA</td></tr>
             <tr data-search="cossio sonja camille grants management specialist sonja.cossio@hud.gov washington dc region 3"><td>COSSIO, SONJA CAMILLE</td><td>Grants Management Specialist</td><td><a href="mailto:Sonja.Cossio@hud.gov">Sonja.Cossio@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
@@ -621,31 +455,31 @@
             <tr data-search="eludoyin pamela s budg anal pamela.s.eludoyin@hud.gov washington dc region 3"><td>ELUDOYIN, PAMELA S</td><td>BUDG ANAL</td><td><a href="mailto:Pamela.S.Eludoyin@hud.gov">Pamela.S.Eludoyin@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="english david nash program analyst david.n.english@hud.gov washington dc region 3"><td>ENGLISH, DAVID NASH</td><td>PROGRAM ANALYST</td><td><a href="mailto:David.N.English@hud.gov">David.N.English@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="evenson collin jerome program analyst collin.j.evenson@hud.gov washington dc region 3"><td>EVENSON, COLLIN JEROME</td><td>PROGRAM ANALYST</td><td><a href="mailto:Collin.J.Evenson@hud.gov">Collin.J.Evenson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="fleming tiffany taylor supervisory equal opportunity spec tiffany.t.fleming@hud.gov washington dc region 3"><td>FLEMING, TIFFANY TAYLOR</td><td>SUPERVISORY EQUAL OPPORTUNITY SPEC</td><td><a href="mailto:tiffany.t.fleming@hud.gov">tiffany.t.fleming@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="fleming tiffany taylor supervisory equal opportunity spec tiffany.t.fleming@hud.gov washington dc region 3"><td>FLEMING, TIFFANY TAYLOR</td><td>leadership</td><td>SUPERVISORY EQUAL OPPORTUNITY SPEC</td><td><a href="mailto:tiffany.t.fleming@hud.gov">tiffany.t.fleming@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="frattalone danielle marie eq opp speclst danielle.m.frattalone@hud.gov philadelphia pa region 3"><td>FRATTALONE, DANIELLE MARIE</td><td>EQ OPP SPECLST</td><td><a href="mailto:danielle.m.frattalone@hud.gov">danielle.m.frattalone@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
-            <tr data-search="gano joseph lynn director, office of administrative ser joseph.l.gano@hud.gov washington dc region 3"><td>GANO, JOSEPH LYNN</td><td>Director, Office of Administrative Ser</td><td><a href="mailto:joseph.l.gano@hud.gov">joseph.l.gano@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="gano joseph lynn director, office of administrative ser joseph.l.gano@hud.gov washington dc region 3"><td>GANO, JOSEPH LYNN</td><td>Director, Office of Administrative Ser</td><td><a href="mailto:joseph.l.gano@hud.gov">joseph.l.gano@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="ghasemi jordan a program analyst jordan.a.ghasemi@hud.gov washington dc region 3"><td>GH ASEMI, JORDAN A</td><td>PROGRAM ANALYST</td><td><a href="mailto:Jordan.A.Ghasemi@hud.gov">Jordan.A.Ghasemi@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="graham bianca lynnea equal opportunity specialist bianca.l.graham@hud.gov baltimore md region 3"><td>GRAHAM, BIANCA LYNNEA</td><td>Equal Opportunity Specialist</td><td><a href="mailto:Bianca.L.Graham@HUD.GOV">Bianca.L.Graham@HUD.GOV</a></td><td>BALTIMORE, MD</td></tr>
             <tr data-search="green shameka rushawn equal opportunity specialist shameka.r.green@hud.gov washington dc region 3"><td>GREEN, SHAMEKA RUSHAWN</td><td>Equal Opportunity Specialist</td><td><a href="mailto:shameka.r.green@hud.gov">shameka.r.green@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="griffin laura marie gudgel program analyst laura.m.griffin@hud.gov washington dc region 3"><td>GRIFFIN, LAURA MARIE GUDGEL</td><td>PROGRAM ANALYST</td><td><a href="mailto:Laura.M.Griffin@HUD.GOV">Laura.M.Griffin@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="grosso lynn m das for enforcement lynn.m.grosso@hud.gov washington dc region 3"><td>GROSSO, LYNN M</td><td>DAS FOR ENFORCEMENT</td><td><a href="mailto:Lynn.M.Grosso@hud.gov">Lynn.M.Grosso@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            
             <tr data-search="gums iv eathen supvy supervisory equal opportunity sp eathen.gums@hud.gov washington dc region 3"><td>GUMS IV, EATHEN</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Eathen.Gums@hud.gov">Eathen.Gums@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="hanible donald c program analyst donald.c.hanible@hud.gov washington dc region 3"><td>HANIBLE, DONALD C</td><td>PROGRAM ANALYST</td><td><a href="mailto:Donald.C.Hanible@hud.gov">Donald.C.Hanible@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="hardy leslie nicole program analyst leslie.n.hardy@hud.gov baltimore md region 3"><td>HARDY, LESLIE NICOLE</td><td>PROGRAM ANALYST</td><td><a href="mailto:leslie.n.hardy@hud.gov">leslie.n.hardy@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
-            <tr data-search="hawkins brian leroi senior advisor, fheo brian.l.hawkins@hud.gov washington dc region 3"><td>HAWKINS, BRIAN LEROI</td><td>SENIOR ADVISOR, FHEO</td><td><a href="mailto:brian.l.hawkins@hud.gov">brian.l.hawkins@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="hawkins brian leroi senior advisor, fheo brian.l.hawkins@hud.gov washington dc region 3"><td>HAWKINS, BRIAN LEROI</td><td>SENIOR ADVISOR, FHEO</td><td>leadership</td><td><a href="mailto:brian.l.hawkins@hud.gov">brian.l.hawkins@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="hill andrew paul program analyst andrew.p.hill@hud.gov baltimore md region 3"><td>HILL, ANDREW PAUL</td><td>PROGRAM ANALYST</td><td><a href="mailto:ANDREW.P.HILL@HUD.GOV">ANDREW.P.HILL@HUD.GOV</a></td><td>BALTIMORE, MD</td></tr>
             <tr data-search="holt danielle catrice student trainee (management analyst) danielle.c.holt@hud.gov washington dc region 3"><td>HOLT, DANIELLE CATRICE</td><td>Student Trainee (Management Analyst)</td><td><a href="mailto:Danielle.C.Holt@HUD.GOV">Danielle.C.Holt@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="huff summer b contracting officer representative adv summer.b.huff@hud.gov washington dc region 3"><td>HUFF, SUMMER B</td><td>CONTRACTING OFFICER REPRESENTATIVE ADV</td><td><a href="mailto:Summer.B.Huff@hud.gov">Summer.B.Huff@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="jackson avery star special assistant avery.jackson@hud.gov washington dc region 3"><td>JACKSON, AVERY STAR</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:avery.jackson@hud.gov">avery.jackson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="jackson avery star special assistant avery.jackson@hud.gov washington dc region 3"><td>JACKSON, AVERY STAR</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:avery.jackson@hud.gov">avery.jackson@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="james sharron l eq opp speclst sharron.l.james@hud.gov philadelphia pa region 3"><td>JAMES, SHARRON L</td><td>EQ OPP SPECLST</td><td><a href="mailto:sharron.l.james@hud.gov">sharron.l.james@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
             <tr data-search="johnson akil omari program analyst akil.o.johnson@hud.gov washington dc region 3"><td>JOHNSON, AKIL OMARI</td><td>PROGRAM ANALYST</td><td><a href="mailto:Akil.O.Johnson@hud.gov">Akil.O.Johnson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="jones william budg anal william.g.jones@hud.gov washington dc region 3"><td>JONES, WILLIAM</td><td>BUDG ANAL</td><td><a href="mailto:William.G.Jones@hud.gov">William.G.Jones@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="jones-peters jacqueline spec asst jacqueline.jones-peters@hud.gov washington dc region 3"><td>JONES-PETERS, JACQUELINE</td><td>SPEC ASST</td><td><a href="mailto:JACQUELINE.JONES-PETERS@HUD.GOV">JACQUELINE.JONES-PETERS@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="jones-peters jacqueline spec asst jacqueline.jones-peters@hud.gov washington dc region 3"><td>JONES-PETERS, JACQUELINE</td><td>SPEC ASST</td><td><a href="mailto:JACQUELINE.JONES-PETERS@HUD.GOV">JACQUELINE.JONES-PETERS@HUD.GOV</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="king smith sheila o corres speclst sheila.o.king-smith@hud.gov washington dc region 3"><td>KING SMITH, SHEILA O</td><td>CORRES SPECLST</td><td><a href="mailto:Sheila.O.King-Smith@hud.gov">Sheila.O.King-Smith@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="king brendan francis mgmt inf speclst brendan.f.king@hud.gov washington dc region 3"><td>KING, BRENDAN FRANCIS</td><td>MGMT INF SPECLST</td><td><a href="mailto:brendan.f.king@hud.gov">brendan.f.king@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="kutty nandinee k program analyst nandinee.k.kutty@hud.gov washington dc region 3"><td>KUTTY, NANDINEE K</td><td>PROGRAM ANALYST</td><td><a href="mailto:Nandinee.K.Kutty@hud.gov">Nandinee.K.Kutty@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="latham ronaldlyn e eq opp speclst ronaldlyn.e.latham@hud.gov philadelphia pa region 3"><td>LATHAM, RONALDLYN E</td><td>EQ OPP SPECLST</td><td><a href="mailto:ronaldlyn.e.latham@hud.gov">ronaldlyn.e.latham@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
-            <tr data-search="leake karina s special assistant karina.s.leake@hud.gov washington dc region 3"><td>LEAKE, KARINA S</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:karina.s.leake@hud.gov">karina.s.leake@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="leake karina s special assistant karina.s.leake@hud.gov washington dc region 3"><td>LEAKE, KARINA S</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:karina.s.leake@hud.gov">karina.s.leake@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="lee iman program analyst iman.lee@hud.gov washington dc region 3"><td>LEE, IMAN</td><td>PROGRAM ANALYST</td><td><a href="mailto:iman.lee@hud.gov">iman.lee@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="leith rachel l supvy supervisory equal opportunity sp rachel.l.leith@hud.gov baltimore md region 3"><td>LEITH, RACHEL L</td><td>SUPVY Supervisory Equal Opportunity Sp</td><td><a href="mailto:Rachel.L.Leith@hud.gov">Rachel.L.Leith@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
             <tr data-search="lew richard eq opp speclst richard.lew@hud.gov philadelphia pa region 3"><td>LEW, RICHARD</td><td>EQ OPP SPECLST</td><td><a href="mailto:richard.lew@hud.gov">richard.lew@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
@@ -657,7 +491,7 @@
             <tr data-search="mcdaniel monique r program analyst monique.r.mcdaniel@hud.gov washington dc region 3"><td>MCDANIEL, MONIQUE R</td><td>PROGRAM ANALYST</td><td><a href="mailto:Monique.R.Mcdaniel@hud.gov">Monique.R.Mcdaniel@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="mcglincy hugh james equal opportunity specialist hugh.j.mcglincy@hud.gov washington dc region 3"><td>MCGLINCY, HUGH JAMES</td><td>Equal Opportunity Specialist</td><td><a href="mailto:Hugh.J.McGlincy@hud.gov">Hugh.J.McGlincy@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="mckay charles arthur policy advisor charles.a.mckay@hud.gov washington dc region 3"><td>MCKAY, CHARLES ARTHUR</td><td>POLICY ADVISOR</td><td><a href="mailto:CHARLES.A.MCKAY@HUD.GOV">CHARLES.A.MCKAY@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="montgomery iii charles m supvy prog mgr charles.m.montgomeryiii@hud.gov washington dc region 3"><td>MONTGOMERY III, CHARLES M</td><td>SUPVY PROG MGR</td><td><a href="mailto:Charles.M.MontgomeryIII@hud.gov">Charles.M.MontgomeryIII@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="montgomery iii charles m supvy prog mgr charles.m.montgomeryiii@hud.gov washington dc region 3"><td>MONTGOMERY III, CHARLES M</td><td>SUPVY PROG MGR</td><td><a href="mailto:Charles.M.MontgomeryIII@hud.gov">Charles.M.MontgomeryIII@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="morgan-cosic letisha yvonne program analyst letisha.y.morgan-cosic@hud.gov washington dc region 3"><td>MORGAN-COSIC, LETISHA YVONNE</td><td>PROGRAM ANALYST</td><td><a href="mailto:Letisha.Y.Morgan-Cosic@hud.gov">Letisha.Y.Morgan-Cosic@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="myers dartesha syreeta program analyst dartesha.s.myers@hud.gov washington dc region 3"><td>MYERS, DARTESHA SYREETA</td><td>PROGRAM ANALYST</td><td><a href="mailto:DARTESHA.S.MYERS@HUD.GOV">DARTESHA.S.MYERS@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="pace rex jefferson architect rex.j.pace@hud.gov washington dc region 3"><td>PACE, REX JEFFERSON</td><td>ARCHITECT</td><td><a href="mailto:Rex.J.Pace@hud.gov">Rex.J.Pace@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
@@ -667,20 +501,20 @@
             <tr data-search="perry judon rene budg anal judon.r.perry@hud.gov washington dc region 3"><td>PERRY, JUDON RENE</td><td>BUDG ANAL</td><td><a href="mailto:Judon.R.Perry@hud.gov">Judon.R.Perry@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="phaup jeffrey alan eq opp speclst jeffrey.a.phaup@hud.gov richmond va region 3"><td>PHAUP, JEFFREY ALAN</td><td>EQ OPP SPECLST</td><td><a href="mailto:jeffrey.a.phaup@hud.gov">jeffrey.a.phaup@hud.gov</a></td><td>RICHMOND, VA</td></tr>
             <tr data-search="rai tej bahadur budg anal tej.b.rai@hud.gov washington dc region 3"><td>RAI, TEJ BAHADUR</td><td>BUDG ANAL</td><td><a href="mailto:TEJ.B.RAI@HUD.GOV">TEJ.B.RAI@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="reinhard linda ayala special assistant linda.a.reinhard@hud.gov washington dc region 3"><td>REINHARD, LINDA AYALA</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:linda.a.reinhard@hud.gov">linda.a.reinhard@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="reinhard linda ayala special assistant linda.a.reinhard@hud.gov washington dc region 3"><td>REINHARD, LINDA AYALA</td><td>SPECIAL ASSISTANT</td><td>leadership</td><td><a href="mailto:linda.a.reinhard@hud.gov">linda.a.reinhard@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="riley devereaux alene s. special assistant alene.riley.devereaux@hud.gov washington dc region 3"><td>RILEY DEVEREAUX, ALENE S.</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Alene.Riley.Devereaux@hud.gov">Alene.Riley.Devereaux@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="riley sharon l program analyst sharon.l.riley@hud.gov washington dc region 3"><td>RILEY, SHARON L</td><td>PROGRAM ANALYST</td><td><a href="mailto:Sharon.L.Riley@HUD.gov">Sharon.L.Riley@HUD.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="robinson tirmira prog anal tirmira.l.robinson@hud.gov washington dc region 3"><td>ROBINSON, TIRMIRA</td><td>PROG ANAL</td><td><a href="mailto:Tirmira.L.Robinson@hud.gov">Tirmira.L.Robinson@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="robison elizabeth carol program analyst elizabeth.c.robison@hud.gov washington dc region 3"><td>ROBISON, ELIZABETH CAROL</td><td>PROGRAM ANALYST</td><td><a href="mailto:elizabeth.c.robison@hud.gov">elizabeth.c.robison@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="roth nathan scott mgmt & prog anal nathan.s.roth@hud.gov washington dc region 3"><td>ROTH, NATHAN SCOTT</td><td>MGMT & PROG ANAL</td><td><a href="mailto:Nathan.S.Roth@hud.gov">Nathan.S.Roth@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="roth nathan scott mgmt & prog anal nathan.s.roth@hud.gov washington dc region 3"><td>ROTH, NATHAN SCOTT</td><td>Director Education And Outreach</td><td>leadership</td><td><a href="mailto:Nathan.S.Roth@hud.gov">Nathan.S.Roth@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="sewell sarale helen prog anal sarale.h.sewell@hud.gov washington dc region 3"><td>SEWELL, SARALE HELEN</td><td>PROG ANAL</td><td><a href="mailto:SARALE.H.SEWELL@HUD.GOV">SARALE.H.SEWELL@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="sievers danielle l management analyst danielle.l.sievers@hud.gov philadelphia pa region 3"><td>SIEVERS, DANIELLE L</td><td>Management Analyst</td><td><a href="mailto:Danielle.L.Sievers@hud.gov">Danielle.L.Sievers@hud.gov</a></td><td>PHILADELPHIA, PA</td></tr>
-            <tr data-search="smallwood marcus ricardo senior senior policy analyst marcus.r.smallwood@hud.gov washington dc region 3"><td>SMALLWOOD, MARCUS RICARDO</td><td>SENIOR Senior Policy Analyst</td><td><a href="mailto:Marcus.R.Smallwood@hud.gov">Marcus.R.Smallwood@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="smallwood marcus ricardo senior senior policy analyst marcus.r.smallwood@hud.gov washington dc region 3"><td>SMALLWOOD, MARCUS RICARDO</td><td>SENIOR Senior Policy Analyst</td><td><a href="mailto:Marcus.R.Smallwood@hud.gov">Marcus.R.Smallwood@hud.gov</a></td><td>leadership</td><td>WASHINGTON, DC</td></tr>
             <tr data-search="st. hilaire nancy kathleen management analyst nancy.k.sthilaire@hud.gov washington dc region 3"><td>ST. HILAIRE, NANCY KATHLEEN</td><td>Management Analyst</td><td><a href="mailto:NANCY.K.STHILAIRE@HUD.GOV">NANCY.K.STHILAIRE@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="tagert iii earl eugene senior advisor, fheo earl.e.tagert@hud.gov washington dc region 3"><td>TAGERT III, EARL EUGENE</td><td>SENIOR ADVISOR, FHEO</td><td><a href="mailto:earl.e.tagert@hud.gov">earl.e.tagert@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            <tr data-search="tagert iii earl eugene senior advisor, fheo earl.e.tagert@hud.gov washington dc region 3"><td>TAGERT III, EARL EUGENE</td><td>SENIOR ADVISOR, FHEO</td><td>leadership</td><td><a href="mailto:earl.e.tagert@hud.gov">earl.e.tagert@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="tate nakeita lynn program analyst nakeita.l.tate@hud.gov washington dc region 3"><td>TATE, NAKEITA LYNN</td><td>PROGRAM ANALYST</td><td><a href="mailto:NAKEITA.L.TATE@HUD.GOV">NAKEITA.L.TATE@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="taylor melody c das, ofc of policy, legislative initia melody.c.taylor@hud.gov washington dc region 3"><td>TAYLOR, MELODY C</td><td>DAS, OFC OF POLICY, LEGISLATIVE INITIA</td><td><a href="mailto:Melody.C.Taylor@hud.gov">Melody.C.Taylor@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
-            <tr data-search="thomas adrienne d special assistant adrienne.d.thomas@hud.gov washington dc region 3"><td>THOMAS, ADRIENNE D</td><td>SPECIAL ASSISTANT</td><td><a href="mailto:Adrienne.D.Thomas@hud.gov">Adrienne.D.Thomas@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
+            
             <tr data-search="tomlin angela keeshanna management analyst angela.k.tomlin@hud.gov washington dc region 3"><td>TOMLIN, ANGELA KEESHANNA</td><td>Management Analyst</td><td><a href="mailto:ANGELA.K.TOMLIN@HUD.GOV">ANGELA.K.TOMLIN@HUD.GOV</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="wade arthur d management analyst (web manager) arthur.d.wade@hud.gov washington dc region 3"><td>WADE, ARTHUR D</td><td>MANAGEMENT ANALYST (WEB MANAGER)</td><td><a href="mailto:Arthur.D.Wade@hud.gov">Arthur.D.Wade@hud.gov</a></td><td>WASHINGTON, DC</td></tr>
             <tr data-search="walker dameon alamando eq opp speclst dameon.a.walker@hud.gov baltimore md region 3"><td>WALKER, DAMEON ALAMANDO</td><td>EQ OPP SPECLST</td><td><a href="mailto:Dameon.A.Walker@hud.gov">Dameon.A.Walker@hud.gov</a></td><td>BALTIMORE, MD</td></tr>
@@ -1337,167 +1171,157 @@
       <p>Directory generated from HUD FHEO staff export – December 2025. Use the search box to filter instantly. Grid/Table views toggle per section.</p>
     </footer>
       </main>
-
 <script>
 (function () {
   const input = document.getElementById('globalSearch');
   const btnGrid = document.getElementById('btnGrid');
   const btnTable = document.getElementById('btnTable');
-  const gridContainers = Array.from(document.querySelectorAll('.region-grid'));
-  const tableContainers = Array.from(document.querySelectorAll('.region-table'));
-  const mainEl = document.querySelector('main');
   const controlsSection = document.getElementById('controls');
 
-  if (!input || !btnGrid || !btnTable || !mainEl) return;
+  if (!input || !btnGrid || !btnTable) return;
 
-  let currentView = 'grid'; 
-  let resultsContainer = document.getElementById('searchResultsContainer');
+  /**
+   * 1. DYNAMIC PULL & EMAIL SYNC: REGION 3 LEADERSHIP TO HQ
+   */
+  const syncR3Leadership = () => {
+    const hqSection = document.getElementById('hq');
+    const hqGridContainer = hqSection.querySelector('.region-grid');
+    const hqTableBody = hqSection.querySelector('table tbody');
+    const r3Rows = document.querySelectorAll('#region-3 table tbody tr');
 
-  // Create Results Container if it doesn't exist
-  if (!resultsContainer) {
-    resultsContainer = document.createElement('div');
-    resultsContainer.id = 'searchResultsContainer';
-    resultsContainer.className = 'search-results';
-    resultsContainer.style.margin = '0.75rem 0 1rem 0';
-    if (controlsSection) {
-      const viewEl = controlsSection.querySelector('.view');
-      if (viewEl) viewEl.insertAdjacentElement('afterend', resultsContainer);
-      else controlsSection.appendChild(resultsContainer);
-    }
-  }
+    const getExistingHqNames = () => Array.from(hqSection.querySelectorAll('h4')).map(h4 => 
+      h4.childNodes[0].textContent.trim().toUpperCase()
+    );
 
-  function normalize(s) { return (s || '').toString().toLowerCase().trim(); }
-  function escapeHtml(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+    r3Rows.forEach(row => {
+      const cells = Array.from(row.querySelectorAll('td'));
+      const hasLeadershipTag = cells.some(td => td.textContent.trim().toLowerCase() === 'leadership');
 
-  function showGridView() {
-    currentView = 'grid';
-    document.querySelectorAll('.region-grid').forEach(el => el.style.display = '');
-    document.querySelectorAll('.region-table').forEach(el => el.style.display = 'none');
-    btnGrid.classList.add('active');
-    btnTable.classList.remove('active');
-    runFilterNow(input.value);
-  }
+      if (hasLeadershipTag) {
+        const name = cells[0].textContent.trim();
+        const position = cells[1].textContent.trim();
+        
+        // --- EMAIL FIX: Robust detection of email inside the row ---
+        let emailLink = row.querySelector('a[href^="mailto:"]');
+        const emailHtml = emailLink ? emailLink.outerHTML : `<em>Email not listed</em>`;
+        
+        // Location is usually the last cell
+        const location = cells[cells.length - 1].textContent.trim();
+        
+        const currentHqNames = getExistingHqNames();
 
-  function showTableView() {
-    currentView = 'table';
-    document.querySelectorAll('.region-grid').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.region-table').forEach(el => el.style.display = '');
-    btnTable.classList.add('active');
-    btnGrid.classList.remove('active');
-    runFilterNow(input.value);
-  }
+        if (!currentHqNames.includes(name.toUpperCase())) {
+          // Add Row to HQ Table
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `<td>${name}</td><td>${position}</td><td>Leadership </td><td>${emailHtml}</td><td>${location}</td><td>R3</td>`;
+          hqTableBody.appendChild(newRow);
 
-  btnGrid.addEventListener('click', showGridView);
-  btnTable.addEventListener('click', showTableView);
+          // Add Card to HQ Grid
+          const newCard = document.createElement('article');
+          newCard.className = 'article card';
+          newCard.setAttribute('data-search', `${name} ${position} ${location} region 3 leadership`.toLowerCase());
+          newCard.innerHTML = `
+            <h4>${name} <span class="position">${position}</span><span class="corr-code">R3</span></h4>
+            <p><strong>Email:</strong><br>${emailHtml}</p>
+            <p><strong>Location:</strong> ${location}</p>
+          `;
+          hqGridContainer.appendChild(newCard);
+        }
+      }
+    });
+  };
 
-  function rowToCardElement(row) {
-    const cells = Array.from(row.children);
-    const name = cells[0]?.textContent.trim() || '';
-    const pos = cells[1]?.textContent.trim() || '';
-    const emailA = cells[2]?.querySelector('a');
-    const email = emailA ? emailA.href.replace('mailto:', '') : (cells[2]?.textContent.trim() || '');
-    const loc = cells[3]?.textContent.trim() || '';
+  syncR3Leadership();
 
-    const card = document.createElement('article');
-    card.className = 'card search-match result-card';
-    card.innerHTML = `
-      <h4>${escapeHtml(name)} <span class="position">${escapeHtml(pos)}</span></h4>
-      <p><strong>Email:</strong><br><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-      <p><strong>Location:</strong> ${escapeHtml(loc)}</p>
-    `;
-    return card;
-  }
+  /**
+   * 2. DATA CACHING & DEDUPLICATION LOGIC
+   */
+  const masterData = Array.from(document.querySelectorAll('.card')).map(el => {
+    const section = el.closest('.section');
+    const name = (el.querySelector('h4')?.childNodes[0].textContent || '').trim().toUpperCase();
+    const pos = (el.querySelector('.position')?.textContent || '').toUpperCase();
+    const isLeader = (section && section.id === 'hq') || pos.includes("SUPVY") || pos.includes("DIRECTOR");
 
-  function runFilterNow(rawValue) {
-    const q = normalize(rawValue);
-    resultsContainer.innerHTML = '';
-    
-    // Clear everything if input is empty
-    if (q === "") {
+    if (isLeader) el.style.borderLeft = "4px solid gold";
+
+    return {
+      el: el,
+      cleanName: name,
+      isLeader: isLeader,
+      searchBlob: (el.getAttribute('data-search') || el.textContent).toLowerCase()
+    };
+  });
+
+  /**
+   * 3. SEARCH & TABLE HIGHLIGHTING
+   */
+  let resultsContainer = document.getElementById('searchResultsContainer') || (() => {
+    const res = document.createElement('div');
+    res.id = 'searchResultsContainer';
+    res.className = 'view grid';
+    res.style.cssText = "display:none; background:#fff; border-bottom:3px solid var(--accent); padding:1rem; gap:1rem; margin-bottom:2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);";
+    controlsSection.appendChild(res);
+    return res;
+  })();
+
+  function runFilterNow(val) {
+    const q = val.toLowerCase().trim();
+    const allTableRows = document.querySelectorAll('tbody tr');
+
+    if (q.length < 3) {
       resultsContainer.style.display = 'none';
-      document.querySelectorAll('.section, .card, tr').forEach(el => {
-        el.classList.remove('hidden', 'search-match', 'section-match');
-      });
+      masterData.forEach(d => d.el.classList.remove('search-match'));
+      allTableRows.forEach(r => r.classList.remove('search-match')); // Reset table highlights
       return;
     }
 
+    resultsContainer.innerHTML = ''; 
+    const seenNames = new Set();
     let matchCount = 0;
 
-    if (currentView === 'grid') {
-      gridContainers.forEach(grid => {
-        let hasMatch = false;
-        grid.querySelectorAll('.card').forEach(card => {
-          const content = normalize(card.getAttribute('data-search') || card.textContent);
-          if (content.includes(q)) {
-            card.classList.remove('hidden');
-            card.classList.add('search-match');
-            resultsContainer.appendChild(card.cloneNode(true));
-            hasMatch = true;
-            matchCount++;
-          } else {
-            card.classList.add('hidden');
-            card.classList.remove('search-match');
-          }
-        });
-        const section = grid.closest('.section');
-        if (hasMatch) section.classList.remove('hidden'); else section.classList.add('hidden');
-      });
-    } else {
-      tableContainers.forEach(tbl => {
-        let hasMatch = false;
-        tbl.querySelectorAll('tbody tr').forEach(row => {
-          const content = normalize(row.getAttribute('data-search') || row.textContent);
-          if (content.includes(q)) {
-            row.classList.remove('hidden');
-            resultsContainer.appendChild(rowToCardElement(row));
-            hasMatch = true;
-            matchCount++;
-          } else {
-            row.classList.add('hidden');
-          }
-        });
-        const section = tbl.closest('.section');
-        if (hasMatch) section.classList.remove('hidden'); else section.classList.add('hidden');
-      });
-    }
+    // Filter Cards (Grid)
+    masterData.forEach(item => {
+      const isMatch = item.searchBlob.includes(q);
+      item.el.classList.toggle('search-match', isMatch);
 
-    if (matchCount > 0) {
-      resultsContainer.style.display = 'block';
-      const heading = document.createElement('div');
-      heading.className = 'small-muted';
-      heading.style.margin = '0 0 10px 10px';
-      heading.innerHTML = `<strong>Found ${matchCount} result(s):</strong>`;
-      resultsContainer.prepend(heading);
-    } else {
-      resultsContainer.style.display = 'none';
-    }
+      if (isMatch && !seenNames.has(item.cleanName)) {
+        const clone = item.el.cloneNode(true);
+        resultsContainer.appendChild(clone);
+        seenNames.add(item.cleanName);
+        matchCount++;
+      }
+    });
+
+    // --- TABLE VIEW HIGHLIGHTING ---
+    allTableRows.forEach(row => {
+      const rowText = row.textContent.toLowerCase();
+      row.classList.toggle('search-match', rowText.includes(q));
+    });
+
+    resultsContainer.style.display = matchCount > 0 ? 'grid' : 'none';
   }
 
-  // FAST SEARCH LISTENERS
-  let debounceTimer;
+  /**
+   * 4. CONTROLS
+   */
+  let debounce;
   input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    // 200ms is imperceptible but prevents lag
-    debounceTimer = setTimeout(() => runFilterNow(e.target.value), 200);
+    clearTimeout(debounce);
+    debounce = setTimeout(() => runFilterNow(e.target.value), 50);
   });
 
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      clearTimeout(debounceTimer);
-      runFilterNow(input.value);
-    }
-    if (e.key === 'Escape') {
-      input.value = '';
-      runFilterNow('');
-    }
-  });
+  function toggleView(view) {
+    const isGrid = view === 'grid';
+    document.querySelectorAll('.region-grid').forEach(el => el.style.display = isGrid ? '' : 'none');
+    document.querySelectorAll('.region-table').forEach(el => el.style.display = isGrid ? 'none' : '');
+    btnGrid.classList.toggle('active', isGrid);
+    btnTable.classList.toggle('active', !isGrid);
+  }
 
-  showGridView();
+  btnGrid.addEventListener('click', () => toggleView('grid'));
+  btnTable.addEventListener('click', () => toggleView('table'));
+  toggleView('grid');
 })();
-</script>
-
-
-</body>
+</script></body>
 </html>
+

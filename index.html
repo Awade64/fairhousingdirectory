@@ -1179,6 +1179,7 @@
 
   /**
    * 1. DYNAMIC PULL & EMAIL SYNC: REGION 3 LEADERSHIP TO HQ
+   * Updated to ensure row structure matches the hidden column CSS logic.
    */
   const syncR3Leadership = () => {
     const hqSection = document.getElementById('hq');
@@ -1198,27 +1199,38 @@
         const name = cells[0].textContent.trim();
         const position = cells[1].textContent.trim();
         
-        // --- EMAIL FIX: Robust detection of email inside the row ---
+        // EMAIL DETECTION
         let emailLink = row.querySelector('a[href^="mailto:"]');
         const emailHtml = emailLink ? emailLink.outerHTML : `<em>Email not listed</em>`;
         
-        // Location is usually the last cell
-        const location = cells[cells.length - 1].textContent.trim();
+        // Location is typically the 4th cell (index 3) in Region 3 table
+        const location = cells[3] ? cells[3].textContent.trim() : 'N/A';
         
         const currentHqNames = getExistingHqNames();
 
         if (!currentHqNames.includes(name.toUpperCase())) {
           // Add Row to HQ Table
+          // Note: Column 3 is the "Leadership" tag which the CSS hides via nth-child(3)
           const newRow = document.createElement('tr');
-          newRow.innerHTML = `<td>${name}</td><td>${position}</td><td>Leadership </td><td>${emailHtml}</td><td>${location}</td><td>R3</td>`;
+          newRow.innerHTML = `
+            <td>${name}</td>
+            <td>${position}</td>
+            <td>Leadership</td> 
+            <td>${emailHtml}</td>
+            <td>${location}</td>
+            <td><span class="corr-code">R3</span></td>
+          `;
           hqTableBody.appendChild(newRow);
 
           // Add Card to HQ Grid
           const newCard = document.createElement('article');
-          newCard.className = 'article card';
+          newCard.className = 'card';
           newCard.setAttribute('data-search', `${name} ${position} ${location} region 3 leadership`.toLowerCase());
           newCard.innerHTML = `
-            <h4>${name} <span class="position">${position}</span><span class="corr-code">R3</span></h4>
+            <h4>${name} 
+              <span class="position">${position}</span>
+              <span class="corr-code">R3</span>
+            </h4>
             <p><strong>Email:</strong><br>${emailHtml}</p>
             <p><strong>Location:</strong> ${location}</p>
           `;
@@ -1239,7 +1251,8 @@
     const pos = (el.querySelector('.position')?.textContent || '').toUpperCase();
     const isLeader = (section && section.id === 'hq') || pos.includes("SUPVY") || pos.includes("DIRECTOR");
 
-    if (isLeader) el.style.borderLeft = "4px solid gold";
+    // Applied gold border left to leadership cards
+    if (isLeader) el.style.borderLeft = "4px solid #ffb84d";
 
     return {
       el: el,
@@ -1268,7 +1281,7 @@
     if (q.length < 3) {
       resultsContainer.style.display = 'none';
       masterData.forEach(d => d.el.classList.remove('search-match'));
-      allTableRows.forEach(r => r.classList.remove('search-match')); // Reset table highlights
+      allTableRows.forEach(r => r.classList.remove('search-match'));
       return;
     }
 
@@ -1276,7 +1289,7 @@
     const seenNames = new Set();
     let matchCount = 0;
 
-    // Filter Cards (Grid)
+    // Filter Cards
     masterData.forEach(item => {
       const isMatch = item.searchBlob.includes(q);
       item.el.classList.toggle('search-match', isMatch);
@@ -1289,7 +1302,7 @@
       }
     });
 
-    // --- TABLE VIEW HIGHLIGHTING ---
+    // Filter Rows
     allTableRows.forEach(row => {
       const rowText = row.textContent.toLowerCase();
       row.classList.toggle('search-match', rowText.includes(q));
@@ -1299,7 +1312,7 @@
   }
 
   /**
-   * 4. CONTROLS
+   * 4. CONTROLS & EVENT LISTENERS
    */
   let debounce;
   input.addEventListener('input', (e) => {
@@ -1309,18 +1322,21 @@
 
   function toggleView(view) {
     const isGrid = view === 'grid';
-    document.querySelectorAll('.region-grid').forEach(el => el.style.display = isGrid ? '' : 'none');
-    document.querySelectorAll('.region-table').forEach(el => el.style.display = isGrid ? 'none' : '');
+    document.querySelectorAll('.region-grid').forEach(el => el.style.display = isGrid ? 'grid' : 'none');
+    document.querySelectorAll('.region-table').forEach(el => el.style.display = isGrid ? 'none' : 'block');
     btnGrid.classList.toggle('active', isGrid);
     btnTable.classList.toggle('active', !isGrid);
   }
 
   btnGrid.addEventListener('click', () => toggleView('grid'));
   btnTable.addEventListener('click', () => toggleView('table'));
+  
+  // Set default view
   toggleView('grid');
 })();
 </script></body>
 </html>
+
 
 
 

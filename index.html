@@ -1178,11 +1178,14 @@
   if (!input || !btnGrid || !btnTable) return;
 
   /**
-   * 1. DYNAMIC PULL & EMAIL SYNC: REGION 3 LEADERSHIP TO HQ
-   * Updated to ensure row structure matches the hidden column CSS logic.
+   * 1. DYNAMIC PULL: Updated for New Header Logic
+   * HQ Leader (Column 3) now contains the Email Link
+   * Location (Column 4) now contains the City/State
    */
   const syncR3Leadership = () => {
     const hqSection = document.getElementById('hq');
+    if (!hqSection) return; // Guard clause if HQ doesn't exist yet
+
     const hqGridContainer = hqSection.querySelector('.region-grid');
     const hqTableBody = hqSection.querySelector('table tbody');
     const r3Rows = document.querySelectorAll('#region-3 table tbody tr');
@@ -1193,44 +1196,40 @@
 
     r3Rows.forEach(row => {
       const cells = Array.from(row.querySelectorAll('td'));
+      // Check if any cell contains the word "leadership"
       const hasLeadershipTag = cells.some(td => td.textContent.trim().toLowerCase() === 'leadership');
 
       if (hasLeadershipTag) {
         const name = cells[0].textContent.trim();
         const position = cells[1].textContent.trim();
         
-        // EMAIL DETECTION
-        let emailLink = row.querySelector('a[href^="mailto:"]');
+        // NEW LOGIC: Email is now in the 3rd column (index 2)
+        let emailLink = cells[2].querySelector('a[href^="mailto:"]');
         const emailHtml = emailLink ? emailLink.outerHTML : `<em>Email not listed</em>`;
         
-        // Location is typically the 4th cell (index 3) in Region 3 table
-        const location = cells[3] ? cells[3].textContent.trim() : 'N/A';
+        // NEW LOGIC: Location is now in the 4th column (index 3)
+        const location = cells[3] ? cells[3].textContent.trim() : "WASHINGTON, DC";
         
         const currentHqNames = getExistingHqNames();
 
         if (!currentHqNames.includes(name.toUpperCase())) {
-          // Add Row to HQ Table
-          // Note: Column 3 is the "Leadership" tag which the CSS hides via nth-child(3)
+          // Add Row to HQ Table (Following your new header: Name | Position | HQ Leader | Location)
           const newRow = document.createElement('tr');
           newRow.innerHTML = `
             <td>${name}</td>
             <td>${position}</td>
-            <td>Leadership</td> 
-            <td>${emailHtml}</td>
+            <td>${emailHtml}</td> 
             <td>${location}</td>
-            <td><span class="corr-code">R3</span></td>
+            <td>R3</td>
           `;
           hqTableBody.appendChild(newRow);
 
           // Add Card to HQ Grid
           const newCard = document.createElement('article');
-          newCard.className = 'card';
+          newCard.className = 'article card';
           newCard.setAttribute('data-search', `${name} ${position} ${location} region 3 leadership`.toLowerCase());
           newCard.innerHTML = `
-            <h4>${name} 
-              <span class="position">${position}</span>
-              <span class="corr-code">R3</span>
-            </h4>
+            <h4>${name} <span class="position">${position}</span><span class="corr-code">R3</span></h4>
             <p><strong>Email:</strong><br>${emailHtml}</p>
             <p><strong>Location:</strong> ${location}</p>
           `;
@@ -1243,7 +1242,7 @@
   syncR3Leadership();
 
   /**
-   * 2. DATA CACHING & DEDUPLICATION LOGIC
+   * 2. DATA CACHING, SEARCH & CONTROLS (Remaining logic stays same)
    */
   const masterData = Array.from(document.querySelectorAll('.card')).map(el => {
     const section = el.closest('.section');
@@ -1251,8 +1250,7 @@
     const pos = (el.querySelector('.position')?.textContent || '').toUpperCase();
     const isLeader = (section && section.id === 'hq') || pos.includes("SUPVY") || pos.includes("DIRECTOR");
 
-    // Applied gold border left to leadership cards
-    if (isLeader) el.style.borderLeft = "4px solid #ffb84d";
+    if (isLeader) el.style.borderLeft = "4px solid gold";
 
     return {
       el: el,
@@ -1262,9 +1260,7 @@
     };
   });
 
-  /**
-   * 3. SEARCH & TABLE HIGHLIGHTING
-   */
+  // Search logic
   let resultsContainer = document.getElementById('searchResultsContainer') || (() => {
     const res = document.createElement('div');
     res.id = 'searchResultsContainer';
@@ -1289,11 +1285,9 @@
     const seenNames = new Set();
     let matchCount = 0;
 
-    // Filter Cards
     masterData.forEach(item => {
       const isMatch = item.searchBlob.includes(q);
       item.el.classList.toggle('search-match', isMatch);
-
       if (isMatch && !seenNames.has(item.cleanName)) {
         const clone = item.el.cloneNode(true);
         resultsContainer.appendChild(clone);
@@ -1302,7 +1296,6 @@
       }
     });
 
-    // Filter Rows
     allTableRows.forEach(row => {
       const rowText = row.textContent.toLowerCase();
       row.classList.toggle('search-match', rowText.includes(q));
@@ -1311,9 +1304,6 @@
     resultsContainer.style.display = matchCount > 0 ? 'grid' : 'none';
   }
 
-  /**
-   * 4. CONTROLS & EVENT LISTENERS
-   */
   let debounce;
   input.addEventListener('input', (e) => {
     clearTimeout(debounce);
@@ -1322,20 +1312,19 @@
 
   function toggleView(view) {
     const isGrid = view === 'grid';
-    document.querySelectorAll('.region-grid').forEach(el => el.style.display = isGrid ? 'grid' : 'none');
-    document.querySelectorAll('.region-table').forEach(el => el.style.display = isGrid ? 'none' : 'block');
+    document.querySelectorAll('.region-grid').forEach(el => el.style.display = isGrid ? '' : 'none');
+    document.querySelectorAll('.region-table').forEach(el => el.style.display = isGrid ? 'none' : '');
     btnGrid.classList.toggle('active', isGrid);
     btnTable.classList.toggle('active', !isGrid);
   }
 
   btnGrid.addEventListener('click', () => toggleView('grid'));
   btnTable.addEventListener('click', () => toggleView('table'));
-  
-  // Set default view
   toggleView('grid');
 })();
 </script></body>
 </html>
+
 
 
 

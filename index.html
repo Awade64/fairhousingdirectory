@@ -88,7 +88,114 @@
       header, .controls, .searchbar { display: none !important; }
       .section { border: 1px solid #ccc; box-shadow: none; }
     }
-  </style></head>
+  </style><style>
+    :root {
+      --bg: #f4f6f9;
+      --brand: #003366;
+      --nav-green: #76b078; /* Added HUD-style green */
+      --accent: #0066cc;
+      --accent-strong: #005bb5;
+      --text: #333;
+      --muted: #555;
+      --card: #fff;
+      --border: #e5e7eb;
+      --focus: #ffb84d;
+      --grid-btn-bg: #e6f0ff;
+      --table-btn-bg: #fff4e6;
+      --grid-btn-active-bg: var(--accent);
+      --table-btn-active-bg: #ff8c00;
+      --grid-btn-active-color: #fff;
+      --table-btn-active-color: #fff;
+      
+      /* Standardized Width Variable */
+      --layout-width: 1140px;
+    }
+
+    /* --- Global & Layout --- */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+
+    /* New Container Class: Use this inside your Header or Nav tags to center content */
+    .container {
+      max-width: var(--layout-width);
+      margin: 0 auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    /* --- Header & Nav --- */
+    header { background: var(--brand); color: #fff; padding: 1.5rem 0; }
+    
+    /* Apply this class to your green menu bar div */
+    .sub-nav {
+      background: var(--nav-green);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.5rem 0;
+    }
+
+    /* --- Main UI Elements --- */
+    main { 
+      max-width: var(--layout-width); 
+      margin: 2rem auto; 
+      padding: 0 1rem; 
+    }
+
+    /* --- Search & Match States --- */
+    .section-match { outline: 2px solid rgba(0, 102, 204, 0.2); }
+    .search-match { 
+      z-index: 5 !important; 
+      border: 2px solid #ff4d4d !important; 
+      background: #fff7f7 !important; 
+      transform: translateY(-2px); 
+    }
+    .search-match h4 { color: #b30000 !important; }
+    .search-match .position { color: #8b0000 !important; }
+    .hidden { display: none !important; }
+
+    .section { margin: 2rem 0; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.08); border: 1px solid var(--border); overflow: hidden; }
+    .section-header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      padding: 1rem; border-bottom: 1px solid var(--border); background: #f9fbff;
+    }
+    .section-header h2 { margin: 0; font-size: 1.25rem; color: var(--brand); }
+    .meta { color: var(--muted); font-size: .95rem; margin-top: .25rem; }
+    
+    .controls { display: flex; gap: .5rem; align-items: center; }
+    .btn {
+      appearance: none; border: 1px solid var(--border); background: var(--grid-btn-bg); color: var(--text);
+      padding: .45rem .8rem; border-radius: 6px; cursor: pointer; font-size: .95rem; transition: all .12s ease;
+    }
+    .btn.active.grid { background: var(--grid-btn-active-bg); color: var(--grid-btn-active-color); }
+    .btn.active.table { background: var(--table-btn-active-bg); color: var(--table-btn-active-color); }
+
+    /* --- Grid & Cards --- */
+    .view { padding: 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; position: relative; }
+    .card h4 { margin: 0 0 .35rem 0; color: var(--brand); font-size: 1rem; }
+    .position { display: block; font-weight: 600; color: var(--muted); font-size: .9rem; }
+    .corr-code { font-weight: 600; color: var(--accent-strong); font-size: .85rem; background: #eef4ff; padding: .1rem .4rem; border-radius: 4px; }
+
+    /* --- Tables --- */
+    .table-wrap { overflow-x: auto; padding: 0 1rem 1rem 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    thead th { position: sticky; top: 0; background: #eef4ff; color: #1f3b66; text-align: left; padding: .6rem; border-bottom: 2px solid var(--border); }
+    tbody td { border-top: 1px solid var(--border); padding: .55rem; vertical-align: top; white-space: nowrap; }
+
+    .searchbar { display: flex; gap: .5rem; align-items: center; padding: 1rem; }
+    .searchbar input { flex: 1; padding: .6rem; border: 1px solid var(--border); border-radius: 6px; }
+    
+    @media print {
+      header, .controls, .searchbar, .sub-nav { display: none !important; }
+      .section { border: 1px solid #ccc; box-shadow: none; }
+    }
+</style></head>
 <body>
   <header>
     <h1>HUD FHEO Staff Directory — Full (All Regions & Offices)</h1>
@@ -1324,6 +1431,7 @@
 })();
 </script></body>
 </html>
+
 
 
 

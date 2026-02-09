@@ -4,7 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HUD FHEO Staff Directory — Full (All Regions & Offices)</title>
-  <style>
+  <style>/* 1. Normalize the base scale */
+html {
+  font-size: 16px; /* Sets a hard baseline for 1rem */
+  -webkit-text-size-adjust: 100%; /* Prevents font-size changes after orientation change */
+  -ms-text-size-adjust: 100%;
+}
+
+/* 2. Unified Rendering Engine Instructions */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
+  
+  /* Use a more specific font stack to prevent Edge from falling back 
+     to a thinner version of Segoe UI */
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji";
+}
+
+/* 3. Global Line-Height Reset */
+* {
+  line-height: 1.5; /* Chrome and Edge often calculate "normal" differently */
+}
     :root {
       /* Colors */
       --bg: #f4f6f9;
@@ -1456,6 +1478,7 @@
 })();
 </script></body>
 </html>
+
 
 
 

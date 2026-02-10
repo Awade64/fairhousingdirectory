@@ -293,4 +293,20 @@
   // Initialize default view and hide results container initially
   showGridView();
   resultsContainer.style.display = 'none';
+
 })();
+
+
+    const frame = document.getElementById('directory-frame');
+    
+    // Adjust height once the content loads
+    frame.onload = function() {
+        // This only works if the iframe and main site are on the same domain
+        // If they are different, use a postMessage approach or a set height
+        try {
+            frame.style.height = frame.contentWindow.document.body.scrollHeight + 'px';
+        } catch (e) {
+            console.log("Cross-domain security restricted auto-height. Using fallback.");
+            frame.style.height = "2500px"; 
+        }
+    };

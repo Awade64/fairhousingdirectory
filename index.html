@@ -32,7 +32,6 @@
 
     main { max-width: var(--layout-width); margin: 1rem auto; padding: 0 1rem 4rem; }
 
-    /* Sticky Controls for easier use in Iframe */
     .controls-container {
       position: sticky;
       top: 0;
@@ -71,7 +70,7 @@
       border-radius: var(--radius); position: relative;
     }
     .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
-    .position { display: block; font-size: 0.75rem; color: #d97706; font-weight: bold; text-transform: uppercase; }
+    .position-text { display: block; font-size: 0.75rem; color: #d97706; font-weight: bold; text-transform: uppercase; }
     .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 99px; }
 
     .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
@@ -79,7 +78,6 @@
     th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; color: var(--brand); }
 
-    /* Back to Top Button */
     #backToTop {
       position: fixed; bottom: 20px; right: 20px; 
       background: var(--nav-green); color: white; border: none;
@@ -110,7 +108,7 @@
         <div id="resultCount" style="font-size: 0.85rem; color: var(--muted);"></div>
       </div>
       <div class="searchbar">
-        <input type="text" id="globalSearch" placeholder="Search name, position, email, or location...">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, email, or city...">
       </div>
     </section>
   </div>
@@ -134,25 +132,32 @@
   let employees = [];
   let currentView = 'grid';
 
-  // 1. Fetch Data
+  // Key mappings for clarity
+  const kName = "EMPLOYEE NAME";
+  const kTitle = "POSITION OFFICAL TITLE";
+  const kEmail = "EMPLOYEE WORK EMAIL";
+  const kCity = "DUTY STATION CITY STATE";
+  const kSup = "SUPERVISOR NAME";
+  const kGeo = "GEO REGION";
+  const kCode = "POSITION SUPERVISORY CODE AND DESCR";
+
   async function init() {
     try {
       const response = await fetch('employees.json');
-      if (!response.ok) throw new Error('Data not found');
+      if (!response.ok) throw new Error('Data file not found');
       employees = await response.json();
       render();
     } catch (err) {
-      root.innerHTML = `<div style="color:red; text-align:center;">Error: ${err.message}</div>`;
+      root.innerHTML = `<div style="color:red; text-align:center; padding:2rem;">Error: ${err.message}</div>`;
     }
   }
 
-  // 2. Render Logic
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
 
     const filtered = employees.filter(emp => 
-      `${emp.name} ${emp.position} ${emp.email} ${emp.location} ${emp.supervisor} ${emp.region}`.toLowerCase().includes(term)
+      `${emp[kName]} ${emp[kTitle]} ${emp[kEmail]} ${emp[kCity]} ${emp[kSup]} ${emp[kGeo]}`.toLowerCase().includes(term)
     );
 
     resultCount.textContent = term ? `Matches: ${filtered.length}` : "";
@@ -164,8 +169,8 @@
 
     const hierarchy = {};
     filtered.forEach(emp => {
-      const reg = emp.region || "Other Offices";
-      const sup = emp.supervisor || "Director/Lead";
+      const reg = emp[kGeo] || "Other Offices";
+      const sup = emp[kSup] || "Director/Lead";
       if (!hierarchy[reg]) hierarchy[reg] = {};
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
@@ -203,23 +208,22 @@
   function renderGrid(data) {
     return data.map(e => `
       <article class="card">
-        ${e.corr_code ? `<span class="corr-code">${e.corr_code}</span>` : ''}
-        <h4>${e.name} <span class="position">${e.position}</span></h4>
+        ${e[kCode] ? `<span class="corr-code">${e[kCode]}</span>` : ''}
+        <h4>${e[kName]} <span class="position-text">${e[kTitle]}</span></h4>
         <div style="font-size:0.85rem;">
-          <a href="mailto:${e.email}">${e.email}</a><br>
-          <span style="color:var(--muted)">${e.location}</span>
+          <a href="mailto:${e[kEmail]}">${e[kEmail]}</a><br>
+          <span style="color:var(--muted)">${e[kCity]}</span>
         </div>
       </article>
     `).join('');
   }
 
   function renderTable(data) {
-    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Loc</th></tr></thead><tbody>` +
-      data.map(e => `<tr><td><strong>${e.name}</strong></td><td>${e.position}</td><td><a href="mailto:${e.email}">${e.email}</a></td><td>${e.location}</td></tr>`).join('') +
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>` +
+      data.map(e => `<tr><td><strong>${e[kName]}</strong></td><td>${e[kTitle]}</td><td><a href="mailto:${e[kEmail]}">${e[kEmail]}</a></td><td>${e[kCity]}</td></tr>`).join('') +
       `</tbody></table>`;
   }
 
-  // 3. Interactions
   searchInput.addEventListener('input', e => render(e.target.value));
   searchInput.addEventListener('keydown', e => { if(e.key==='Escape'){ searchInput.value=''; render(''); }});
   

@@ -12,64 +12,83 @@
       --layout-width: 1100px; --radius: 8px;
     }
 
-    /* Iframe Optimization */
-    html, body { height: auto; overflow-x: hidden; background: transparent; }
+    /* Oracle Iframe Optimization */
+    html, body { 
+      height: 100%; 
+      margin: 0; 
+      background: var(--bg); 
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0; background: var(--bg); color: var(--text);
       font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5; -webkit-font-smoothing: antialiased;
+      color: var(--text);
     }
 
-    header { background: var(--brand); color: #fff; padding: 2.5rem 1rem; text-align: center; }
-    header h1 { margin: 0; font-size: 1.8rem; letter-spacing: -0.5px; }
-    header p { margin: 0.5rem 0 0; font-size: 0.95rem; opacity: 0.8; }
+    header { background: var(--brand); color: #fff; padding: 1.5rem 1rem; text-align: center; }
+    header h1 { margin: 0; font-size: 1.5rem; }
+    header p { margin: 0.2rem 0 0; font-size: 0.85rem; opacity: 0.8; }
 
-    main { max-width: var(--layout-width); margin: 2rem auto; padding: 0 1rem; }
+    main { max-width: var(--layout-width); margin: 1rem auto; padding: 0 1rem 4rem; }
+
+    /* Sticky Controls for easier use in Iframe */
+    .controls-container {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      padding-bottom: 10px;
+    }
 
     .section { 
-      margin-bottom: 2rem; background: var(--card); border-radius: var(--radius); 
+      margin-bottom: 1.5rem; background: var(--card); border-radius: var(--radius); 
       box-shadow: 0 2px 6px rgba(0,0,0,0.08); border: 1px solid var(--border); overflow: hidden; 
     }
+    
     .section-header {
       display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-      padding: 1.25rem; border-bottom: 1px solid var(--border); background: #f9fbff;
+      padding: 1rem; border-bottom: 1px solid var(--border); background: #f9fbff;
     }
-    .section-header h2 { margin: 0; font-size: 1.3rem; color: var(--brand); }
     
-    .searchbar { padding: 1.25rem; background: #fff; }
+    .searchbar { padding: 1rem; background: #fff; }
     .searchbar input { 
       width: 100%; padding: 0.8rem; border: 2px solid var(--border); 
       border-radius: 6px; font-size: 1rem; box-sizing: border-box;
     }
-    .searchbar input:focus { border-color: var(--accent); outline: none; }
 
     .btn-group { display: flex; gap: 8px; }
     .btn { 
-      padding: 0.5rem 1.2rem; border-radius: 6px; border: 1px solid var(--border); 
-      cursor: pointer; font-weight: 600; background: #eee; transition: all 0.2s;
+      padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid var(--border); 
+      cursor: pointer; font-weight: 600; background: #eee;
     }
     .btn.active { background: var(--brand); color: white; border-color: var(--brand); }
 
-    .view-content { padding: 1.5rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; padding: 1rem; }
     
     .card { 
-      background: #fff; border: 1px solid var(--border); padding: 1.25rem; 
-      border-radius: var(--radius); transition: transform 0.2s;
+      background: #fff; border: 1px solid var(--border); padding: 1rem; 
+      border-radius: var(--radius); position: relative;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .card h4 { margin: 0 0 0.75rem; color: var(--brand); font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-    .position { display: block; font-size: 0.85rem; color: #d97706; font-weight: bold; text-transform: uppercase; margin-top: 4px; }
-    .corr-code { float: right; font-size: 0.7rem; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 99px; }
+    .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
+    .position { display: block; font-size: 0.75rem; color: #d97706; font-weight: bold; text-transform: uppercase; }
+    .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 99px; }
 
-    .table-wrap { overflow-x: auto; padding: 1rem; }
-    table { width: 100%; border-collapse: collapse; min-width: 600px; }
-    th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
-    th { background: #f8fafc; color: var(--brand); font-weight: 700; }
+    .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; color: var(--brand); }
+
+    /* Back to Top Button */
+    #backToTop {
+      position: fixed; bottom: 20px; right: 20px; 
+      background: var(--nav-green); color: white; border: none;
+      padding: 10px 15px; border-radius: 50px; cursor: pointer;
+      display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 200;
+    }
 
     @media (max-width: 600px) {
-      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .section-header { flex-direction: column; gap: 0.5rem; }
     }
   </style>
 </head>
@@ -77,27 +96,31 @@
 
 <header>
   <h1>FHEO Staff Directory</h1>
-  <p>Department of Housing and Urban Development — Fair Housing & Equal Opportunity</p>
+  <p>Department of Housing and Urban Development</p>
 </header>
 
 <main>
-  <section class="section" id="controls">
-    <div class="section-header">
-      <div><h2>Directory Search</h2></div>
-      <div class="btn-group">
-        <button id="btnGrid" class="btn active">Grid View</button>
-        <button id="btnTable" class="btn">Table View</button>
+  <div class="controls-container">
+    <section class="section">
+      <div class="section-header">
+        <div class="btn-group">
+          <button id="btnGrid" class="btn active">Grid</button>
+          <button id="btnTable" class="btn">Table</button>
+        </div>
+        <div id="resultCount" style="font-size: 0.85rem; color: var(--muted);"></div>
       </div>
-    </div>
-    <div class="searchbar">
-      <input type="text" id="globalSearch" placeholder="Filter by name, position, email, or city...">
-    </div>
-  </section>
+      <div class="searchbar">
+        <input type="text" id="globalSearch" placeholder="Search name, position, email, or location...">
+      </div>
+    </section>
+  </div>
 
   <div id="directory-root">
-    <div style="text-align:center; padding: 3rem; color: var(--muted);">Initializing directory...</div>
+    <div style="text-align:center; padding: 3rem; color: var(--muted);">Loading staff data...</div>
   </div>
 </main>
+
+<button id="backToTop" title="Go to top">↑ Top</button>
 
 <script>
 (function() {
@@ -105,182 +128,112 @@
   const searchInput = document.getElementById('globalSearch');
   const btnGrid = document.getElementById('btnGrid');
   const btnTable = document.getElementById('btnTable');
+  const resultCount = document.getElementById('resultCount');
+  const topBtn = document.getElementById('backToTop');
   
   let employees = [];
   let currentView = 'grid';
 
-  // Communication with Oracle Site Parent
-  function sendHeightToParent() {
-    if (window.parent && window.parent !== window) {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ frameHeight: height }, '*');
-    }
-  }
-
+  // 1. Fetch Data
   async function init() {
     try {
       const response = await fetch('employees.json');
-      if (!response.ok) throw new Error('Could not load employees.json');
+      if (!response.ok) throw new Error('Data not found');
       employees = await response.json();
       render();
     } catch (err) {
-      root.innerHTML = `<div class="section" style="padding:2rem; color:red;">Error: ${err.message}</div>`;
+      root.innerHTML = `<div style="color:red; text-align:center;">Error: ${err.message}</div>`;
     }
   }
 
+  // 2. Render Logic
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
 
-    // 1. Filter results
-    const filtered = employees.filter(emp => {
-      const searchStr = `${emp.name} ${emp.position} ${emp.email} ${emp.location} ${emp.supervisor} ${emp.region}`.toLowerCase();
-      return searchStr.includes(term);
-    });
+    const filtered = employees.filter(emp => 
+      `${emp.name} ${emp.position} ${emp.email} ${emp.location} ${emp.supervisor} ${emp.region}`.toLowerCase().includes(term)
+    );
+
+    resultCount.textContent = term ? `Matches: ${filtered.length}` : "";
 
     if (filtered.length === 0) {
-      root.innerHTML = `<div class="section" style="padding:2rem; text-align:center;">No results matching "${filter}"</div>`;
-      sendHeightToParent();
+      root.innerHTML = `<div style="text-align:center; padding: 2rem;">No results found for "${filter}"</div>`;
       return;
     }
 
-    // 2. Results Counter
-    if (term.length > 0) {
-      const status = document.createElement('div');
-      status.style = "padding: 0 1rem 1.5rem; color: var(--muted); font-size: 0.95rem;";
-      status.innerHTML = `Found <strong>${filtered.length}</strong> matching staff member(s).`;
-      root.appendChild(status);
-    }
-
-    // 3. Nesting Logic: Region > Supervisor
     const hierarchy = {};
     filtered.forEach(emp => {
       const reg = emp.region || "Other Offices";
-      const sup = emp.supervisor || "Director / Supervisor";
+      const sup = emp.supervisor || "Director/Lead";
       if (!hierarchy[reg]) hierarchy[reg] = {};
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
     });
 
-    // 4. Sort Regions (HQ Priority)
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
-      const aHQ = a.toLowerCase().includes("hq") || a.toLowerCase().includes("headquarters");
-      const bHQ = b.toLowerCase().includes("hq") || b.toLowerCase().includes("headquarters");
+      const aHQ = a.toLowerCase().includes("hq");
+      const bHQ = b.toLowerCase().includes("hq");
       if (aHQ && !bHQ) return -1;
       if (!aHQ && bHQ) return 1;
       return a.localeCompare(b);
     });
 
-    // 5. Build HTML
     sortedRegions.forEach(region => {
       const regionBox = document.createElement('div');
-      regionBox.innerHTML = `<h2 class="region-title" style="margin: 2.5rem 0 1rem; color: var(--brand); border-left: 5px solid var(--nav-green); padding-left: 15px;">${region}</h2>`;
+      regionBox.innerHTML = `<h2 style="margin: 2rem 0 1rem; color: var(--brand); border-left: 5px solid var(--nav-green); padding-left: 10px; font-size: 1.25rem;">${region}</h2>`;
       
-      const supervisors = Object.keys(hierarchy[region]);
-      supervisors.forEach(supName => {
+      Object.keys(hierarchy[region]).forEach(supName => {
         const section = document.createElement('section');
         section.className = 'section';
-        
-        let html = `
+        section.innerHTML = `
           <div class="section-header" style="background: #f1f5f9;">
-            <div>
-              <span style="font-size: 0.7rem; text-transform: uppercase; color: #64748b; font-weight: 800; letter-spacing: 0.5px;">Reporting to:</span>
-              <h3 style="margin:0; color: var(--brand); font-size: 1.15rem;">${supName}</h3>
-            </div>
+            <h3 style="margin:0; color: var(--brand); font-size: 1rem;"><small style="font-weight:normal; color:#64748b; display:block; text-transform:uppercase; font-size:0.65rem;">Supervisor</small>${supName}</h3>
           </div>
-          <div class="view-content grid" style="display: ${currentView === 'grid' ? 'grid' : 'none'}">
-            ${hierarchy[region][supName].map(e => `
-              <article class="card">
-                ${e.corr_code ? `<span class="corr-code">${e.corr_code}</span>` : ''}
-                <h4>${e.name} <span class="position">${e.position}</span></h4>
-                <div style="font-size:0.9rem;">
-                  <strong>Email:</strong> <a href="mailto:${e.email}">${e.email}</a><br>
-                  <strong>Loc:</strong> ${e.location}
-                </div>
-              </article>
-            `).join('')}
-          </div>
-          <div class="table-wrap" style="display: ${currentView === 'table' ? 'block' : 'none'}">
-            <table>
-              <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
-              <tbody>
-                ${hierarchy[region][supName].map(e => `
-                  <tr>
-                    <td><strong>${e.name}</strong></td>
-                    <td>${e.position}</td>
-                    <td><a href="mailto:${e.email}">${e.email}</a></td>
-                    <td>${e.location}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}" style="display: ${currentView === 'grid' ? 'grid' : 'block'}">
+            ${currentView === 'grid' ? renderGrid(hierarchy[region][supName]) : renderTable(hierarchy[region][supName])}
           </div>
         `;
-        section.innerHTML = html;
         regionBox.appendChild(section);
       });
       root.appendChild(regionBox);
     });
-
-    // 6. Smooth Scroll & Height Update
-    if (term.length >= 3) {
-      const firstRes = root.querySelector('.section');
-      if (firstRes) firstRes.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    // Crucial for Oracle Sites Iframe:
-    setTimeout(sendHeightToParent, 100); 
   }
 
-  // Listeners
-  searchInput.addEventListener('input', e => render(e.target.value));
-  searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { searchInput.value = ''; render(''); }
-    if (e.key === 'Enter') { e.preventDefault(); render(searchInput.value); }
-  });
+  function renderGrid(data) {
+    return data.map(e => `
+      <article class="card">
+        ${e.corr_code ? `<span class="corr-code">${e.corr_code}</span>` : ''}
+        <h4>${e.name} <span class="position">${e.position}</span></h4>
+        <div style="font-size:0.85rem;">
+          <a href="mailto:${e.email}">${e.email}</a><br>
+          <span style="color:var(--muted)">${e.location}</span>
+        </div>
+      </article>
+    `).join('');
+  }
 
-  btnGrid.onclick = () => { currentView = 'grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
-  btnTable.onclick = () => { currentView = 'table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+  function renderTable(data) {
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Loc</th></tr></thead><tbody>` +
+      data.map(e => `<tr><td><strong>${e.name}</strong></td><td>${e.position}</td><td><a href="mailto:${e.email}">${e.email}</a></td><td>${e.location}</td></tr>`).join('') +
+      `</tbody></table>`;
+  }
+
+  // 3. Interactions
+  searchInput.addEventListener('input', e => render(e.target.value));
+  searchInput.addEventListener('keydown', e => { if(e.key==='Escape'){ searchInput.value=''; render(''); }});
+  
+  btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
+  btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+
+  window.onscroll = () => {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) topBtn.style.display = "block";
+    else topBtn.style.display = "none";
+  };
+  topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
   init();
 })();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -12,6 +12,9 @@
       --layout-width: 1100px; --radius: 8px;
     }
 
+    /* Iframe Optimization */
+    html, body { height: auto; overflow-x: hidden; background: transparent; }
+
     body {
       margin: 0; background: var(--bg); color: var(--text);
       font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -24,7 +27,6 @@
 
     main { max-width: var(--layout-width); margin: 2rem auto; padding: 0 1rem; }
 
-    /* Controls Section */
     .section { 
       margin-bottom: 2rem; background: var(--card); border-radius: var(--radius); 
       box-shadow: 0 2px 6px rgba(0,0,0,0.08); border: 1px solid var(--border); overflow: hidden; 
@@ -49,7 +51,6 @@
     }
     .btn.active { background: var(--brand); color: white; border-color: var(--brand); }
 
-    /* Directory Rendering */
     .view-content { padding: 1.5rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     
@@ -67,8 +68,6 @@
     th, td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; color: var(--brand); font-weight: 700; }
 
-    .search-match { border-color: #ef4444 !important; background: #fef2f2 !important; }
-    
     @media (max-width: 600px) {
       .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
@@ -91,7 +90,7 @@
       </div>
     </div>
     <div class="searchbar">
-      <input type="text" id="globalSearch" placeholder="Type name, position, email, or city to filter...">
+      <input type="text" id="globalSearch" placeholder="Filter by name, position, email, or city...">
     </div>
   </section>
 
@@ -109,6 +108,14 @@
   
   let employees = [];
   let currentView = 'grid';
+
+  // Communication with Oracle Site Parent
+  function sendHeightToParent() {
+    if (window.parent && window.parent !== window) {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ frameHeight: height }, '*');
+    }
+  }
 
   async function init() {
     try {
@@ -132,7 +139,8 @@
     });
 
     if (filtered.length === 0) {
-      root.innerHTML = `<div class="section" style="padding:2rem; text-align:center;">No staff found matching "${filter}"</div>`;
+      root.innerHTML = `<div class="section" style="padding:2rem; text-align:center;">No results matching "${filter}"</div>`;
+      sendHeightToParent();
       return;
     }
 
@@ -140,7 +148,7 @@
     if (term.length > 0) {
       const status = document.createElement('div');
       status.style = "padding: 0 1rem 1.5rem; color: var(--muted); font-size: 0.95rem;";
-      status.innerHTML = `Found <strong>${filtered.length}</strong> staff member(s) matching your search.`;
+      status.innerHTML = `Found <strong>${filtered.length}</strong> matching staff member(s).`;
       root.appendChild(status);
     }
 
@@ -154,7 +162,7 @@
       hierarchy[reg][sup].push(emp);
     });
 
-    // 4. Sort Regions (HQ First)
+    // 4. Sort Regions (HQ Priority)
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
       const aHQ = a.toLowerCase().includes("hq") || a.toLowerCase().includes("headquarters");
       const bHQ = b.toLowerCase().includes("hq") || b.toLowerCase().includes("headquarters");
@@ -174,13 +182,12 @@
         section.className = 'section';
         
         let html = `
-          <div class="section-header" style="background: #f1f5f9; border-bottom: 1px solid #e2e8f0;">
+          <div class="section-header" style="background: #f1f5f9;">
             <div>
               <span style="font-size: 0.7rem; text-transform: uppercase; color: #64748b; font-weight: 800; letter-spacing: 0.5px;">Reporting to:</span>
               <h3 style="margin:0; color: var(--brand); font-size: 1.15rem;">${supName}</h3>
             </div>
           </div>
-          
           <div class="view-content grid" style="display: ${currentView === 'grid' ? 'grid' : 'none'}">
             ${hierarchy[region][supName].map(e => `
               <article class="card">
@@ -193,7 +200,6 @@
               </article>
             `).join('')}
           </div>
-
           <div class="table-wrap" style="display: ${currentView === 'table' ? 'block' : 'none'}">
             <table>
               <thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead>
@@ -216,46 +222,32 @@
       root.appendChild(regionBox);
     });
 
-    // 6. Smooth Scroll to first result on active search
+    // 6. Smooth Scroll & Height Update
     if (term.length >= 3) {
-      const firstResult = root.querySelector('.section');
-      if (firstResult) firstResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const firstRes = root.querySelector('.section');
+      if (firstRes) firstRes.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    
+    // Crucial for Oracle Sites Iframe:
+    setTimeout(sendHeightToParent, 100); 
   }
 
-  // Event Listeners
+  // Listeners
   searchInput.addEventListener('input', e => render(e.target.value));
-
   searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      searchInput.value = '';
-      render('');
-    }
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      render(searchInput.value);
-    }
+    if (e.key === 'Escape') { searchInput.value = ''; render(''); }
+    if (e.key === 'Enter') { e.preventDefault(); render(searchInput.value); }
   });
 
-  btnGrid.onclick = () => {
-    currentView = 'grid';
-    btnGrid.classList.add('active');
-    btnTable.classList.remove('active');
-    render(searchInput.value);
-  };
-
-  btnTable.onclick = () => {
-    currentView = 'table';
-    btnTable.classList.add('active');
-    btnGrid.classList.remove('active');
-    render(searchInput.value);
-  };
+  btnGrid.onclick = () => { currentView = 'grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
+  btnTable.onclick = () => { currentView = 'table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
 
   init();
 })();
 </script>
 </body>
 </html>
+
 
 
 

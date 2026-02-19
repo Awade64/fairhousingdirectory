@@ -3,9 +3,8 @@
    "EMPLOYEE NAME": "vacant",
    "EMPLOYEE WORK EMAIL": "vacant@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
-   "HOCS HQ": {
-      "FIELD": "HQ"
-   
+   "HOCS HQ": 
+      "FIELD": "HQ"   
    "POSITION OFFICIAL TITLE": "DAS for Operations",
    "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
@@ -15,9 +14,9 @@
    "EMPLOYEE NAME": "ADAMS, SHERRIE D",
    "EMPLOYEE WORK EMAIL": "Sherrie.D.Adams@hud.gov",
    "SUPERVISOR NAME": "Lee,Breanne Alise",
-   "HOCS HQ": {
+   "HOCS HQ":
       "FIELD": "FIELD"
-   },
+  
    "POSITION OFFICIAL TITLE": "EQ OPP SPECLST",
    "POSITION SUPERVISORY CODE AND DESCR": "8 - All Other Positions",
    "DUTY STATION CITY STATE": "SEATTLE, WA",
@@ -4021,4 +4020,5 @@
 }
 
 ]
+
 

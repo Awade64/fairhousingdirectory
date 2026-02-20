@@ -77,6 +77,224 @@
     th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; color: var(--brand); }
 
+    /* The Highlighting Style */
+    .hl { color: red; font-weight: bold; background: transparent; }
+
+    #backToTop {
+      position: fixed; bottom: 20px; right: 20px; 
+      background: var(--nav-green); color: white; border: none;
+      padding: 10px 15px; border-radius: 50px; cursor: pointer;
+      display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 200;
+    }
+
+    @media (max-width: 600px) {
+      .section-header { flex-direction: column; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>FHEO Staff Directory</h1>
+  <p>Department of Housing and Urban Development</p>
+</header>
+
+<main>
+  <div class="controls-container">
+    <section class="section">
+      <div class="section-header">
+        <div class="btn-group">
+          <button id="btnGrid" class="btn active">Grid</button>
+          <button id="btnTable" class="btn">Table</button>
+        </div>
+        <div id="resultCount" style="font-size: 0.85rem; color: var(--muted);"></div>
+      </div>
+      <div class="searchbar">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, email, or city...">
+      </div>
+    </section>
+  </div>
+
+  <div id="directory-root">
+    <div style="text-align:center; padding: 3rem; color: var(--muted);">Loading staff data...</div>
+  </div>
+</main>
+
+<button id="backToTop" title="Go to top">↑ Top</button>
+
+<script>
+(function() {
+  const root = document.getElementById('directory-root');
+  const searchInput = document.getElementById('globalSearch');
+  const btnGrid = document.getElementById('btnGrid');
+  const btnTable = document.getElementById('btnTable');
+  const resultCount = document.getElementById('resultCount');
+  const topBtn = document.getElementById('backToTop');
+  
+  let employees = [];
+  let currentView = 'grid';
+
+  const kName = "EMPLOYEE NAME";
+  const kTitle = "POSITION OFFICIAL TITLE";
+  const kEmail = "EMPLOYEE WORK EMAIL";
+  const kCity = "DUTY STATION CITY STATE";
+  const kSup = "SUPERVISOR NAME";
+  const kGeo = "GEO REGION";
+  const kCode = "POSITION SUPERVISORY CODE AND DESCR";
+
+  async function init() {
+    try {
+      const response = await fetch('employees.json');
+      if (!response.ok) throw new Error('Data file not found');
+      employees = await response.json();
+      render();
+    } catch (err) {
+      root.innerHTML = `<div style="color:red; text-align:center; padding:2rem;">Error: ${err.message}</div>`;
+    }
+  }
+
+  // Helper to wrap matched text in red span
+  function highlight(text, term) {
+    if (!term || !text) return text;
+    const regex = new RegExp(`(${term})`, "gi");
+    return text.toString().replace(regex, `<span class="hl">$1</span>`);
+  }
+
+  function render(filter = "") {
+    root.innerHTML = "";
+    const term = filter.toLowerCase().trim();
+
+    const filtered = employees.filter(emp => 
+      `${emp[kName]} ${emp[kTitle]} ${emp[kEmail]} ${emp[kCity]} ${emp[kSup]} ${emp[kGeo]}`.toLowerCase().includes(term)
+    );
+
+    resultCount.textContent = term ? `Matches: ${filtered.length}` : "";
+
+    if (filtered.length === 0) {
+      root.innerHTML = `<div style="text-align:center; padding: 2rem;">No results found for "${filter}"</div>`;
+      return;
+    }
+
+    const hierarchy = {};
+
+    filtered.forEach(emp => {
+      let reg = emp[kGeo] || "Other Offices";
+      const isHQ = reg.toLowerCase().includes("hq") || 
+                   (reg === "Region 3" && emp[kCity].toLowerCase().includes("washington"));
+      
+      if (isHQ) reg = "Headquarters";
+
+      const sup = emp[kSup] || "Director/Lead";
+      if (!hierarchy[reg]) hierarchy[reg] = {};
+      if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
+      hierarchy[reg][sup].push(emp);
+    });
+
+    const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
+      if (a === "Headquarters") return -1;
+      if (b === "Headquarters") return 1;
+      return a.localeCompare(b);
+    });
+
+    sortedRegions.forEach(region => {
+      const regionBox = document.createElement('div');
+      regionBox.innerHTML = `<h2 style="margin: 2rem 0 1rem; color: var(--brand); border-left: 5px solid var(--nav-green); padding-left: 10px; font-size: 1.25rem;">${region}</h2>`;
+      
+      Object.keys(hierarchy[region]).forEach(supName => {
+        const staffList = hierarchy[region][supName];
+        
+        staffList.sort((a, b) => {
+          const aIsSup = (a[kCode] || "").toLowerCase().includes("supervisor") || (a[kCode] || "").startsWith("2");
+          const bIsSup = (b[kCode] || "").toLowerCase().includes("supervisor") || (b[kCode] || "").startsWith("2");
+          if (aIsSup && !bIsSup) return -1;
+          if (!aIsSup && bIsSup) return 1;
+          return a[kName].localeCompare(b[kName]);
+        });
+
+        const section = document.createElement('section');
+        section.className = 'section';
+        section.innerHTML = `
+          <div class="section-header" style="background: #f1f5f9;">
+            <h3 style="margin:0; color: var(--brand); font-size: 1rem;">
+                <small style="font-weight:normal; color:#64748b; display:block; text-transform:uppercase; font-size:0.65rem;">Reporting To</small>
+                ${highlight(supName, term)}
+            </h3>
+          </div>
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}" style="display: ${currentView === 'grid' ? 'grid' : 'block'}">
+            ${currentView === 'grid' ? renderGrid(staffList, term) : renderTable(staffList, term)}
+          </div>
+        `;
+        regionBox.appendChild(section);
+      });
+      root.appendChild(regionBox);
+    });
+  }
+
+  function renderGrid(data, term) {
+    return data.map(e => `
+      <article class="card">
+        ${e[kCode] ? `<span class="corr-code">${e[kCode]}</span>` : ''}
+        <h4>${highlight(e[kName], term)} <span class="position-text">${highlight(e[kTitle], term)}</span></h4>
+        <div style="font-size:0.85rem;">
+          <a href="mailto:${e[kEmail]}">${highlight(e[kEmail], term)}</a><br>
+          <span style="color:var(--muted)">${highlight(e[kCity], term)}</span>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  function renderTable(data, term) {
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>` +
+      data.map(e => `<tr>
+        <td><strong>${highlight(e[kName], term)}</strong></td>
+        <td>${highlight(e[kTitle], term)}</td>
+        <td><a href="mailto:${e[kEmail]}">${highlight(e[kEmail], term)}</a></td>
+        <td>${highlight(e[kCity], term)}</td>
+      </tr>`).join('') +
+      `</tbody></table>`;
+  }
+
+  searchInput.addEventListener('input', e => render(e.target.value));
+  searchInput.addEventListener('keydown', e => { if(e.key==='Escape'){ searchInput.value=''; render(''); }});
+  
+  btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
+  btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+
+  window.onscroll = () => {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) topBtn.style.display = "block";
+    else topBtn.style.display = "none";
+  };
+  topBtn.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+  init();
+})();
+</script>
+</body>
+</html>
+    }
+
+    .btn-group { display: flex; gap: 8px; }
+    .btn { 
+      padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid var(--border); 
+      cursor: pointer; font-weight: 600; background: #eee;
+    }
+    .btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; padding: 1rem; }
+    
+    .card { 
+      background: #fff; border: 1px solid var(--border); padding: 1rem; 
+      border-radius: var(--radius); position: relative;
+    }
+    .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
+    .position-text { display: block; font-size: 0.75rem; color: #d97706; font-weight: bold; text-transform: uppercase; }
+    .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 99px; }
+
+    .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; color: var(--brand); }
+
     #backToTop {
       position: fixed; bottom: 20px; right: 20px; 
       background: var(--nav-green); color: white; border: none;
@@ -257,3 +475,4 @@
 </script>
 </body>
 </html>
+

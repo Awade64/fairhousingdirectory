@@ -1092,7 +1092,7 @@
    "GEO REGION": "REGION 5"
 },
  {
-   "EMPLOYEE NAME": "Jacqueline, Jones-Peters",
+   "EMPLOYEE NAME": "JONES-PETERS, JACQUELINE",
    "EMPLOYEE WORK EMAIL": "Jacqueline.Jones-Peters@hud.gov",
    "SUPERVISOR NAME": "Kevin,Cooke R",
    "HOCS HQ": {
@@ -1272,7 +1272,7 @@
    "GEO REGION": "REGION 3"
 },
  {
-   "EMPLOYEE NAME": "Doles, Robert",
+   "EMPLOYEE NAME": "DOLES, ROBERT",
    "EMPLOYEE WORK EMAIL": "Doles.a.doles@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": {
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

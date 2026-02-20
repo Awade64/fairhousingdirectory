@@ -12,7 +12,6 @@
       --layout-width: 1100px; --radius: 8px;
     }
 
-    /* Oracle Iframe Optimization */
     html, body { 
       height: 100%; 
       margin: 0; 
@@ -132,7 +131,6 @@
   let employees = [];
   let currentView = 'grid';
 
-  // Key mappings for clarity
   const kName = "EMPLOYEE NAME";
   const kTitle = "POSITION OFFICIAL TITLE";
   const kEmail = "EMPLOYEE WORK EMAIL";
@@ -168,19 +166,26 @@
     }
 
     const hierarchy = {};
+
     filtered.forEach(emp => {
-      const reg = emp[kGeo] || "Other Offices";
+      let reg = emp[kGeo] || "Other Offices";
+      
+      // Logic: If in Region 3 but title/city/geo indicates HQ, move it to "Headquarters"
+      const isHQ = reg.toLowerCase().includes("hq") || 
+                   (reg === "Region 3" && emp[kCity].toLowerCase().includes("washington"));
+      
+      if (isHQ) reg = "Headquarters";
+
       const sup = emp[kSup] || "Director/Lead";
       if (!hierarchy[reg]) hierarchy[reg] = {};
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
     });
 
+    // Ensure Headquarters is first
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
-      const aHQ = a.toLowerCase().includes("hq");
-      const bHQ = b.toLowerCase().includes("hq");
-      if (aHQ && !bHQ) return -1;
-      if (!aHQ && bHQ) return 1;
+      if (a === "Headquarters") return -1;
+      if (b === "Headquarters") return 1;
       return a.localeCompare(b);
     });
 
@@ -189,14 +194,25 @@
       regionBox.innerHTML = `<h2 style="margin: 2rem 0 1rem; color: var(--brand); border-left: 5px solid var(--nav-green); padding-left: 10px; font-size: 1.25rem;">${region}</h2>`;
       
       Object.keys(hierarchy[region]).forEach(supName => {
+        const staffList = hierarchy[region][supName];
+        
+        // Custom Sort: Supervisors (Code starts with 2 or mentions Supervisor) first
+        staffList.sort((a, b) => {
+          const aIsSup = (a[kCode] || "").toLowerCase().includes("supervisor") || (a[kCode] || "").startsWith("2");
+          const bIsSup = (b[kCode] || "").toLowerCase().includes("supervisor") || (b[kCode] || "").startsWith("2");
+          if (aIsSup && !bIsSup) return -1;
+          if (!aIsSup && bIsSup) return 1;
+          return a[kName].localeCompare(b[kName]);
+        });
+
         const section = document.createElement('section');
         section.className = 'section';
         section.innerHTML = `
           <div class="section-header" style="background: #f1f5f9;">
-            <h3 style="margin:0; color: var(--brand); font-size: 1rem;"><small style="font-weight:normal; color:#64748b; display:block; text-transform:uppercase; font-size:0.65rem;">Supervisor</small>${supName}</h3>
+            <h3 style="margin:0; color: var(--brand); font-size: 1rem;"><small style="font-weight:normal; color:#64748b; display:block; text-transform:uppercase; font-size:0.65rem;">Reporting To</small>${supName}</h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}" style="display: ${currentView === 'grid' ? 'grid' : 'block'}">
-            ${currentView === 'grid' ? renderGrid(hierarchy[region][supName]) : renderTable(hierarchy[region][supName])}
+            ${currentView === 'grid' ? renderGrid(staffList) : renderTable(staffList)}
           </div>
         `;
         regionBox.appendChild(section);
@@ -241,4 +257,3 @@
 </script>
 </body>
 </html>
-

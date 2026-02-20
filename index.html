@@ -8,27 +8,15 @@
     :root {
       --brand: #003366; --nav-green: #2e7d32; --bg: #f4f6f9;
       --text: #333; --muted: #555; --card: #fff;
-      --border: #e5e7eb; --accent: #d32f2f; /* 508 compliant red */
+      --border: #e5e7eb; --accent: #d32f2f;
       --layout-width: 1100px; --radius: 8px;
     }
 
-    html, body { 
-      height: 100%; 
-      margin: 0; 
-      background: var(--bg); 
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5; -webkit-font-smoothing: antialiased;
-      color: var(--text);
-    }
-
+    html, body { height: 100%; margin: 0; background: var(--bg); scroll-behavior: smooth; }
+    body { font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; color: var(--text); }
     header { background: var(--brand); color: #fff; padding: 1.5rem 1rem; text-align: center; }
     header h1 { margin: 0; font-size: 1.5rem; }
     header p { margin: 0.2rem 0 0; font-size: 0.85rem; opacity: 0.9; }
-
     main { max-width: var(--layout-width); margin: 1rem auto; padding: 0 1rem 4rem; }
 
     .controls-container {
@@ -49,44 +37,21 @@
       padding: 1rem; border-bottom: 1px solid var(--border); background: #f9fbff;
     }
     
-    /* Searchbar Layout */
-    .searchbar { 
-      padding: 1rem; 
-      background: #fff; 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-    }
-    .searchbar label {
-      font-weight: 600;
-      color: var(--brand);
-      white-space: nowrap;
-    }
-    .searchbar input { 
-      flex: 1; padding: 0.8rem; border: 2px solid var(--border); 
-      border-radius: 6px; font-size: 1rem; box-sizing: border-box;
-    }
-    .searchbar input:focus {
-      outline: 3px solid var(--nav-green);
-      border-color: var(--nav-green);
-    }
+    .searchbar { padding: 1rem; background: #fff; display: flex; align-items: center; gap: 12px; }
+    .searchbar label { font-weight: 600; color: var(--brand); white-space: nowrap; }
+    .searchbar input { flex: 1; padding: 0.8rem; border: 2px solid var(--border); border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+    .searchbar input:focus { outline: 3px solid var(--nav-green); border-color: var(--nav-green); }
 
     .btn-group { display: flex; gap: 8px; }
-    .btn { 
-      padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid var(--border); 
-      cursor: pointer; font-weight: 600; background: #eee;
-    }
+    .btn { padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; font-weight: 600; background: #eee; }
     .btn.active { background: var(--brand); color: white; border-color: var(--brand); }
-    .btn:focus { outline: 3px solid var(--nav-green); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; padding: 1rem; }
     
+    /* Scroll margin to prevent content from hiding under the sticky header */
     .card, tr { scroll-margin-top: 180px; }
 
-    .card { 
-      background: #fff; border: 1px solid var(--border); padding: 1rem; 
-      border-radius: var(--radius); position: relative;
-    }
+    .card { background: #fff; border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); position: relative; }
     .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
     .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: bold; text-transform: uppercase; }
     .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #14532d; padding: 2px 6px; border-radius: 99px; }
@@ -96,6 +61,7 @@
     th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; color: var(--brand); }
 
+    /* 508 Compliant Red Pulse Highlighting */
     .hl { 
       display: inline-block;
       border: 2px solid #d32f2f; 
@@ -144,7 +110,7 @@
       </div>
       <div class="searchbar">
         <label for="globalSearch">Search Staff:</label>
-        <input type="text" id="globalSearch" placeholder="Search by name, title, email, or city..." autocomplete="off">
+        <input type="text" id="globalSearch" placeholder="Enter first or last name..." autocomplete="off">
       </div>
     </section>
   </div>
@@ -187,6 +153,7 @@
     }
   }
 
+  // Highlights only the text that matches the search term
   function highlight(text, term) {
     if (!term || !text) return text;
     const isMatch = text.toString().toLowerCase().includes(term.toLowerCase());
@@ -200,6 +167,7 @@
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
 
+    // Filter logic: Only shows matches for the name, title, etc.
     const filtered = employees.filter(emp => 
       `${emp[kName]} ${emp[kTitle]} ${emp[kEmail]} ${emp[kCity]} ${emp[kSup]} ${emp[kGeo]}`.toLowerCase().includes(term)
     );
@@ -326,3 +294,4 @@
 </script>
 </body>
 </html>
+

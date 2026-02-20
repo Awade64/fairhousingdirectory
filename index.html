@@ -6,9 +6,9 @@
   <title>HUD FHEO Staff Directory</title>
   <style>
     :root {
-      --brand: #003366; --nav-green: #76b078; --bg: #f4f6f9;
+      --brand: #003366; --nav-green: #2e7d32; --bg: #f4f6f9;
       --text: #333; --muted: #555; --card: #fff;
-      --border: #e5e7eb; --accent: #0066cc;
+      --border: #e5e7eb; --accent: #d32f2f; /* 508 compliant red */
       --layout-width: 1100px; --radius: 8px;
     }
 
@@ -27,7 +27,7 @@
 
     header { background: var(--brand); color: #fff; padding: 1.5rem 1rem; text-align: center; }
     header h1 { margin: 0; font-size: 1.5rem; }
-    header p { margin: 0.2rem 0 0; font-size: 0.85rem; opacity: 0.8; }
+    header p { margin: 0.2rem 0 0; font-size: 0.85rem; opacity: 0.9; }
 
     main { max-width: var(--layout-width); margin: 1rem auto; padding: 0 1rem 4rem; }
 
@@ -49,10 +49,26 @@
       padding: 1rem; border-bottom: 1px solid var(--border); background: #f9fbff;
     }
     
-    .searchbar { padding: 1rem; background: #fff; }
+    /* Searchbar Layout */
+    .searchbar { 
+      padding: 1rem; 
+      background: #fff; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+    }
+    .searchbar label {
+      font-weight: 600;
+      color: var(--brand);
+      white-space: nowrap;
+    }
     .searchbar input { 
-      width: 100%; padding: 0.8rem; border: 2px solid var(--border); 
+      flex: 1; padding: 0.8rem; border: 2px solid var(--border); 
       border-radius: 6px; font-size: 1rem; box-sizing: border-box;
+    }
+    .searchbar input:focus {
+      outline: 3px solid var(--nav-green);
+      border-color: var(--nav-green);
     }
 
     .btn-group { display: flex; gap: 8px; }
@@ -61,16 +77,19 @@
       cursor: pointer; font-weight: 600; background: #eee;
     }
     .btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+    .btn:focus { outline: 3px solid var(--nav-green); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; padding: 1rem; }
     
+    .card, tr { scroll-margin-top: 180px; }
+
     .card { 
       background: #fff; border: 1px solid var(--border); padding: 1rem; 
       border-radius: var(--radius); position: relative;
     }
     .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
-    .position-text { display: block; font-size: 0.75rem; color: #d97706; font-weight: bold; text-transform: uppercase; }
-    .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 99px; }
+    .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: bold; text-transform: uppercase; }
+    .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #14532d; padding: 2px 6px; border-radius: 99px; }
 
     .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
@@ -79,11 +98,17 @@
 
     .hl { 
       display: inline-block;
-      border: 2px solid var(--accent); 
-      background: rgba(0, 102, 204, 0.05);
+      border: 2px solid #d32f2f; 
+      background: rgba(211, 47, 47, 0.05);
       padding: 1px 4px;
       border-radius: 4px;
       font-weight: bold;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { box-shadow: 0 0 2px #d32f2f; }
+      to { box-shadow: 0 0 8px #d32f2f; }
     }
 
     #backToTop {
@@ -95,6 +120,8 @@
 
     @media (max-width: 600px) {
       .section-header { flex-direction: column; gap: 0.5rem; }
+      .searchbar { flex-direction: column; align-items: flex-start; }
+      .searchbar input { width: 100%; }
     }
   </style>
 </head>
@@ -109,14 +136,15 @@
   <div class="controls-container">
     <section class="section">
       <div class="section-header">
-        <div class="btn-group">
-          <button id="btnGrid" class="btn active">Grid</button>
-          <button id="btnTable" class="btn">Table</button>
-        </div>
-        <div id="resultCount" style="font-size: 0.85rem; color: var(--muted);"></div>
+        <nav class="btn-group" aria-label="View Toggle">
+          <button id="btnGrid" class="btn active" aria-pressed="true">Grid View</button>
+          <button id="btnTable" class="btn" aria-pressed="false">Table View</button>
+        </nav>
+        <div id="resultCount" style="font-size: 0.85rem; color: var(--muted);" aria-live="polite"></div>
       </div>
       <div class="searchbar">
-        <input type="text" id="globalSearch" placeholder="Search by name, title, email, or city...">
+        <label for="globalSearch">Search Staff:</label>
+        <input type="text" id="globalSearch" placeholder="Search by name, title, email, or city..." autocomplete="off">
       </div>
     </section>
   </div>
@@ -155,7 +183,7 @@
       employees = await response.json();
       render();
     } catch (err) {
-      root.innerHTML = `<div style="color:red; text-align:center; padding:2rem;">Error: ${err.message}</div>`;
+      root.innerHTML = `<div role="alert" style="color:red; text-align:center; padding:2rem;">Error: ${err.message}</div>`;
     }
   }
 
@@ -176,10 +204,10 @@
       `${emp[kName]} ${emp[kTitle]} ${emp[kEmail]} ${emp[kCity]} ${emp[kSup]} ${emp[kGeo]}`.toLowerCase().includes(term)
     );
 
-    resultCount.textContent = term ? `Matches: ${filtered.length}` : "";
+    resultCount.textContent = term ? `Matches Found: ${filtered.length}` : "";
 
     if (filtered.length === 0) {
-      root.innerHTML = `<div style="text-align:center; padding: 2rem;">No results found for "${filter}"</div>`;
+      root.innerHTML = `<div style="text-align:center; padding: 2rem;" role="status">No results found for "${filter}"</div>`;
       return;
     }
 
@@ -187,11 +215,8 @@
     filtered.forEach(emp => {
       let reg = emp[kGeo] || "Other Offices";
       const city = (emp[kCity] || "").toLowerCase();
-      
-      // LOGIC: Extract HQ from Region 3 if they are in DC/Washington
       const isHQ = reg.toLowerCase().includes("hq") || 
                    (reg.includes("3") && (city.includes("washington") || city.includes(" d.c") || city.includes(" dc")));
-      
       if (isHQ) reg = "Headquarters";
 
       const sup = emp[kSup] || "Director/Lead";
@@ -200,7 +225,6 @@
       hierarchy[reg][sup].push(emp);
     });
 
-    // SORTING: Headquarters always first, others alphabetical
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
       if (a === "Headquarters") return -1;
       if (b === "Headquarters") return 1;
@@ -246,7 +270,7 @@
         ${e[kCode] ? `<span class="corr-code">${e[kCode]}</span>` : ''}
         <h4>${highlight(e[kName], term)} <span class="position-text">${highlight(e[kTitle], term)}</span></h4>
         <div style="font-size:0.85rem;">
-          <a href="mailto:${e[kEmail]}">${highlight(e[kEmail], term)}</a><br>
+          <a href="mailto:${e[kEmail]}" aria-label="Email ${e[kName]}">${highlight(e[kEmail], term)}</a><br>
           <span style="color:var(--muted)">${highlight(e[kCity], term)}</span>
         </div>
       </article>
@@ -254,11 +278,11 @@
   }
 
   function renderTable(data, term) {
-    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>` +
+    return `<table><thead><tr><th scope="col">Name</th><th scope="col">Position</th><th scope="col">Email</th><th scope="col">Location</th></tr></thead><tbody>` +
       data.map(e => `<tr>
         <td><strong>${highlight(e[kName], term)}</strong></td>
         <td>${highlight(e[kTitle], term)}</td>
-        <td><a href="mailto:${e[kEmail]}">${highlight(e[kEmail], term)}</a></td>
+        <td><a href="mailto:${e[kEmail]}" aria-label="Email ${e[kName]}">${highlight(e[kEmail], term)}</a></td>
         <td>${highlight(e[kCity], term)}</td>
       </tr>`).join('') +
       `</tbody></table>`;
@@ -270,15 +294,26 @@
     if (term.trim().length > 0) {
       const firstMatch = document.querySelector('.search-match');
       if (firstMatch) {
-        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const parent = firstMatch.closest(currentView === 'grid' ? '.card' : 'tr');
+        parent.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   });
 
   searchInput.addEventListener('keydown', e => { if(e.key==='Escape'){ searchInput.value=''; render(''); }});
   
-  btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
-  btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+  btnGrid.onclick = () => { 
+    currentView='grid'; 
+    btnGrid.classList.add('active'); btnGrid.setAttribute('aria-pressed', 'true');
+    btnTable.classList.remove('active'); btnTable.setAttribute('aria-pressed', 'false');
+    render(searchInput.value); 
+  };
+  btnTable.onclick = () => { 
+    currentView='table'; 
+    btnTable.classList.add('active'); btnTable.setAttribute('aria-pressed', 'true');
+    btnGrid.classList.remove('active'); btnGrid.setAttribute('aria-pressed', 'false');
+    render(searchInput.value); 
+  };
 
   window.onscroll = () => {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) topBtn.style.display = "block";

@@ -1,12 +1,12 @@
 [
  {
-   "EMPLOYEE NAME": "Joesph Gano, Acting Associate",
+   "EMPLOYEE NAME": "Joesph, Gano L, Acting Associate",
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
-   "POSITION OFFICIAL TITLE": "DAS for Operations",
+   "POSITION OFFICIAL TITLE": "Acting DAS for Operations",
    "POSITION SUPERVISORY CODE AND DESCR": "EG",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
@@ -650,7 +650,7 @@
  {
    "EMPLOYEE NAME": "CARROLL, KENNETH J",
    "EMPLOYEE WORK EMAIL": "Kenneth.J.Carroll@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -890,7 +890,7 @@
  {
    "EMPLOYEE NAME": "DAVIS, URSULA R",
    "EMPLOYEE WORK EMAIL": "Ursula.R.Davis@hud.gov",
-   "SUPERVISOR NAME": "Taylor,Melody C",
+   "SUPERVISOR NAME": "Nathan, Roth",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -938,7 +938,7 @@
  {
    "EMPLOYEE NAME": "DOLES, ROBERT A",
    "EMPLOYEE WORK EMAIL": "ROBERT.A.DOLES@HUD.GOV",
-   "SUPERVISOR NAME": "Taylor,Melody C",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1034,12 +1034,12 @@
  {
    "EMPLOYEE NAME": "FLEMING, TIFFANY TAYLOR",
    "EMPLOYEE WORK EMAIL": "tiffany.t.fleming@hud.gov",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Doles,Robert",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "SUPERVISORY EQUAL OPPORTUNITY SPEC",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDEE - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -1092,14 +1092,26 @@
    "GEO REGION": "REGION 5"
 },
  {
+   "EMPLOYEE NAME": "Jacqueline, Jones-Peters",
+   "EMPLOYEE WORK EMAIL": "Jacqueline.Jones-Peters@hud.gov",
+   "SUPERVISOR NAME": "Kevin,Cooke R",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
+   "POSITION OFFICIAL TITLE": "Director, Resource Management  Division",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGCA",
+   "DUTY STATION CITY STATE": "WASHINGTON, DC",
+   "GEO REGION": "REGION 3"
+},
+ {
    "EMPLOYEE NAME": "GANO, JOSEPH LYNN",
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
-   "SUPERVISOR NAME": "Abell,Lisa S",
+   "SUPERVISOR NAME": "Kevin,Cooke R",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "Director, Office of Administrative Ser",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGC - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -1514,7 +1526,7 @@
  {
    "EMPLOYEE NAME": "JACKSON, AVERY STAR",
    "EMPLOYEE WORK EMAIL": "avery.jackson@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1910,7 +1922,7 @@
  {
    "EMPLOYEE NAME": "LEAKE, KARINA S",
    "EMPLOYEE WORK EMAIL": "karina.s.leake@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Nathan,Roth",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1946,7 +1958,7 @@
  {
    "EMPLOYEE NAME": "LEITH, RACHEL L",
    "EMPLOYEE WORK EMAIL": "Rachel.L.Leith@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth, Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -2006,7 +2018,7 @@
  {
    "EMPLOYEE NAME": "LEWIS, CHRISTINA",
    "EMPLOYEE WORK EMAIL": "Christina.Lewis@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth, Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -2066,7 +2078,7 @@
  {
    "EMPLOYEE NAME": "LONG, THURMOND ERIC",
    "EMPLOYEE WORK EMAIL": "thurmond.e.long@hud.gov",
-   "SUPERVISOR NAME": "Abell,Lisa S",
+   "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -2279,6 +2291,18 @@
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
+  {
+   "EMPLOYEE NAME": "MCGLINCY, HUGH JAMES",
+   "EMPLOYEE WORK EMAIL": "Hugh.J.McGlincy@hud.gov",
+   "SUPERVISOR NAME": "Doles,Robert A",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
+   "POSITION OFFICIAL TITLE": "Acting Director,Special Investigations",
+   "POSITION SUPERVISORY CODE AND DESCR": "EB - Supervisor or Manager",
+   "DUTY STATION CITY STATE": "WASHINGTON, DC",
+   "GEO REGION": "REGION 3"
+},
  {
    "EMPLOYEE NAME": "MCKAY, CHARLES ARTHUR",
    "EMPLOYEE WORK EMAIL": "CHARLES.A.MCKAY@HUD.GOV",
@@ -2299,7 +2323,7 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "Supervisory Program Analyst",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDPP - Supervisor or Manager",
    "DUTY STATION CITY STATE": "NEW YORK, NY",
    "GEO REGION": "REGION 2"
 },
@@ -2342,7 +2366,7 @@
  {
    "EMPLOYEE NAME": "MELTESEN, LON DAVID",
    "EMPLOYEE WORK EMAIL": "LON.D.MELTESEN@HUD.GOV",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -2378,12 +2402,12 @@
  {
    "EMPLOYEE NAME": "MONTGOMERY III, CHARLES M",
    "EMPLOYEE WORK EMAIL": "Charles.M.MontgomeryIII@hud.gov",
-   "SUPERVISOR NAME": "Abell,Lisa S",
+   "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "SUPVY PROG MGR",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGP",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -2594,7 +2618,7 @@
  {
    "EMPLOYEE NAME": "OSEGUEDA, CARLOS",
    "EMPLOYEE WORK EMAIL": "Carlos.Osegueda@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -2618,7 +2642,7 @@
  {
    "EMPLOYEE NAME": "PACE, REX JEFFERSON",
    "EMPLOYEE WORK EMAIL": "Rex.J.Pace@hud.gov",
-   "SUPERVISOR NAME": "Grosso,Lynn M",
+   "SUPERVISOR NAME": "Doles,Robert",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -2966,7 +2990,7 @@
  {
    "EMPLOYEE NAME": "RIVERA-GIUSTI, IVETTE",
    "EMPLOYEE WORK EMAIL": "Ivette.M.Rivera-Giusti@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -2978,7 +3002,7 @@
  {
    "EMPLOYEE NAME": "ROBERTS, JAMES MICHAEL",
    "EMPLOYEE WORK EMAIL": "james.m.roberts@hud.gov",
-   "SUPERVISOR NAME": "Taylor,Melody C",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3083,7 +3107,18 @@
    "DUTY STATION CITY STATE": "SAN FRANCISCO, CA",
    "GEO REGION": "REGION 9"
 },
- {
+  {
+   "EMPLOYEE NAME": "ROTH, NATHAN SCOTT",
+   "EMPLOYEE WORK EMAIL": "Nathan.S.Roth@hud.gov",
+   "SUPERVISOR NAME": "Cooke Jr,Kevin R",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
+   "POSITION OFFICIAL TITLE": "Acting Director Office of Programs",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDP - Supervisor or Manager",
+   "DUTY STATION CITY STATE": "WASHINGTON, DC",
+   "GEO REGION": "REGION 3"
+},{
    "EMPLOYEE NAME": "ROTH, NATHAN SCOTT",
    "EMPLOYEE WORK EMAIL": "Nathan.S.Roth@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
@@ -3091,7 +3126,7 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "MGMT & PROG ANAL",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "2 - ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -3290,12 +3325,12 @@
  {
    "EMPLOYEE NAME": "SMALLWOOD, MARCUS RICARDO",
    "EMPLOYEE WORK EMAIL": "Marcus.R.Smallwood@hud.gov",
-   "SUPERVISOR NAME": "Abell,Lisa S",
+   "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
-   "POSITION OFFICIAL TITLE": "SENIOR Senior Policy Analyst",
-   "POSITION SUPERVISORY CODE AND DESCR": "8 - All Other Positions",
+   "POSITION OFFICIAL TITLE": "Director, Office of Information Services and Communications",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGID - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -3323,10 +3358,22 @@
    "DUTY STATION CITY STATE": "NEWARK, NJ",
    "GEO REGION": "REGION 2"
 },
+  {
+   "EMPLOYEE NAME": "SPRINGER, IRIS",
+   "EMPLOYEE WORK EMAIL": "Iris.Springer-Elkerson@hud.gov",
+   "SUPERVISOR NAME": "Roth,Nathan ",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
+   "POSITION OFFICIAL TITLE": "Acting Director,Policy and Legislative Initiatives Division",
+   "POSITION SUPERVISORY CODE AND DESCR": "EC - Supervisor or Manager",
+   "DUTY STATION CITY STATE": "NEW YORK, NY",
+   "GEO REGION": "REGION 2"
+},
  {
    "EMPLOYEE NAME": "SPRINGER, IRIS",
    "EMPLOYEE WORK EMAIL": "Iris.Springer-Elkerson@hud.gov",
-   "SUPERVISOR NAME": "Taylor,Melody C",
+   "SUPERVISOR NAME": "Roth,Nathan ",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3362,12 +3409,12 @@
  {
    "EMPLOYEE NAME": "STEINECKER, ERIK L",
    "EMPLOYEE WORK EMAIL": "Erik.L.Steinecker@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
    "POSITION OFFICIAL TITLE": "SUPVY Supervisory Equal Opportunity Sp",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDEA - Supervisor or Manager",
    "DUTY STATION CITY STATE": "SEATTLE, WA",
    "GEO REGION": "REGION 10"
 },
@@ -3398,7 +3445,7 @@
  {
    "EMPLOYEE NAME": "SUSSMAN, JEFFREY M",
    "EMPLOYEE WORK EMAIL": "Jeffrey.M.Sussman@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3410,18 +3457,18 @@
  {
    "EMPLOYEE NAME": "SUTTON, JAMES N",
    "EMPLOYEE WORK EMAIL": "James.N.Sutton@hud.gov",
-   "SUPERVISOR NAME": "Abell,Lisa S",
+   "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "Program Manager",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "E1A - Supervisor or Manager",
    "DUTY STATION CITY STATE": "MIAMI, FL",
    "GEO REGION": "REGION 4"
 },
   {
    "EMPLOYEE NAME": "Trainor, Craig",
-   "EMPLOYEE WORK EMAIL": "James.N.Sutton@hud.gov",
+   "EMPLOYEE WORK EMAIL": "craig.w.trainor@hud.gov",
    "SUPERVISOR NAME": "",
    "HOCS HQ": {
       "FIELD": "HQ"
@@ -3458,7 +3505,7 @@
  {
    "EMPLOYEE NAME": "TATE, NAKEITA LYNN",
    "EMPLOYEE WORK EMAIL": "NAKEITA.L.TATE@HUD.GOV",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Smallwood, Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3475,6 +3522,18 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "Acting DAS, OFC OF POLICY, LEGISLATIVE INITIA",
+   "POSITION SUPERVISORY CODE AND DESCR": "EC",
+   "DUTY STATION CITY STATE": "WASHINGTON, DC",
+   "GEO REGION": "REGION 3"
+},
+  {
+   "EMPLOYEE NAME": "Roth, Nathan",
+   "EMPLOYEE WORK EMAIL": "Nathan.S.Roth@hud.gov",
+   "SUPERVISOR NAME": "Cooke Jr,Kevin R",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
+   "POSITION OFFICIAL TITLE": "Acting Director, Eduaction and Outreach Division",
    "POSITION SUPERVISORY CODE AND DESCR": "EC",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
@@ -3504,9 +3563,9 @@
    "GEO REGION": "REGION 6"
 },
  {
-   "EMPLOYEE NAME": "THOMAS, ADRIENNE D",
-   "EMPLOYEE WORK EMAIL": "Adrienne.D.Thomas@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "EMPLOYEE NAME": "vacnt",
+   "EMPLOYEE WORK EMAIL": "vacant",
+   "SUPERVISOR NAME": "vacant",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3690,8 +3749,19 @@
    "HOCS HQ": {
       "FIELD": "HQ"
    },
+   "POSITION OFFICIAL TITLE": "Acting Director Fair Housing Initiatives Program",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDPP - Supervisor or Manager",
+   "DUTY STATION CITY STATE": "NEW YORK, NY",
+   "GEO REGION": "REGION 2"
+}, {
+   "EMPLOYEE NAME": "VASILOPOULOS, KATHERINE",
+   "EMPLOYEE WORK EMAIL": "KATHERINE.VASILOPOULOS@HUD.GOV",
+   "SUPERVISOR NAME": "",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
    "POSITION OFFICIAL TITLE": "PROG ANAL",
-   "POSITION SUPERVISORY CODE AND DESCR": "8 - All Other Positions",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDPP -  All Other Positions",
    "DUTY STATION CITY STATE": "NEW YORK, NY",
    "GEO REGION": "REGION 2"
 },
@@ -3830,7 +3900,7 @@
  {
    "EMPLOYEE NAME": "WATSON, NATASHA J",
    "EMPLOYEE WORK EMAIL": "Natasha.J.Watson@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -3842,7 +3912,7 @@
  {
    "EMPLOYEE NAME": "WEAVER, DANIEL J",
    "EMPLOYEE WORK EMAIL": "Daniel.J.Weaver@hud.gov",
-   "SUPERVISOR NAME": "Cullen,DeAndra J.",
+   "SUPERVISOR NAME": "Roth,Nathan ",
    "HOCS HQ": {
       "FIELD": "FIELD"
    },
@@ -3859,7 +3929,7 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "SUPERVISORY BUDGET ANALYST",
-   "POSITION SUPERVISORY CODE AND DESCR": "2 - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGPD",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -3974,7 +4044,7 @@
  {
    "EMPLOYEE NAME": "WOUDENH, DESTA D",
    "EMPLOYEE WORK EMAIL": "Desta.D.Woudenh@hud.gov",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Smallwood, Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -4032,6 +4102,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

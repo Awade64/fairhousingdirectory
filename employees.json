@@ -2646,6 +2646,17 @@
    "HOCS HQ": {
       "FIELD": "HQ"
    },
+   "POSITION OFFICIAL TITLE": "Acting  Director Compliance & Disability Rights Division",
+   "POSITION SUPERVISORY CODE AND DESCR": "8 - Supervisor or Manager",
+   "DUTY STATION CITY STATE": "WASHINGTON, DC",
+   "GEO REGION": "REGION 3"
+}, {
+   "EMPLOYEE NAME": "PACE, REX JEFFERSON",
+   "EMPLOYEE WORK EMAIL": "Rex.J.Pace@hud.gov",
+   "SUPERVISOR NAME": "Doles,Robert",
+   "HOCS HQ": {
+      "FIELD": "HQ"
+   },
    "POSITION OFFICIAL TITLE": "ARCHITECT",
    "POSITION SUPERVISORY CODE AND DESCR": "8 - All Other Positions",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
@@ -4102,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

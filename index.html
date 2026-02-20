@@ -77,7 +77,14 @@
     th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); }
     th { background: #f8fafc; color: var(--brand); }
 
-    .hl { color: red; font-weight: bold; background: transparent; }
+    .hl { 
+      display: inline-block;
+      border: 2px solid var(--accent); 
+      background: rgba(0, 102, 204, 0.05);
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
 
     #backToTop {
       position: fixed; bottom: 20px; right: 20px; 
@@ -154,8 +161,11 @@
 
   function highlight(text, term) {
     if (!term || !text) return text;
-    const regex = new RegExp(`(${term})`, "gi");
-    return text.toString().replace(regex, `<span class="hl">$1</span>`);
+    const isMatch = text.toString().toLowerCase().includes(term.toLowerCase());
+    if (isMatch) {
+      return `<span class="hl search-match">${text}</span>`;
+    }
+    return text;
   }
 
   function render(filter = "") {
@@ -176,8 +186,12 @@
     const hierarchy = {};
     filtered.forEach(emp => {
       let reg = emp[kGeo] || "Other Offices";
+      const city = (emp[kCity] || "").toLowerCase();
+      
+      // LOGIC: Extract HQ from Region 3 if they are in DC/Washington
       const isHQ = reg.toLowerCase().includes("hq") || 
-                   (reg === "Region 3" && emp[kCity].toLowerCase().includes("washington"));
+                   (reg.includes("3") && (city.includes("washington") || city.includes(" d.c") || city.includes(" dc")));
+      
       if (isHQ) reg = "Headquarters";
 
       const sup = emp[kSup] || "Director/Lead";
@@ -186,6 +200,7 @@
       hierarchy[reg][sup].push(emp);
     });
 
+    // SORTING: Headquarters always first, others alphabetical
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
       if (a === "Headquarters") return -1;
       if (b === "Headquarters") return 1;
@@ -249,7 +264,17 @@
       `</tbody></table>`;
   }
 
-  searchInput.addEventListener('input', e => render(e.target.value));
+  searchInput.addEventListener('input', e => {
+    const term = e.target.value;
+    render(term);
+    if (term.trim().length > 0) {
+      const firstMatch = document.querySelector('.search-match');
+      if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  });
+
   searchInput.addEventListener('keydown', e => { if(e.key==='Escape'){ searchInput.value=''; render(''); }});
   
   btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
@@ -266,5 +291,3 @@
 </script>
 </body>
 </html>
-
-

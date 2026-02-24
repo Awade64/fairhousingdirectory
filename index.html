@@ -62,7 +62,7 @@
     .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; padding: 1.25rem; }
-    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); }
+    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); transition: 0.2s; }
     
     mark { background: var(--highlight); color: inherit; padding: 0 2px; }
     .match-found { border: 2px solid var(--accent-red) !important; background: #fff5f5 !important; }
@@ -125,7 +125,8 @@
     email: "EMPLOYEE WORK EMAIL",
     city: "DUTY STATION CITY STATE",
     sup: "SUPERVISOR NAME",
-    geo: "GEO REGION"
+    geo: "GEO REGION",
+    code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
   async function init() {
@@ -145,9 +146,15 @@
   }
 
   function highlight(text, term) {
-    if (!term) return text;
+    if (!term || typeof text !== 'string') return text;
     const regex = new RegExp(`(${term})`, 'gi');
     return text.replace(regex, '<mark>$1</mark>');
+  }
+
+  // Helper to determine if someone is a leader
+  function isLeader(emp) {
+    const code = (emp[k.code] || "").toLowerCase();
+    return code.includes("supervisor") || code.startsWith("2");
   }
 
   function render(filter = "") {
@@ -157,7 +164,6 @@
 
     const matches = employees.filter(e => checkMatch(e, term));
     
-    // IF SEARCHING: Only show the "Found Results" section
     if (term) {
       resultCount.textContent = `${matches.length} results found`;
       const resultsSection = document.createElement('div');
@@ -170,31 +176,58 @@
         </section>
       `;
       root.appendChild(resultsSection);
-      return; // Stop here so standard directory doesn't show
+      return;
     }
 
-    // IF NOT SEARCHING: Show full regional directory
     resultCount.textContent = "";
     const hierarchy = {};
+
     employees.forEach(emp => {
-      let reg = emp[k.geo] || "Other Offices";
+      let reg = emp[k.geo] || "Other";
+      const city = (emp[k.city] || "").toLowerCase();
+      // Classify Headquarters
+      if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
+        reg = "Headquarters";
+      }
+      
       if (!hierarchy[reg]) hierarchy[reg] = {};
-      const sup = emp[k.sup] || "Leadership";
+      const sup = emp[k.sup] || "Office Leadership";
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
     });
 
-    Object.keys(hierarchy).sort().forEach(region => {
+    // CUSTOM REGION SORT: Headquarters first, then Region 1 to 10
+    const sortedRegionKeys = Object.keys(hierarchy).sort((a, b) => {
+      if (a === "Headquarters") return -1;
+      if (b === "Headquarters") return 1;
+      
+      // Extract numbers for numeric sorting (e.g., Region 1 vs Region 10)
+      const numA = parseInt(a.replace(/\D/g, '')) || 999;
+      const numB = parseInt(b.replace(/\D/g, '')) || 999;
+      return numA - numB;
+    });
+
+    sortedRegionKeys.forEach(region => {
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
       Object.keys(hierarchy[region]).forEach(supName => {
         const staff = hierarchy[region][supName];
+        
+        // SORT STAFF: Leaders first, then alphabetical name
+        staff.sort((a, b) => {
+          const aLead = isLeader(a);
+          const bLead = isLeader(b);
+          if (aLead && !bLead) return -1;
+          if (!aLead && bLead) return 1;
+          return a[k.name].localeCompare(b[k.name]);
+        });
+
         const section = document.createElement('section');
         section.className = 'section';
         section.innerHTML = `
           <div class="section-header-main" style="background: #f8fafc;">
-            <h3 style="margin:0; font-size: 0.85rem; color: var(--muted);">Reports to: ${supName}</h3>
+            <h3 style="margin:0; font-size: 0.85rem; color: var(--muted); text-transform:uppercase;">Reports to: ${supName}</h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
             ${currentView === 'grid' ? renderGrid(staff, "") : renderTable(staff, "")}

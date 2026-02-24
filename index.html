@@ -75,16 +75,6 @@
     th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
-    .office-as-header {
-      background: var(--brand);
-      color: white;
-      padding: 1rem;
-      font-weight: 800;
-      font-size: 1.1rem;
-      text-align: center;
-      letter-spacing: 0.05em;
-    }
-
     #backToTop { position: fixed; bottom: 30px; right: 30px; background: var(--brand); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; z-index: 1000; }
   </style>
 </head>
@@ -106,7 +96,7 @@
         <div id="resultCount" style="font-weight: 600; color: var(--brand);"></div>
       </div>
       <div class="searchbar-wrapper">
-        <input type="text" id="globalSearch" placeholder="Search by name, title, or supervisor..." autocomplete="off">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, or location..." autocomplete="off">
         <button id="clearSearch">✕</button>
       </div>
     </section>
@@ -149,10 +139,9 @@
     }
   }
 
-  // UPDATED SEARCH LOGIC: Now includes Supervisor in search
   function checkMatch(emp, term) {
     if (!term) return false;
-    const fields = [emp[k.name], emp[k.title], emp[k.email], emp[k.city], emp[k.sup]];
+    const fields = [emp[k.name], emp[k.title], emp[k.email], emp[k.city]];
     return fields.some(f => String(f).toLowerCase().includes(term.toLowerCase()));
   }
 
@@ -167,11 +156,6 @@
     return code.includes("supervisor") || code.startsWith("2");
   }
 
-  function getSupTitle(supName) {
-    const found = employees.find(e => e[k.name] === supName);
-    return found ? found[k.title] : "";
-  }
-
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
@@ -180,7 +164,6 @@
     if (term) {
       const matches = employees.filter(e => checkMatch(e, term));
       resultCount.textContent = `${matches.length} results found`;
-      
       const resultsSection = document.createElement('div');
       resultsSection.innerHTML = `
         <h2 class="region-title" style="color: var(--accent-red);">Search Results</h2>
@@ -188,8 +171,7 @@
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
             ${currentView === 'grid' ? renderGrid(matches, term) : renderTable(matches, term)}
           </div>
-        </section>
-      `;
+        </section>`;
       root.appendChild(resultsSection);
       return;
     }
@@ -200,42 +182,51 @@
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city] || "").toLowerCase();
+      const title = String(emp[k.title] || "").toUpperCase();
+      const name = String(emp[k.name] || "");
+      const supervisor = String(emp[k.sup] || "");
+      
       if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
-        reg = "Headquarters";
+        reg = "Headquarters Senior Leadership";
       }
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
-      const sup = emp[k.sup] || "Office Leadership";
-      if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
-      hierarchy[reg][sup].push(emp);
+      
+      let groupKey = emp[k.sup] || "Office Staff";
+
+      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING
+      if (reg === "Headquarters Senior Leadership") {
+        if (name.includes("Craig Trainor") || supervisor.includes("Craig Trainor") || title.includes("ASSISTANT SECRETARY")) {
+            groupKey = "10_Assistant Secretary: Craig Trainor & Staff";
+        } else if (title.includes("GENERAL DEPUTY") || supervisor.includes("GDAS")) {
+            groupKey = "20_General Deputy Assistant Secretary (GDAS) & Staff";
+        } else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
+            groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
+        } else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
+            groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
+        } else {
+            groupKey = "50_" + groupKey; // Other HQ staff
+        }
+      }
+      
+      if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
+      hierarchy[reg][groupKey].push(emp);
     });
 
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
-      if (a === "Headquarters") return -1;
-      if (b === "Headquarters") return 1;
-      const numA = parseInt(a.replace(/\D/g, '')) || 999;
-      const numB = parseInt(b.replace(/\D/g, '')) || 999;
-      return numA - numB;
+      if (a === "Headquarters Senior Leadership") return -1;
+      if (b === "Headquarters Senior Leadership") return 1;
+      return (parseInt(a.replace(/\D/g, '')) || 999) - (parseInt(b.replace(/\D/g, '')) || 999);
     });
 
     sortedRegions.forEach(region => {
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
-      let sortedSups = Object.keys(hierarchy[region]).sort();
+      const sortedGroups = Object.keys(hierarchy[region]).sort();
 
-      // PIN CRAIG TRAINOR TO TOP OF HEADQUARTERS
-      if (region === "Headquarters") {
-        const craigKey = sortedSups.find(name => name.toUpperCase().includes("CRAIG TRAINOR"));
-        if (craigKey) {
-          sortedSups = [craigKey, ...sortedSups.filter(name => name !== craigKey)];
-        }
-      }
-
-      sortedSups.forEach(supName => {
-        const staff = hierarchy[region][supName];
-        const supTitle = getSupTitle(supName);
-        
+      sortedGroups.forEach(groupKey => {
+        const staff = hierarchy[region][groupKey];
         staff.sort((a, b) => {
           const aLead = isLeader(a);
           const bLead = isLeader(b);
@@ -244,25 +235,20 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
-        // New Logic for OAS Branding
-        const isAssistantSecOffice = supName.toUpperCase().includes("CRAIG TRAINOR");
+        // Clean up sorting prefix (e.g., "10_")
+        const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+
         const section = document.createElement('section');
         section.className = 'section';
-        
-        const specialOfficeBanner = isAssistantSecOffice ? 
-          `<div class="office-as-header">OFFICE OF THE ASSISTANT SECRETARY</div>` : '';
-
         section.innerHTML = `
-          ${specialOfficeBanner}
-          <div class="section-header-main" style="background: #f1f5f9;">
+          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid var(--brand);">
             <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
-              Reports to: <span style="color: #b45309;">${supTitle ? supTitle + ' - ' : ''}</span><span style="font-weight:800;">${supName}</span>
+              ${displayGroupName}
             </h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
             ${currentView === 'grid' ? renderGrid(staff, "") : renderTable(staff, "")}
-          </div>
-        `;
+          </div>`;
         regionBox.appendChild(section);
       });
       root.appendChild(regionBox);
@@ -275,11 +261,9 @@
         <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
         <div style="font-size:0.85rem; margin-top: 1rem; line-height: 1.5;">
           <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
-          <span style="color:var(--muted)">${highlight(e[k.city], term)}</span><br>
-          ${term ? `<small>Supervisor: ${highlight(e[k.sup], term)}</small>` : ''}
+          <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
         </div>
-      </article>
-    `).join('');
+      </article>`).join('');
   }
 
   function renderTable(data, term) {
@@ -289,26 +273,15 @@
         <td>${highlight(e[k.title], term)}</td>
         <td>${highlight(e[k.email], term)}</td>
         <td>${highlight(e[k.city], term)}</td>
-        ${term ? `<td>${highlight(e[k.sup], term)}</td>` : ''}
       </tr>`).join('');
-    
-    const supHeader = term ? '<th>Supervisor</th>' : '';
-    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th>${supHeader}</tr></thead><tbody>${rows}</tbody></table>`;
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  searchInput.addEventListener('input', e => {
-    render(e.target.value);
-    window.scrollTo({top: 0, behavior: 'instant'});
-  });
-
+  searchInput.addEventListener('input', e => { render(e.target.value); window.scrollTo({top: 0, behavior: 'instant'}); });
   clearBtn.onclick = () => { searchInput.value = ''; render(); searchInput.focus(); };
   btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
   btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
-
-  window.onscroll = () => {
-    const btn = document.getElementById('backToTop');
-    btn.style.display = (window.scrollY > 400) ? "block" : "none";
-  };
+  window.onscroll = () => { document.getElementById('backToTop').style.display = (window.scrollY > 400) ? "block" : "none"; };
   document.getElementById('backToTop').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
   init();
@@ -316,3 +289,6 @@
 </script>
 </body>
 </html>
+
+
+

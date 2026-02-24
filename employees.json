@@ -1814,7 +1814,7 @@
  {
    "EMPLOYEE NAME": "KING SMITH, SHEILA O",
    "EMPLOYEE WORK EMAIL": "Sheila.O.King-Smith@hud.gov",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1826,7 +1826,7 @@
  {
    "EMPLOYEE NAME": "KING, BRENDAN FRANCIS",
    "EMPLOYEE WORK EMAIL": "brendan.f.king@hud.gov",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

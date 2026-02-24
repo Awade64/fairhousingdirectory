@@ -434,7 +434,7 @@
  {
    "EMPLOYEE NAME": "BRODEN, TAMARA R",
    "EMPLOYEE WORK EMAIL": "Tamara.R.Broden@hud.gov",
-   "SUPERVISOR NAME": "",
+   "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3808,7 +3808,7 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "MANAGEMENT ANALYST (WEB MANAGER)",
-   "POSITION SUPERVISORY CODE AND DESCR": "",
+   "POSITION SUPERVISORY CODE AND DESCR": "Marcus, Smallwood",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

@@ -75,6 +75,17 @@
     th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
+    /* Special Office Styling */
+    .office-as-header {
+      background: var(--brand);
+      color: white;
+      padding: 1rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
     #backToTop { position: fixed; bottom: 30px; right: 30px; background: var(--brand); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; z-index: 1000; }
   </style>
 </head>
@@ -131,6 +142,7 @@
 
   async function init() {
     try {
+      // In production, ensure employees.json is in the same directory
       const response = await fetch('employees.json');
       employees = await response.json();
       render();
@@ -156,7 +168,6 @@
     return code.includes("supervisor") || code.startsWith("2");
   }
 
-  // New helper to get supervisor's title
   function getSupTitle(supName) {
     const found = employees.find(e => e[k.name] === supName);
     return found ? found[k.title] : "";
@@ -212,11 +223,20 @@
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
-      const sortedSups = Object.keys(hierarchy[region]).sort();
+      // Get supervisor names and sort them
+      let sortedSups = Object.keys(hierarchy[region]).sort();
+
+      // PIN CRAIG TRAINOR TO TOP OF HEADQUARTERS
+      if (region === "Headquarters") {
+        const craigKey = sortedSups.find(name => name.toUpperCase().includes("CRAIG TRAINOR"));
+        if (craigKey) {
+          sortedSups = [craigKey, ...sortedSups.filter(name => name !== craigKey)];
+        }
+      }
 
       sortedSups.forEach(supName => {
         const staff = hierarchy[region][supName];
-        const supTitle = getSupTitle(supName); // Lookup the title
+        const supTitle = getSupTitle(supName);
         
         staff.sort((a, b) => {
           const aLead = isLeader(a);
@@ -226,9 +246,16 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
+        const isAssistantSecOffice = supName.toUpperCase().includes("CRAIG TRAINOR");
         const section = document.createElement('section');
         section.className = 'section';
+        
+        // Add "Office Of The Assistant Secretary" banner only for Craig's group
+        const specialOfficeBanner = isAssistantSecOffice ? 
+          `<div class="office-as-header">OFFICE OF THE ASSISTANT SECRETARY</div>` : '';
+
         section.innerHTML = `
+          ${specialOfficeBanner}
           <div class="section-header-main" style="background: #f1f5f9;">
             <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
               Reports to: <span style="color: #b45309;">${supTitle ? supTitle + ' - ' : ''}</span><span style="font-weight:800;">${supName}</span>

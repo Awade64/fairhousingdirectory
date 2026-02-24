@@ -20,16 +20,16 @@
     }
 
     html, body { height: 100%; margin: 0; background: var(--bg); scroll-behavior: smooth; }
-    body { font-family: 'Inter', system-ui, sans-serif; color: var(--text); }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--text); }
     
     header { background: var(--brand); color: #fff; padding: 2rem 1rem; text-align: center; border-bottom: 4px solid var(--nav-green); }
-    header h1 { margin: 0; font-size: 1.75rem; }
+    header h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.025em; }
 
     main { max-width: var(--layout-width); margin: 0 auto; padding: 0 1rem 5rem; }
 
     .controls-container {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(248, 250, 252, 0.9); backdrop-filter: blur(8px); padding: 1rem 0;
+      background: rgba(248, 250, 252, 0.9); backdrop-filter: blur(10px); padding: 1rem 0;
     }
 
     .section { 
@@ -45,37 +45,37 @@
     .searchbar-wrapper { padding: 1rem; background: #fff; display: flex; align-items: center; gap: 12px; position: relative; }
     .searchbar-wrapper input { 
       flex: 1; padding: 0.8rem 1rem; border: 2px solid var(--border); 
-      border-radius: 8px; font-size: 1rem;
+      border-radius: 8px; font-size: 1rem; transition: border-color 0.2s;
     }
     .searchbar-wrapper input:focus { outline: none; border-color: var(--brand); }
     
     #clearSearch {
       position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-      background: #eee; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;
+      background: #eee; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; display: none;
     }
 
     .btn-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; }
-    .btn { padding: 0.5rem 1.25rem; border: none; cursor: pointer; font-weight: 600; background: transparent; color: var(--muted); }
+    .btn { padding: 0.5rem 1.25rem; border: none; cursor: pointer; font-weight: 600; background: transparent; color: var(--muted); transition: 0.2s; }
     .btn.active { background: #fff; color: var(--brand); border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
     .region-title { margin: 2.5rem 0 1rem; color: var(--brand); font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
     .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; padding: 1.25rem; }
-    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); transition: 0.2s; }
+    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); position: relative; }
     
-    mark { background: var(--highlight); color: inherit; padding: 0 2px; }
+    mark { background: var(--highlight); color: inherit; padding: 0 2px; border-radius: 2px; }
     .match-found { border: 2px solid var(--accent-red) !important; background: #fff5f5 !important; }
 
-    .card h4 { margin: 0 0 0.75rem; color: var(--brand); }
-    .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: 700; text-transform: uppercase; }
+    .card h4 { margin: 0 0 0.75rem; color: var(--brand); line-height: 1.2; }
+    .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
 
     .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); }
+    th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
-    #backToTop { position: fixed; bottom: 30px; right: 30px; background: var(--brand); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; }
+    #backToTop { position: fixed; bottom: 30px; right: 30px; background: var(--brand); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; z-index: 1000; }
   </style>
 </head>
 <body>
@@ -141,19 +141,18 @@
 
   function checkMatch(emp, term) {
     if (!term) return false;
-    const searchString = `${emp[k.name]} ${emp[k.title]} ${emp[k.email]} ${emp[k.city]}`.toLowerCase();
-    return searchString.includes(term.toLowerCase());
+    const fields = [emp[k.name], emp[k.title], emp[k.email], emp[k.city]];
+    return fields.some(f => String(f).toLowerCase().includes(term.toLowerCase()));
   }
 
   function highlight(text, term) {
-    if (!term || typeof text !== 'string') return text;
+    if (!term || !text) return text;
     const regex = new RegExp(`(${term})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
+    return String(text).replace(regex, '<mark>$1</mark>');
   }
 
-  // Helper to determine if someone is a leader
   function isLeader(emp) {
-    const code = (emp[k.code] || "").toLowerCase();
+    const code = String(emp[k.code] || "").toLowerCase();
     return code.includes("supervisor") || code.startsWith("2");
   }
 
@@ -162,10 +161,11 @@
     const term = filter.toLowerCase().trim();
     clearBtn.style.display = term ? "block" : "none";
 
-    const matches = employees.filter(e => checkMatch(e, term));
-    
+    // 1. SEARCH MODE: Show matches at the top, isolated
     if (term) {
+      const matches = employees.filter(e => checkMatch(e, term));
       resultCount.textContent = `${matches.length} results found`;
+      
       const resultsSection = document.createElement('div');
       resultsSection.innerHTML = `
         <h2 class="region-title" style="color: var(--accent-red);">Search Results</h2>
@@ -179,55 +179,61 @@
       return;
     }
 
+    // 2. DIRECTORY MODE: Grouped by Region -> then by Supervisor
     resultCount.textContent = "";
     const hierarchy = {};
 
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
-      const city = (emp[k.city] || "").toLowerCase();
-      // Classify Headquarters
+      const city = String(emp[k.city] || "").toLowerCase();
+      
+      // Define Headquarters logic
       if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
         reg = "Headquarters";
       }
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
+      
+      // Grouping by actual supervisor name
       const sup = emp[k.sup] || "Office Leadership";
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
     });
 
-    // CUSTOM REGION SORT: Headquarters first, then Region 1 to 10
-    const sortedRegionKeys = Object.keys(hierarchy).sort((a, b) => {
+    const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
       if (a === "Headquarters") return -1;
       if (b === "Headquarters") return 1;
-      
-      // Extract numbers for numeric sorting (e.g., Region 1 vs Region 10)
       const numA = parseInt(a.replace(/\D/g, '')) || 999;
       const numB = parseInt(b.replace(/\D/g, '')) || 999;
       return numA - numB;
     });
 
-    sortedRegionKeys.forEach(region => {
+    sortedRegions.forEach(region => {
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
-      Object.keys(hierarchy[region]).forEach(supName => {
+      // Sort Supervisors alphabetically within the region
+      const sortedSups = Object.keys(hierarchy[region]).sort();
+
+      sortedSups.forEach(supName => {
         const staff = hierarchy[region][supName];
         
-        // SORT STAFF: Leaders first, then alphabetical name
+        // Sort staff: Leaders of that group first, then alpha
         staff.sort((a, b) => {
           const aLead = isLeader(a);
           const bLead = isLeader(b);
           if (aLead && !bLead) return -1;
           if (!aLead && bLead) return 1;
-          return a[k.name].localeCompare(b[k.name]);
+          return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
         const section = document.createElement('section');
         section.className = 'section';
         section.innerHTML = `
-          <div class="section-header-main" style="background: #f8fafc;">
-            <h3 style="margin:0; font-size: 0.85rem; color: var(--muted); text-transform:uppercase;">Reports to: ${supName}</h3>
+          <div class="section-header-main" style="background: #f1f5f9;">
+            <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
+              Reports to: <span style="font-weight:800;">${supName}</span>
+            </h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
             ${currentView === 'grid' ? renderGrid(staff, "") : renderTable(staff, "")}
@@ -243,8 +249,8 @@
     return data.map(e => `
       <article class="card ${term ? 'match-found' : ''}">
         <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
-        <div style="font-size:0.85rem; margin-top: 1rem;">
-          <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
+        <div style="font-size:0.85rem; margin-top: 1rem; line-height: 1.5;">
+          <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent;">${highlight(e[k.email], term)}</a><br>
           <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
         </div>
       </article>
@@ -267,9 +273,15 @@
     window.scrollTo({top: 0, behavior: 'instant'});
   });
 
-  clearBtn.onclick = () => { searchInput.value = ''; render(); };
+  clearBtn.onclick = () => { searchInput.value = ''; render(); searchInput.focus(); };
   btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
   btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+
+  window.onscroll = () => {
+    const btn = document.getElementById('backToTop');
+    btn.style.display = (window.scrollY > 400) ? "block" : "none";
+  };
+  document.getElementById('backToTop').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
 
   init();
 })();

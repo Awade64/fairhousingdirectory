@@ -16,19 +16,18 @@
       --accent-red: #d32f2f;
       --layout-width: 1100px; 
       --radius: 12px;
+      --highlight: #fef08a; /* Yellow for text highlighting */
     }
 
     html, body { height: 100%; margin: 0; background: var(--bg); scroll-behavior: smooth; }
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: var(--text); }
     
-    /* Header UI */
     header { background: var(--brand); color: #fff; padding: 2rem 1rem; text-align: center; border-bottom: 4px solid var(--nav-green); }
     header h1 { margin: 0; font-size: 1.75rem; letter-spacing: -0.025em; }
     header p { margin: 0.5rem 0 0; font-size: 0.9rem; opacity: 0.9; font-weight: 300; }
 
     main { max-width: var(--layout-width); margin: 0 auto; padding: 0 1rem 5rem; }
 
-    /* Sticky Controls with Glassmorphism Effect */
     .controls-container {
       position: sticky;
       top: 0;
@@ -48,7 +47,6 @@
       padding: 0.75rem 1rem; background: #fff; border-bottom: 1px solid var(--border);
     }
     
-    /* Search Bar UI */
     .searchbar-wrapper { padding: 1rem; background: #fff; display: flex; align-items: center; gap: 12px; position: relative; }
     .searchbar-wrapper label { font-weight: 600; color: var(--brand); font-size: 0.9rem; }
     .input-container { flex: 1; position: relative; }
@@ -64,7 +62,6 @@
       cursor: pointer; display: none; font-weight: bold; font-size: 12px;
     }
 
-    /* View Toggles */
     .btn-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; }
     .btn { 
       padding: 0.5rem 1.25rem; border-radius: 6px; border: none; 
@@ -72,9 +69,11 @@
     }
     .btn.active { background: #fff; color: var(--brand); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-    /* Directory Styles */
     .region-title { margin: 2.5rem 0 1rem; color: var(--brand); font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
     .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+    /* Special style for the Results section at the top */
+    .results-area { border-left: 4px solid var(--accent-red); margin-top: 1rem; }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; padding: 1.25rem; }
 
@@ -84,27 +83,22 @@
     }
     .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
     
-    /* The Highlight state */
+    /* Highlight Mark */
+    mark { background: var(--highlight); color: inherit; padding: 0 2px; border-radius: 2px; }
+
     .match-found {
-      border: 3px solid var(--accent-red) !important;
+      border: 2px solid var(--accent-red) !important;
       background: #fff5f5 !important;
-      box-shadow: 0 0 15px rgba(211, 47, 47, 0.15);
     }
 
     .card h4 { margin: 0 0 0.75rem; color: var(--brand); font-size: 1.1rem; }
     .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
     .corr-code { float: right; font-size: 0.65rem; background: #dcfce7; color: #14532d; padding: 4px 8px; border-radius: 99px; font-weight: 600; }
 
-    /* Table UI */
     .table-wrap { overflow-x: auto; padding: 0 1rem 1rem; }
     table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
     th { text-align: left; padding: 1rem; background: #f8fafc; color: var(--brand); font-weight: 700; border-bottom: 2px solid var(--border); }
-    td { padding: 1rem; border-bottom: 1px solid var(--border); transition: background 0.2s; }
-    tr:last-child td { border-bottom: none; }
-
-    /* Utilities */
-    .skeleton { background: #e2e8f0; height: 200px; border-radius: 12px; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
     #backToTop {
       position: fixed; bottom: 30px; right: 30px; 
@@ -112,6 +106,9 @@
       width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
       display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 200;
     }
+    
+    .skeleton { background: #e2e8f0; height: 200px; border-radius: 12px; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
     @media (max-width: 600px) {
       .section-header-main { flex-direction: column; gap: 1rem; align-items: stretch; }
@@ -182,6 +179,7 @@
 
   async function init() {
     try {
+      // Ensure you have an employees.json in the same folder
       const response = await fetch('employees.json');
       if (!response.ok) throw new Error('Directory data unreachable');
       employees = await response.json();
@@ -197,20 +195,42 @@
     return searchString.includes(term.toLowerCase());
   }
 
+  // Helper to highlight matching text
+  function highlight(text, term) {
+    if (!term) return text;
+    const regex = new RegExp(`(${term})`, 'gi');
+    return text.replace(regex, '<mark>$1</mark>');
+  }
+
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     clearBtn.style.display = term ? "block" : "none";
 
-    const actualMatchesCount = employees.filter(e => checkMatch(e, term)).length;
-    resultCount.textContent = term ? `${actualMatchesCount} results found` : "";
+    const matches = employees.filter(e => checkMatch(e, term));
+    resultCount.textContent = term ? `${matches.length} results found` : "";
 
+    // 1. TOP SECTION: SEARCH RESULTS
+    if (term && matches.length > 0) {
+      const resultsSection = document.createElement('div');
+      resultsSection.className = 'results-area';
+      resultsSection.innerHTML = `
+        <h2 class="region-title" style="color: var(--accent-red);">Search Results</h2>
+        <section class="section">
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
+            ${currentView === 'grid' ? renderGrid(matches, term, true) : renderTable(matches, term, true)}
+          </div>
+        </section>
+      `;
+      root.appendChild(resultsSection);
+    }
+
+    // 2. MAIN SECTION: REGULAR HIERARCHY
     const hierarchy = {};
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other Offices";
       const city = (emp[k.city] || "").toLowerCase();
-      const isHQ = reg.toLowerCase().includes("hq") || 
-                   (reg.includes("3") && (city.includes("washington") || city.includes(" dc")));
+      const isHQ = reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes(" dc")));
       if (isHQ) reg = "Headquarters";
 
       const sup = emp[k.sup] || "Office Leadership";
@@ -248,7 +268,7 @@
             </h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
-            ${currentView === 'grid' ? renderGrid(staffList, term) : renderTable(staffList, term)}
+            ${currentView === 'grid' ? renderGrid(staffList, term, false) : renderTable(staffList, term, false)}
           </div>
         `;
         regionBox.appendChild(section);
@@ -257,37 +277,48 @@
     });
   }
 
-  function renderGrid(data, term) {
+  function renderGrid(data, term, isResultBlock) {
     return data.map(e => {
       const isMatch = checkMatch(e, term);
+      // We only want the red border if we are in the "All Staff" list or if it's an active match
+      const highlightClass = (isMatch && !isResultBlock) ? 'match-found' : '';
+      
       return `
-        <article class="card ${isMatch ? 'match-found' : ''}">
+        <article class="card ${highlightClass}">
           ${e[k.code] ? `<span class="corr-code">${e[k.code]}</span>` : ''}
-          <h4>${e[k.name]} <span class="position-text">${e[k.title]}</span></h4>
+          <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
           <div style="font-size:0.85rem; margin-top: 1rem;">
-            <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${e[k.email]}</a><br>
-            <span style="color:var(--muted)">${e[k.city]}</span>
+            <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
+            <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
           </div>
         </article>
       `;
     }).join('');
   }
 
-  function renderTable(data, term) {
+  function renderTable(data, term, isResultBlock) {
     let rows = data.map(e => {
       const isMatch = checkMatch(e, term);
+      const highlightClass = (isMatch && !isResultBlock) ? 'match-found' : '';
       return `
-        <tr class="${isMatch ? 'match-found' : ''}">
-          <td style="font-weight: 700;">${e[k.name]}</td>
-          <td>${e[k.title]}</td>
-          <td><a href="mailto:${e[k.email]}" style="color: var(--brand); font-weight: 600;">${e[k.email]}</a></td>
-          <td>${e[k.city]}</td>
+        <tr class="${highlightClass}">
+          <td style="font-weight: 700;">${highlight(e[k.name], term)}</td>
+          <td>${highlight(e[k.title], term)}</td>
+          <td><a href="mailto:${e[k.email]}" style="color: var(--brand); font-weight: 600;">${highlight(e[k.email], term)}</a></td>
+          <td>${highlight(e[k.city], term)}</td>
         </tr>`;
     }).join('');
     return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  searchInput.addEventListener('input', e => render(e.target.value));
+  searchInput.addEventListener('input', e => {
+    render(e.target.value);
+    // Smooth scroll to top of main if searching
+    if (e.target.value.length > 1) {
+       window.scrollTo({top: 0, behavior: 'instant'});
+    }
+  });
+
   clearBtn.onclick = () => { searchInput.value = ''; render(); searchInput.focus(); };
   
   btnGrid.onclick = () => { 

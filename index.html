@@ -75,7 +75,6 @@
     th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
-    /* Special Office Styling */
     .office-as-header {
       background: var(--brand);
       color: white;
@@ -107,7 +106,7 @@
         <div id="resultCount" style="font-weight: 600; color: var(--brand);"></div>
       </div>
       <div class="searchbar-wrapper">
-        <input type="text" id="globalSearch" placeholder="Search by name, title, or location..." autocomplete="off">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, or supervisor..." autocomplete="off">
         <button id="clearSearch">✕</button>
       </div>
     </section>
@@ -142,7 +141,6 @@
 
   async function init() {
     try {
-      // In production, ensure employees.json is in the same directory
       const response = await fetch('employees.json');
       employees = await response.json();
       render();
@@ -151,9 +149,10 @@
     }
   }
 
+  // UPDATED SEARCH LOGIC: Now includes Supervisor in search
   function checkMatch(emp, term) {
     if (!term) return false;
-    const fields = [emp[k.name], emp[k.title], emp[k.email], emp[k.city]];
+    const fields = [emp[k.name], emp[k.title], emp[k.email], emp[k.city], emp[k.sup]];
     return fields.some(f => String(f).toLowerCase().includes(term.toLowerCase()));
   }
 
@@ -223,7 +222,6 @@
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
-      // Get supervisor names and sort them
       let sortedSups = Object.keys(hierarchy[region]).sort();
 
       // PIN CRAIG TRAINOR TO TOP OF HEADQUARTERS
@@ -246,11 +244,11 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
+        // New Logic for OAS Branding
         const isAssistantSecOffice = supName.toUpperCase().includes("CRAIG TRAINOR");
         const section = document.createElement('section');
         section.className = 'section';
         
-        // Add "Office Of The Assistant Secretary" banner only for Craig's group
         const specialOfficeBanner = isAssistantSecOffice ? 
           `<div class="office-as-header">OFFICE OF THE ASSISTANT SECRETARY</div>` : '';
 
@@ -277,7 +275,8 @@
         <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
         <div style="font-size:0.85rem; margin-top: 1rem; line-height: 1.5;">
           <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
-          <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
+          <span style="color:var(--muted)">${highlight(e[k.city], term)}</span><br>
+          ${term ? `<small>Supervisor: ${highlight(e[k.sup], term)}</small>` : ''}
         </div>
       </article>
     `).join('');
@@ -290,8 +289,11 @@
         <td>${highlight(e[k.title], term)}</td>
         <td>${highlight(e[k.email], term)}</td>
         <td>${highlight(e[k.city], term)}</td>
+        ${term ? `<td>${highlight(e[k.sup], term)}</td>` : ''}
       </tr>`).join('');
-    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
+    
+    const supHeader = term ? '<th>Supervisor</th>' : '';
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th>${supHeader}</tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   searchInput.addEventListener('input', e => {
@@ -314,4 +316,3 @@
 </script>
 </body>
 </html>
-

@@ -156,12 +156,17 @@
     return code.includes("supervisor") || code.startsWith("2");
   }
 
+  // New helper to get supervisor's title
+  function getSupTitle(supName) {
+    const found = employees.find(e => e[k.name] === supName);
+    return found ? found[k.title] : "";
+  }
+
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     clearBtn.style.display = term ? "block" : "none";
 
-    // 1. SEARCH MODE: Show matches at the top, isolated
     if (term) {
       const matches = employees.filter(e => checkMatch(e, term));
       resultCount.textContent = `${matches.length} results found`;
@@ -179,22 +184,17 @@
       return;
     }
 
-    // 2. DIRECTORY MODE: Grouped by Region -> then by Supervisor
     resultCount.textContent = "";
     const hierarchy = {};
 
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city] || "").toLowerCase();
-      
-      // Define Headquarters logic
       if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
         reg = "Headquarters";
       }
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
-      
-      // Grouping by actual supervisor name
       const sup = emp[k.sup] || "Office Leadership";
       if (!hierarchy[reg][sup]) hierarchy[reg][sup] = [];
       hierarchy[reg][sup].push(emp);
@@ -212,13 +212,12 @@
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
       
-      // Sort Supervisors alphabetically within the region
       const sortedSups = Object.keys(hierarchy[region]).sort();
 
       sortedSups.forEach(supName => {
         const staff = hierarchy[region][supName];
+        const supTitle = getSupTitle(supName); // Lookup the title
         
-        // Sort staff: Leaders of that group first, then alpha
         staff.sort((a, b) => {
           const aLead = isLeader(a);
           const bLead = isLeader(b);
@@ -232,7 +231,7 @@
         section.innerHTML = `
           <div class="section-header-main" style="background: #f1f5f9;">
             <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
-              Reports to: <span style="font-weight:800;">${supName}</span>
+              Reports to: <span style="color: #b45309;">${supTitle ? supTitle + ' - ' : ''}</span><span style="font-weight:800;">${supName}</span>
             </h3>
           </div>
           <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
@@ -250,7 +249,7 @@
       <article class="card ${term ? 'match-found' : ''}">
         <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
         <div style="font-size:0.85rem; margin-top: 1rem; line-height: 1.5;">
-          <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600; border-bottom: 1px solid transparent;">${highlight(e[k.email], term)}</a><br>
+          <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
           <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
         </div>
       </article>

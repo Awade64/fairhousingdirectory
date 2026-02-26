@@ -153,7 +153,7 @@
 
   function isLeader(emp) {
     const code = String(emp[k.code] || "").toLowerCase();
-    return code.includes("supervisor") || code.startsWith("2");
+    return code.includes("supervisor") || code.startsWith("2") || code.startsWith("1");
   }
 
   function render(filter = "") {
@@ -186,6 +186,10 @@
       const name = String(emp[k.name] || "");
       const supervisor = String(emp[k.sup] || "");
       
+      // Clean name logic for comparison
+      const cleanName = name.toUpperCase().replace(/[\s,]/g, "");
+      const cleanSup = supervisor.toUpperCase().replace(/[\s,]/g, "");
+
       if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
         reg = "Headquarters Senior Leadership";
       }
@@ -196,16 +200,20 @@
 
       // LOGIC FOR HQ SENIOR LEADERSHIP SORTING
       if (reg === "Headquarters Senior Leadership") {
-        if (name.includes("Craig Trainor") || supervisor.includes("Craig Trainor") || title.includes("ASSISTANT SECRETARY")) {
+        // Find Craig Trainor (Assistant Secretary)
+        if (cleanName.includes("TRAINORCRAIG") || cleanSup.includes("TRAINORCRAIG") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Craig Trainor & Staff";
-        } else if (title.includes("GENERAL DEPUTY") || supervisor.includes("GDAS")) {
+        } 
+        // Find Kevin Cook (General Deputy Assistant Secretary)
+        else if (cleanName.includes("COOKKEVIN") || cleanSup.includes("COOKKEVIN") || title.includes("GENERAL DEPUTY")) {
             groupKey = "20_General Deputy Assistant Secretary (GDAS) & Staff";
-        } else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
+        } 
+        else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
             groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
         } else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
             groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
         } else {
-            groupKey = "50_" + groupKey; // Other HQ staff
+            groupKey = "50_" + groupKey; 
         }
       }
       
@@ -235,7 +243,6 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
-        // Clean up sorting prefix (e.g., "10_")
         const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
 
         const section = document.createElement('section');

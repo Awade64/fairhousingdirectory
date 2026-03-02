@@ -145,4 +145,154 @@
     return fields.some(f => String(f).toLowerCase().includes(term.toLowerCase()));
   }
 
-  function highlight(text,
+  function highlight(text, term) {
+    if (!term || !text) return text;
+    const regex = new RegExp(`(${term})`, 'gi');
+    return String(text).replace(regex, '<mark>$1</mark>');
+  }
+
+  function isLeader(emp) {
+    const code = String(emp[k.code] || "").toLowerCase();
+    return code.includes("supervisor") || code.startsWith("2") || code.startsWith("1");
+  }
+
+  function render(filter = "") {
+    root.innerHTML = "";
+    const term = filter.toLowerCase().trim();
+    clearBtn.style.display = term ? "block" : "none";
+
+    if (term) {
+      const matches = employees.filter(e => checkMatch(e, term));
+      resultCount.textContent = `${matches.length} results found`;
+      const resultsSection = document.createElement('div');
+      resultsSection.innerHTML = `
+        <h2 class="region-title" style="color: var(--accent-red);">Search Results</h2>
+        <section class="section">
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
+            ${currentView === 'grid' ? renderGrid(matches, term) : renderTable(matches, term)}
+          </div>
+        </section>`;
+      root.appendChild(resultsSection);
+      return;
+    }
+
+    resultCount.textContent = "";
+    const hierarchy = {};
+
+    employees.forEach(emp => {
+      let reg = emp[k.geo] || "Other";
+      const city = String(emp[k.city] || "").toLowerCase();
+      const title = String(emp[k.title] || "").toUpperCase();
+      const name = String(emp[k.name] || "");
+      const supervisor = String(emp[k.sup] || "");
+      
+      // Clean name logic for comparison
+      const cleanName = name.toUpperCase().replace(/[\s,]/g, "");
+      const cleanSup = supervisor.toUpperCase().replace(/[\s,]/g, "");
+
+      if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
+        reg = "Headquarters Senior Leadership";
+      }
+      
+      if (!hierarchy[reg]) hierarchy[reg] = {};
+      
+      let groupKey = emp[k.sup] || "Office Staff";
+
+      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING
+      if (reg === "Headquarters Senior Leadership") {
+        // Find Craig Trainor (Assistant Secretary)
+        if (cleanName.includes("TRAINORCRAIG") || cleanSup.includes("TRAINORCRAIG") || title.includes("ASSISTANT SECRETARY")) {
+            groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
+        } 
+        // Find Kevin Cook (General Deputy Assistant Secretary)
+        else if (cleanName.includes("COOKKEVIN") || cleanSup.includes("COOKKEVIN") || title.includes("GENERAL DEPUTY")) {
+            groupKey = "20_General Deputy Assistant Secretary (GDAS) & Staff";
+        } 
+        else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
+            groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
+        } else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
+            groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
+        } else {
+            groupKey = "50_" + groupKey; 
+        }
+      }
+      
+      if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
+      hierarchy[reg][groupKey].push(emp);
+    });
+
+    const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
+      if (a === "Headquarters Senior Leadership") return -1;
+      if (b === "Headquarters Senior Leadership") return 1;
+      return (parseInt(a.replace(/\D/g, '')) || 999) - (parseInt(b.replace(/\D/g, '')) || 999);
+    });
+
+    sortedRegions.forEach(region => {
+      const regionBox = document.createElement('div');
+      regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
+      
+      const sortedGroups = Object.keys(hierarchy[region]).sort();
+
+      sortedGroups.forEach(groupKey => {
+        const staff = hierarchy[region][groupKey];
+        staff.sort((a, b) => {
+          const aLead = isLeader(a);
+          const bLead = isLeader(b);
+          if (aLead && !bLead) return -1;
+          if (!aLead && bLead) return 1;
+          return String(a[k.name]).localeCompare(String(b[k.name]));
+        });
+
+        const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+
+        const section = document.createElement('section');
+        section.className = 'section';
+        section.innerHTML = `
+          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid var(--brand);">
+            <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
+              ${displayGroupName}
+            </h3>
+          </div>
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
+            ${currentView === 'grid' ? renderGrid(staff, "") : renderTable(staff, "")}
+          </div>`;
+        regionBox.appendChild(section);
+      });
+      root.appendChild(regionBox);
+    });
+  }
+
+  function renderGrid(data, term) {
+    return data.map(e => `
+      <article class="card ${term ? 'match-found' : ''}">
+        <h4>${highlight(e[k.name], term)} <span class="position-text">${highlight(e[k.title], term)}</span></h4>
+        <div style="font-size:0.85rem; margin-top: 1rem; line-height: 1.5;">
+          <a href="mailto:${e[k.email]}" style="color: var(--brand); text-decoration: none; font-weight: 600;">${highlight(e[k.email], term)}</a><br>
+          <span style="color:var(--muted)">${highlight(e[k.city], term)}</span>
+        </div>
+      </article>`).join('');
+  }
+
+  function renderTable(data, term) {
+    let rows = data.map(e => `
+      <tr class="${term ? 'match-found' : ''}">
+        <td style="font-weight: 700;">${highlight(e[k.name], term)}</td>
+        <td>${highlight(e[k.title], term)}</td>
+        <td>${highlight(e[k.email], term)}</td>
+        <td>${highlight(e[k.city], term)}</td>
+      </tr>`).join('');
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  searchInput.addEventListener('input', e => { render(e.target.value); window.scrollTo({top: 0, behavior: 'instant'}); });
+  clearBtn.onclick = () => { searchInput.value = ''; render(); searchInput.focus(); };
+  btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
+  btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+  window.onscroll = () => { document.getElementById('backToTop').style.display = (window.scrollY > 400) ? "block" : "none"; };
+  document.getElementById('backToTop').onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+
+  init();
+})();
+</script>
+</body>
+</html>

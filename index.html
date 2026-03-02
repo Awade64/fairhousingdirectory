@@ -114,6 +114,16 @@
     code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
+  // Helper to normalize names for reliable lookup
+  function cleanNameForMatch(name) {
+    if (!name) return "";
+    return String(name)
+      .toUpperCase()
+      .replace(/,?\s?ACTING.*/g, "") // Remove "Acting Associate" etc
+      .replace(/[\s,]/g, "")         // Remove spaces and commas
+      .trim();
+  }
+
   async function init() {
     try {
       const response = await fetch('employees.json');
@@ -128,11 +138,11 @@
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     
-    // STEP 1: PRE-SCAN - Map names to Official Titles from JSON
+    // STEP 1: PRE-SCAN - Create a lookup map using normalized names
     const titleLookup = {};
     employees.forEach(emp => {
-      const name = String(emp[k.name]).toUpperCase().trim();
-      titleLookup[name] = emp[k.title] || "";
+      const normalizedName = cleanNameForMatch(emp[k.name]);
+      if (normalizedName) titleLookup[normalizedName] = emp[k.title] || "";
     });
 
     const hierarchy = {};
@@ -143,7 +153,7 @@
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city]).toLowerCase();
       const supervisor = String(emp[k.sup] || "Office Staff").trim();
-      const supUpper = supervisor.toUpperCase();
+      const supNormalized = cleanNameForMatch(supervisor);
 
       if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
         reg = "Headquarters Senior Leadership";
@@ -152,23 +162,24 @@
       if (!hierarchy[reg]) hierarchy[reg] = {};
       
       // STEP 2: DYNAMIC HEADER CONSTRUCTION
-      // Fetch title from JSON, and strip any existing "Lead/Supervisor" to prevent double-text
-      let rawTitle = titleLookup[supUpper] || "";
-      let cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
+      const rawTitle = titleLookup[supNormalized] || "";
+      // Strip any existing "Lead/Supervisor" text from the JSON field to avoid doubles
+      const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
       
       let groupKey = "";
 
       if (reg === "Headquarters Senior Leadership") {
-        if (supUpper.includes("TRAINOR")) {
+        if (supNormalized.includes("TRAINOR")) {
             groupKey = `10_ASSISTANT SECRETARY: HON. CRAIG TRAINOR & STAFF`;
-        } else if (supUpper.includes("COOKE")) {
+        } else if (supNormalized.includes("COOKE")) {
             groupKey = `20_GENERAL DEPUTY ASSISTANT SECRETARY: KEVIN R. COOKE JR. & STAFF`;
         } else {
-            // Only one "LEAD/SUPERVISOR" prefix allowed
             groupKey = `30_LEAD/SUPERVISOR: ${cleanTitle}: ${supervisor} & STAFF`;
         }
       } else {
-          groupKey = `LEAD/SUPERVISOR: ${cleanTitle}: ${supervisor} & STAFF`;
+          // Standardized Regional/Other Headers
+          const titleDisplay = cleanTitle ? `${cleanTitle}: ` : "";
+          groupKey = `LEAD/SUPERVISOR: ${titleDisplay}${supervisor} & STAFF`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -189,14 +200,14 @@
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
         
-        // Pin the Leader (named in header) to the very first card position
+        // Sorting: Ensure the Lead is always the first card in the grid
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            const leaderPart = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
+            const leaderNameMatch = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
             
-            if (nameA.includes(leaderPart)) return -1;
-            if (nameB.includes(leaderPart)) return 1;
+            if (nameA.includes(leaderNameMatch)) return -1;
+            if (nameB.includes(leaderNameMatch)) return 1;
             return nameA.localeCompare(nameB);
         });
 

@@ -128,11 +128,11 @@
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     
-    // PRE-SCAN: Map all names to their Official Titles for header lookup
+    // STEP 1: PRE-SCAN - Map names to Official Titles from JSON
     const titleLookup = {};
     employees.forEach(emp => {
       const name = String(emp[k.name]).toUpperCase().trim();
-      titleLookup[name] = emp[k.title];
+      titleLookup[name] = emp[k.title] || "";
     });
 
     const hierarchy = {};
@@ -151,21 +151,24 @@
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
       
-      // HEADER LOGIC: Get official title from JSON
-      const officialTitle = titleLookup[supUpper] || "Lead/Supervisor";
+      // STEP 2: DYNAMIC HEADER CONSTRUCTION
+      // Fetch title from JSON, and strip any existing "Lead/Supervisor" to prevent double-text
+      let rawTitle = titleLookup[supUpper] || "";
+      let cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
+      
       let groupKey = "";
 
-      // Specific formatting for top leaders, standardized "Lead/Supervisor" for others
       if (reg === "Headquarters Senior Leadership") {
         if (supUpper.includes("TRAINOR")) {
             groupKey = `10_ASSISTANT SECRETARY: HON. CRAIG TRAINOR & STAFF`;
         } else if (supUpper.includes("COOKE")) {
             groupKey = `20_GENERAL DEPUTY ASSISTANT SECRETARY: KEVIN R. COOKE JR. & STAFF`;
         } else {
-            groupKey = `30_LEAD/SUPERVISOR: ${officialTitle}: ${supervisor} & STAFF`;
+            // Only one "LEAD/SUPERVISOR" prefix allowed
+            groupKey = `30_LEAD/SUPERVISOR: ${cleanTitle}: ${supervisor} & STAFF`;
         }
       } else {
-          groupKey = `LEAD/SUPERVISOR: ${officialTitle}: ${supervisor} & STAFF`;
+          groupKey = `LEAD/SUPERVISOR: ${cleanTitle}: ${supervisor} & STAFF`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -186,17 +189,14 @@
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
         
-        // Internal sorting: Ensure the leader named in the header is always the first card
+        // Pin the Leader (named in header) to the very first card position
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            
-            // Extract leader name from the groupKey for comparison
             const leaderPart = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
             
             if (nameA.includes(leaderPart)) return -1;
             if (nameB.includes(leaderPart)) return 1;
-            
             return nameA.localeCompare(nameB);
         });
 

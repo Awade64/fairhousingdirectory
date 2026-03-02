@@ -186,7 +186,6 @@
       const name = String(emp[k.name] || "");
       const supervisor = String(emp[k.sup] || "");
       
-      // Clean name logic for comparison
       const cleanName = name.toUpperCase().replace(/[\s,]/g, "");
       const cleanSup = supervisor.toUpperCase().replace(/[\s,]/g, "");
 
@@ -198,23 +197,26 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING
+      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING & NAMING
       if (reg === "Headquarters Senior Leadership") {
-        // Find Craig Trainor (Assistant Secretary)
-        if (cleanName.includes("TRAINORCRAIG") || cleanSup.includes("TRAINORCRAIG") || title.includes("ASSISTANT SECRETARY")) {
+        if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || (title.includes("ASSISTANT SECRETARY") && !title.includes("GENERAL"))) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
         } 
-        // Find Kevin Cook (General Deputy Assistant Secretary)
-        else if (cleanName.includes("COOKKEVIN") || cleanSup.includes("COOKKEVIN") || title.includes("GENERAL DEPUTY")) {
-            groupKey = "20_General Deputy Assistant Secretary (GDAS) & Staff";
+        else if (cleanName.includes("COOKE") || cleanSup.includes("COOKE") || title.includes("GENERAL DEPUTY")) {
+            groupKey = "20_General Deputy Assistant Secretary (GDAS): Kevin Cooke & Staff";
         } 
         else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
             groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
-        } else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
+        } 
+        else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
             groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
-        } else {
+        } 
+        else {
             groupKey = "50_" + groupKey; 
         }
+      } else {
+        // For non-HQ regions, ensure supervisor headers look professional
+        groupKey = "99_" + groupKey;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -243,7 +245,12 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
-        const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+        // Professional header formatting
+        let displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+        if (displayGroupName === "Office Staff") displayGroupName = "General Staff";
+        else if (!displayGroupName.includes(":") && !displayGroupName.includes("Staff")) {
+            displayGroupName = `Office of: ${displayGroupName}`;
+        }
 
         const section = document.createElement('section');
         section.className = 'section';
@@ -296,3 +303,4 @@
 </script>
 </body>
 </html>
+

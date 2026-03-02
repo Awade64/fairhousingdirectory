@@ -1,6 +1,6 @@
 [
  {
-   "EMPLOYEE NAME": "JOESPH, GANO L, Acting Associate",
+   "EMPLOYEE NAME": "JOESPH, GANO L",
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": {
@@ -3340,7 +3340,7 @@
    "HOCS HQ": {
       "FIELD": "HQ"
    },
-   "POSITION OFFICIAL TITLE": "Director, Office of Information Services and Communications",
+   "POSITION OFFICIAL TITLE": "Director Office of Information Services and Communications",
    "POSITION SUPERVISORY CODE AND DESCR": "EGID - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
@@ -3808,7 +3808,7 @@
       "FIELD": "HQ"
    },
    "POSITION OFFICIAL TITLE": "MANAGEMENT ANALYST (WEB MANAGER)",
-   "POSITION SUPERVISORY CODE AND DESCR": "Marcus, Smallwood",
+   "POSITION SUPERVISORY CODE AND DESCR": "",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

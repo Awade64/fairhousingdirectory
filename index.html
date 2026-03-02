@@ -120,7 +120,7 @@
       employees = await response.json();
       render();
     } catch (err) {
-      root.innerHTML = `<p style="text-align:center; padding:2rem; color:red;">Error loading data.</p>`;
+      root.innerHTML = `<p style="text-align:center; padding:2rem; color:red;">Error loading directory data.</p>`;
     }
   }
 
@@ -151,21 +151,21 @@
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
       
-      // Dynamic Header Building
+      // HEADER LOGIC: Get official title from JSON
       const officialTitle = titleLookup[supUpper] || "Lead/Supervisor";
-      let placeholder = officialTitle.includes("Director") ? "Director" : "Lead/Supervisor";
-      
-      let groupKey = `${placeholder}: ${officialTitle}: ${supervisor} & Staff`;
+      let groupKey = "";
 
-      // Priority prefixes for Senior Leadership
+      // Specific formatting for top leaders, standardized "Lead/Supervisor" for others
       if (reg === "Headquarters Senior Leadership") {
         if (supUpper.includes("TRAINOR")) {
-            groupKey = `10_Assistant Secretary: Hon. Craig Trainor & Staff`;
+            groupKey = `10_ASSISTANT SECRETARY: HON. CRAIG TRAINOR & STAFF`;
         } else if (supUpper.includes("COOKE")) {
-            groupKey = `20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff`;
+            groupKey = `20_GENERAL DEPUTY ASSISTANT SECRETARY: KEVIN R. COOKE JR. & STAFF`;
         } else {
-            groupKey = `30_${groupKey}`;
+            groupKey = `30_LEAD/SUPERVISOR: ${officialTitle}: ${supervisor} & STAFF`;
         }
+      } else {
+          groupKey = `LEAD/SUPERVISOR: ${officialTitle}: ${supervisor} & STAFF`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -185,12 +185,18 @@
 
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
+        
+        // Internal sorting: Ensure the leader named in the header is always the first card
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            // Boss first
-            if (nameA.includes("TRAINOR") || nameA.includes("COOKE") || nameA.includes("DOLES")) return -1;
-            if (nameB.includes("TRAINOR") || nameB.includes("COOKE") || nameB.includes("DOLES")) return 1;
+            
+            // Extract leader name from the groupKey for comparison
+            const leaderPart = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
+            
+            if (nameA.includes(leaderPart)) return -1;
+            if (nameB.includes(leaderPart)) return 1;
+            
             return nameA.localeCompare(nameB);
         });
 

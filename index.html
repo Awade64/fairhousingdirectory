@@ -180,7 +180,7 @@
     const hierarchy = {};
     const supervisorTitleMap = {};
 
-    // PASS 1: MAP TITLES
+    // PASS 1: MAP TITLES FOR EVERYONE
     employees.forEach(emp => {
       supervisorTitleMap[String(emp[k.name]).toUpperCase()] = emp[k.title];
     });
@@ -204,7 +204,7 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // PINNING CRAIG TRAINOR (10_) AND KEVIN COOKE (20_) TO THE TOP
+      // TITLING LOGIC
       if (reg === "Headquarters Senior Leadership") {
         if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
@@ -213,11 +213,12 @@
             groupKey = "20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff";
         } 
         else {
-            const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Director/Lead";
+            const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Official Title TBD";
             const sortCode = title.includes("DEPUTY") ? "30_" : "40_";
             groupKey = `${sortCode}${sTitle}: ${supervisor} & Staff`;
         }
       } else {
+          // Dynamic lookup for all Regional/Other supervisors
           const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Supervisor";
           groupKey = `${sTitle}: ${supervisor} & Staff`;
       }

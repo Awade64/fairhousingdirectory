@@ -178,6 +178,12 @@
 
     resultCount.textContent = "";
     const hierarchy = {};
+    const supervisorTitleMap = {};
+
+    // MAPPING ALL EMPLOYEES TO THEIR TITLES
+    employees.forEach(emp => {
+      supervisorTitleMap[String(emp[k.name]).toUpperCase()] = emp[k.title];
+    });
 
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
@@ -197,26 +203,24 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING & NAMING
+      // GLOBAL SUPERVISOR TITLE LOGIC
       if (reg === "Headquarters Senior Leadership") {
-        if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || (title.includes("ASSISTANT SECRETARY") && !title.includes("GENERAL"))) {
+        if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
         } 
-        else if (cleanName.includes("COOKE") || cleanSup.includes("COOKE") || title.includes("GENERAL DEPUTY")) {
-            groupKey = "20_General Deputy Assistant Secretary (GDAS): Kevin Cooke & Staff";
-        } 
-        else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
-            groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
-        } 
-        else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
-            groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
+        else if (cleanName.includes("COOK") || cleanSup.includes("COOK") || title.includes("GENERAL DEPUTY")) {
+            groupKey = "20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff";
         } 
         else {
-            groupKey = "50_" + groupKey; 
+            // Find DAS/ED titles from the map
+            const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Director/Lead";
+            const sortCode = title.includes("DEPUTY ASSISTANT") ? "30_" : "40_";
+            groupKey = `${sortCode}${sTitle}: ${supervisor} & Staff`;
         }
       } else {
-        // For non-HQ regions, ensure supervisor headers look professional
-        groupKey = "99_" + groupKey;
+          // Dynamic title lookup for Regional/Other staff
+          const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Supervisor";
+          groupKey = `${sTitle}: ${supervisor} & Staff`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -245,18 +249,15 @@
           return String(a[k.name]).localeCompare(String(b[k.name]));
         });
 
-        // Professional header formatting
-        let displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
-        if (displayGroupName === "Office Staff") displayGroupName = "General Staff";
-        else if (!displayGroupName.includes(":") && !displayGroupName.includes("Staff")) {
-            displayGroupName = `Office of: ${displayGroupName}`;
-        }
+        const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+        const isSeniorLead = region === "Headquarters Senior Leadership";
+        const headerColor = isSeniorLead ? "var(--accent-red)" : "var(--brand)";
 
         const section = document.createElement('section');
         section.className = 'section';
         section.innerHTML = `
-          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid var(--brand);">
-            <h3 style="margin:0; font-size: 0.85rem; color: var(--brand); text-transform:uppercase; letter-spacing:0.02em;">
+          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid ${headerColor};">
+            <h3 style="margin:0; font-size: 0.85rem; color: ${headerColor}; text-transform:uppercase; letter-spacing:0.02em;">
               ${displayGroupName}
             </h3>
           </div>
@@ -303,4 +304,3 @@
 </script>
 </body>
 </html>
-

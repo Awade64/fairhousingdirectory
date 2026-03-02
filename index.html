@@ -13,7 +13,7 @@
       --muted: #64748b; 
       --card: #ffffff;
       --border: #e2e8f0; 
-      --accent-red: #d32f2f;
+      --accent-red: #d32f2f; /* Red for Senior Leadership headers */
       --layout-width: 1100px; 
       --radius: 12px;
       --highlight: #fef08a;
@@ -178,12 +178,6 @@
 
     resultCount.textContent = "";
     const hierarchy = {};
-    const supervisorTitleMap = {};
-
-    // MAPPING ALL EMPLOYEES TO THEIR TITLES
-    employees.forEach(emp => {
-      supervisorTitleMap[String(emp[k.name]).toUpperCase()] = emp[k.title];
-    });
 
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
@@ -203,7 +197,7 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // GLOBAL SUPERVISOR TITLE LOGIC
+      // UPDATED SORTING & TITLING LOGIC
       if (reg === "Headquarters Senior Leadership") {
         if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
@@ -211,16 +205,13 @@
         else if (cleanName.includes("COOK") || cleanSup.includes("COOK") || title.includes("GENERAL DEPUTY")) {
             groupKey = "20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff";
         } 
-        else {
-            // Find DAS/ED titles from the map
-            const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Director/Lead";
-            const sortCode = title.includes("DEPUTY ASSISTANT") ? "30_" : "40_";
-            groupKey = `${sortCode}${sTitle}: ${supervisor} & Staff`;
+        else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
+            groupKey = "30_Deputy Assistant Secretary (DAS) & Staff";
+        } else if (title.includes("ASSOCIATE DEPUTY") || title.includes("ADAS")) {
+            groupKey = "40_Associate Deputy Assistant Secretary (ADAS) & Staff";
+        } else {
+            groupKey = "50_" + groupKey; 
         }
-      } else {
-          // Dynamic title lookup for Regional/Other staff
-          const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Supervisor";
-          groupKey = `${sTitle}: ${supervisor} & Staff`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -250,6 +241,8 @@
         });
 
         const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+        
+        // Determine header color (Red for Senior Leadership sections)
         const isSeniorLead = region === "Headquarters Senior Leadership";
         const headerColor = isSeniorLead ? "var(--accent-red)" : "var(--brand)";
 

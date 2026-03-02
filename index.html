@@ -114,13 +114,21 @@
     code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
-  // Helper to normalize names for reliable lookup
+  // Logic to flip "LAST, FIRST" to "First Last"
+  function formatNameFirstLast(name) {
+    if (!name || !name.includes(',')) return name;
+    const parts = name.split(',').map(p => p.trim());
+    // Index 1 is First Name, Index 0 is Last Name
+    return `${parts[1]} ${parts[0]}`;
+  }
+
+  // Helper to normalize names for reliable JSON lookup
   function cleanNameForMatch(name) {
     if (!name) return "";
     return String(name)
       .toUpperCase()
-      .replace(/,?\s?ACTING.*/g, "") // Remove "Acting Associate" etc
-      .replace(/[\s,]/g, "")         // Remove spaces and commas
+      .replace(/,?\s?ACTING.*/g, "")
+      .replace(/[\s,]/g, "")
       .trim();
   }
 
@@ -138,7 +146,7 @@
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     
-    // STEP 1: PRE-SCAN - Create a lookup map using normalized names
+    // STEP 1: PRE-SCAN - Map names to Official Titles
     const titleLookup = {};
     employees.forEach(emp => {
       const normalizedName = cleanNameForMatch(emp[k.name]);
@@ -163,8 +171,10 @@
       
       // STEP 2: DYNAMIC HEADER CONSTRUCTION
       const rawTitle = titleLookup[supNormalized] || "";
-      // Strip any existing "Lead/Supervisor" text from the JSON field to avoid doubles
       const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
+      
+      // Flip the supervisor name for the header display
+      const displaySupName = formatNameFirstLast(supervisor);
       
       let groupKey = "";
 
@@ -174,12 +184,11 @@
         } else if (supNormalized.includes("COOKE")) {
             groupKey = `20_GENERAL DEPUTY ASSISTANT SECRETARY: KEVIN R. COOKE JR. & STAFF`;
         } else {
-            groupKey = `30_LEAD/SUPERVISOR: ${cleanTitle}: ${supervisor} & STAFF`;
+            groupKey = `30_LEAD/SUPERVISOR: ${cleanTitle}: ${displaySupName} & STAFF`;
         }
       } else {
-          // Standardized Regional/Other Headers
           const titleDisplay = cleanTitle ? `${cleanTitle}: ` : "";
-          groupKey = `LEAD/SUPERVISOR: ${titleDisplay}${supervisor} & STAFF`;
+          groupKey = `LEAD/SUPERVISOR: ${titleDisplay}${displaySupName} & STAFF`;
       }
       
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
@@ -200,14 +209,20 @@
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
         
-        // Sorting: Ensure the Lead is always the first card in the grid
+        // Sorting: Pin the Leader to the top of the grid
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            const leaderNameMatch = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
             
-            if (nameA.includes(leaderNameMatch)) return -1;
-            if (nameB.includes(leaderNameMatch)) return 1;
+            // Extract leader name from the display name in the groupKey
+            const leaderDisplayPart = groupKey.split(':').pop().split('&')[0].trim().toUpperCase();
+            
+            // Check if nameA (LAST, FIRST) matches leaderDisplayPart (FIRST LAST)
+            // This is handled by flipping the comparison logic back
+            const flipA = cleanNameForMatch(formatNameFirstLast(a[k.name]));
+            const flipLeader = cleanNameForMatch(leaderDisplayPart);
+
+            if (flipA === flipLeader) return -1;
             return nameA.localeCompare(nameB);
         });
 

@@ -114,18 +114,19 @@
     code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
-  // Reorders "LAST, FIRST" to "First Last" for Header Display
+  // Standardizes "LAST, FIRST" to "First Last"
   function formatNameFirstLast(name) {
     if (!name || !name.includes(',')) return name;
     const parts = name.split(',').map(p => p.trim());
     return `${parts[1]} ${parts[0]}`;
   }
 
-  // HEAVY DUTY CLEANING: Ignores suffixes like "Acting Associate" for lookups
+  // FUZZY MATCH LOGIC: Ignores suffixes like "Acting Associate" and fixes typos
   function cleanNameForMatch(name) {
     if (!name) return "";
     return String(name)
       .toUpperCase()
+      .replace(/JOESPH/g, "JOSEPH")    // Manual fix for common data entry typo
       .split(',').slice(0, 2).join('') // Only take Last and First name parts
       .replace(/[\s,]/g, "")           // Remove spaces and commas
       .trim();
@@ -148,8 +149,8 @@
     // STEP 1: PRE-SCAN - Map normalized names to Titles
     const titleLookup = {};
     employees.forEach(emp => {
-      const normalizedName = cleanNameForMatch(emp[k.name]);
-      if (normalizedName) titleLookup[normalizedName] = emp[k.title] || "";
+      const normalizedKey = cleanNameForMatch(emp[k.name]);
+      if (normalizedKey) titleLookup[normalizedKey] = emp[k.title] || "";
     });
 
     const hierarchy = {};
@@ -170,7 +171,7 @@
       
       // STEP 2: DYNAMIC HEADER CONSTRUCTION
       const rawTitle = titleLookup[supNormalized] || "";
-      // Strip any accidental "Lead/Supervisor" to prevent the Double Header glitch
+      // Strip "Lead/Supervisor" from raw title to avoid Double Header Glitch
       const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
       
       const displaySupName = formatNameFirstLast(supervisor);
@@ -186,6 +187,7 @@
             groupKey = `30_LEAD/SUPERVISOR: ${titlePart}${displaySupName} & STAFF`;
         }
       } else {
+          // Standardized Regional Headers
           const titleDisplay = cleanTitle ? `${cleanTitle}: ` : "";
           groupKey = `LEAD/SUPERVISOR: ${titleDisplay}${displaySupName} & STAFF`;
       }
@@ -208,14 +210,14 @@
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
         
-        // Sorting: Boss always comes first in the grid
+        // Sorting: Pin the leader to the first position in the grid
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            const leaderNameMatch = cleanNameForMatch(groupKey.split(':').pop().split('&')[0].trim());
+            const leaderSearch = cleanNameForMatch(groupKey.split(':').pop().split('&')[0].trim());
             
-            if (cleanNameForMatch(nameA) === leaderNameMatch) return -1;
-            if (cleanNameForMatch(nameB) === leaderNameMatch) return 1;
+            if (cleanNameForMatch(nameA) === leaderSearch) return -1;
+            if (cleanNameForMatch(nameB) === leaderSearch) return 1;
             return nameA.localeCompare(nameB);
         });
 

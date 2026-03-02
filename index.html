@@ -13,7 +13,7 @@
       --muted: #64748b; 
       --card: #ffffff;
       --border: #e2e8f0; 
-      --accent-red: #d32f2f; /* Using this for your red headers */
+      --accent-red: #d32f2f; /* Red for Senior Leadership headers */
       --layout-width: 1100px; 
       --radius: 12px;
       --highlight: #fef08a;
@@ -197,12 +197,12 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
+      // UPDATED SORTING & TITLING LOGIC
       if (reg === "Headquarters Senior Leadership") {
-        if (cleanName.includes("TRAINORCRAIG") || cleanSup.includes("TRAINORCRAIG") || title.includes("ASSISTANT SECRETARY")) {
+        if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
         } 
         else if (cleanName.includes("COOK") || cleanSup.includes("COOK") || title.includes("GENERAL DEPUTY")) {
-            // Explicitly naming Kevin's section to include his title
             groupKey = "20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff";
         } 
         else if (title.includes("DEPUTY ASSISTANT SECRETARY") && !title.includes("GENERAL") && !title.includes("ASSOCIATE")) {
@@ -241,13 +241,16 @@
         });
 
         const displayGroupName = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
+        
+        // Determine header color (Red for Senior Leadership sections)
+        const isSeniorLead = region === "Headquarters Senior Leadership";
+        const headerColor = isSeniorLead ? "var(--accent-red)" : "var(--brand)";
 
         const section = document.createElement('section');
         section.className = 'section';
-        // Applying red color here to the displayGroupName
         section.innerHTML = `
-          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid var(--accent-red);">
-            <h3 style="margin:0; font-size: 0.85rem; color: var(--accent-red); text-transform:uppercase; letter-spacing:0.02em;">
+          <div class="section-header-main" style="background: #f1f5f9; border-left: 4px solid ${headerColor};">
+            <h3 style="margin:0; font-size: 0.85rem; color: ${headerColor}; text-transform:uppercase; letter-spacing:0.02em;">
               ${displayGroupName}
             </h3>
           </div>

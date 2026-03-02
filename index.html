@@ -186,7 +186,6 @@
       const name = String(emp[k.name] || "");
       const supervisor = String(emp[k.sup] || "");
       
-      // Clean name logic for comparison
       const cleanName = name.toUpperCase().replace(/[\s,]/g, "");
       const cleanSup = supervisor.toUpperCase().replace(/[\s,]/g, "");
 
@@ -198,13 +197,11 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // LOGIC FOR HQ SENIOR LEADERSHIP SORTING
+      // UPDATED SENIOR LEADERSHIP SORTING LOGIC
       if (reg === "Headquarters Senior Leadership") {
-        // Find Craig Trainor (Assistant Secretary)
         if (cleanName.includes("TRAINORCRAIG") || cleanSup.includes("TRAINORCRAIG") || title.includes("ASSISTANT SECRETARY")) {
-            groupKey = "10_Assistant Secretary: Craig Trainor & Staff";
+            groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
         } 
-        // Find Kevin Cook (General Deputy Assistant Secretary)
         else if (cleanName.includes("COOKKEVIN") || cleanSup.includes("COOKKEVIN") || title.includes("GENERAL DEPUTY")) {
             groupKey = "20_General Deputy Assistant Secretary (GDAS) & Staff";
         } 
@@ -296,6 +293,7 @@
 </script>
 </body>
 </html>
+
 
 
 

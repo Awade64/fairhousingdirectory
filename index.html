@@ -180,12 +180,12 @@
     const hierarchy = {};
     const supervisorTitleMap = {};
 
-    // PASS 1: MAP TITLES FOR EVERYONE
+    // DYNAMIC TITLE EXTRACTION: Map every employee name to their title
     employees.forEach(emp => {
-      supervisorTitleMap[String(emp[k.name]).toUpperCase()] = emp[k.title];
+      const empName = String(emp[k.name]).toUpperCase().trim();
+      supervisorTitleMap[empName] = emp[k.title] || "Staff Member";
     });
 
-    // PASS 2: GROUPING & HIERARCHY
     employees.forEach(emp => {
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city] || "").toLowerCase();
@@ -204,7 +204,7 @@
       
       let groupKey = emp[k.sup] || "Office Staff";
 
-      // TITLING LOGIC
+      // ADVANCED TITLING LOGIC
       if (reg === "Headquarters Senior Leadership") {
         if (cleanName.includes("TRAINOR") || cleanSup.includes("TRAINOR") || title.includes("ASSISTANT SECRETARY")) {
             groupKey = "10_Assistant Secretary: Hon. Craig Trainor & Staff";
@@ -213,13 +213,16 @@
             groupKey = "20_General Deputy Assistant Secretary: Kevin R. Cooke Jr. & Staff";
         } 
         else {
-            const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Official Title TBD";
-            const sortCode = title.includes("DEPUTY") ? "30_" : "40_";
+            // Get title from our JSON map for DAS/ED levels
+            const sName = supervisor.toUpperCase().trim();
+            const sTitle = supervisorTitleMap[sName] || "Senior Leader";
+            const sortCode = sTitle.includes("DEPUTY") ? "30_" : "40_";
             groupKey = `${sortCode}${sTitle}: ${supervisor} & Staff`;
         }
       } else {
-          // Dynamic lookup for all Regional/Other supervisors
-          const sTitle = supervisorTitleMap[supervisor.toUpperCase()] || "Supervisor";
+          // Dynamic lookup for all Regional Supervisors from the JSON
+          const sName = supervisor.toUpperCase().trim();
+          const sTitle = supervisorTitleMap[sName] || "Supervisor";
           groupKey = `${sTitle}: ${supervisor} & Staff`;
       }
       
@@ -304,3 +307,4 @@
 </script>
 </body>
 </html>
+

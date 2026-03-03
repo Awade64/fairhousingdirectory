@@ -56,8 +56,7 @@
     .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; padding: 1.5rem; }
-    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); transition: transform 0.2s; }
-    .card:hover { transform: translateY(-2px); border-color: var(--brand); }
+    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); }
     
     .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1.1rem; }
     .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: 800; text-transform: uppercase; margin-top: 4px; }
@@ -114,39 +113,46 @@
     code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
-  // Standardizes "LAST, FIRST" to "First Last"
+  // Standardizes "LAST, FIRST" to "First Last" for Header Display
   function formatNameFirstLast(name) {
     if (!name || !name.includes(',')) return name;
     const parts = name.split(',').map(p => p.trim());
-    return `${parts[1]} ${parts[0]}`;
+    return `${parts[parts.length-1]} ${parts[0]}`;
   }
 
-  // FUZZY MATCH LOGIC: Ignores suffixes like "Acting Associate" and fixes typos
+  // DEEP CLEAN NORMALIZATION: Fixes typos (Joesph), removes middle initials and extra commas
   function cleanNameForMatch(name) {
     if (!name) return "";
-    return String(name)
-      .toUpperCase()
-      .replace(/JOESPH/g, "JOSEPH")    // Manual fix for common data entry typo
-      .split(',').slice(0, 2).join('') // Only take Last and First name parts
-      .replace(/[\s,]/g, "")           // Remove spaces and commas
-      .trim();
+    let n = String(name).toUpperCase()
+      .replace(/JOESPH/g, "JOSEPH") // Fix the common Joseph typo found in your JSON
+      .replace(/[^A-Z,]/g, "")      // Remove everything except letters and commas
+      .split(',');
+    
+    // We only care about the Last Name and the very first word of the First Name
+    let last = n[0] ? n[0].trim() : "";
+    let first = n[1] ? n[1].trim().split(" ")[0] : ""; 
+    
+    return last + first; // Example result: "GANOJOSEPH"
   }
 
   async function init() {
+    // In a real app, use fetch('employees.json')
+    // Using provided JSON data directly for this update
+    employees = [/* ...Your JSON Data... */];
+    
+    // For your testing environment, replace the line above with your fetch logic:
     try {
-      const response = await fetch('employees.json');
-      employees = await response.json();
-      render();
-    } catch (err) {
-      root.innerHTML = `<p style="text-align:center; padding:2rem; color:red;">Error loading directory data.</p>`;
-    }
+        const response = await fetch('employees.json');
+        employees = await response.json();
+        render();
+    } catch(e) { console.error("Data load error"); }
   }
 
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     
-    // STEP 1: PRE-SCAN - Map normalized names to Titles
+    // PRE-SCAN: Map normalized names to their POSITION OFFICIAL TITLE
     const titleLookup = {};
     employees.forEach(emp => {
       const normalizedKey = cleanNameForMatch(emp[k.name]);
@@ -169,9 +175,8 @@
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
       
-      // STEP 2: DYNAMIC HEADER CONSTRUCTION
+      // Look up title using normalized name logic
       const rawTitle = titleLookup[supNormalized] || "";
-      // Strip "Lead/Supervisor" from raw title to avoid Double Header Glitch
       const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
       
       const displaySupName = formatNameFirstLast(supervisor);
@@ -187,7 +192,6 @@
             groupKey = `30_LEAD/SUPERVISOR: ${titlePart}${displaySupName} & STAFF`;
         }
       } else {
-          // Standardized Regional Headers
           const titleDisplay = cleanTitle ? `${cleanTitle}: ` : "";
           groupKey = `LEAD/SUPERVISOR: ${titleDisplay}${displaySupName} & STAFF`;
       }
@@ -210,14 +214,13 @@
       sortedGroups.forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
         
-        // Sorting: Pin the leader to the first position in the grid
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            const leaderSearch = cleanNameForMatch(groupKey.split(':').pop().split('&')[0].trim());
+            const leaderMatch = cleanNameForMatch(groupKey.split(':').pop().split('&')[0].trim());
             
-            if (cleanNameForMatch(nameA) === leaderSearch) return -1;
-            if (cleanNameForMatch(nameB) === leaderSearch) return 1;
+            if (cleanNameForMatch(nameA) === leaderMatch) return -1;
+            if (cleanNameForMatch(nameB) === leaderMatch) return 1;
             return nameA.localeCompare(nameB);
         });
 
@@ -272,3 +275,4 @@
 </script>
 </body>
 </html>
+

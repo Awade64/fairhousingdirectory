@@ -3334,7 +3334,7 @@
    "GEO REGION": "REGION 3"
 },
  {
-   "EMPLOYEE NAME": "SMALLWOOD, MARCUS R",
+   "EMPLOYEE NAME": "Smallwood, Marcus R",
    "EMPLOYEE WORK EMAIL": "Marcus.R.Smallwood@hud.gov",
    "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": {
@@ -3516,7 +3516,7 @@
  {
    "EMPLOYEE NAME": "TATE, NAKEITA LYNN",
    "EMPLOYEE WORK EMAIL": "NAKEITA.L.TATE@HUD.GOV",
-   "SUPERVISOR NAME": "Smallwood, Marcus",
+   "SUPERVISOR NAME": "Smallwood, Marcus R",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3803,7 +3803,7 @@
  {
    "EMPLOYEE NAME": "WADE, ARTHUR D",
    "EMPLOYEE WORK EMAIL": "Arthur.D.Wade@hud.gov",
-   "SUPERVISOR NAME": "Smallwood, Marcus",
+   "SUPERVISOR NAME": "Smallwood, Marcus R",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -4055,7 +4055,7 @@
  {
    "EMPLOYEE NAME": "WOUDENH, DESTA D",
    "EMPLOYEE WORK EMAIL": "Desta.D.Woudenh@hud.gov",
-   "SUPERVISOR NAME": "Smallwood, Marcus",
+   "SUPERVISOR NAME": "Smallwood, Marcus R",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

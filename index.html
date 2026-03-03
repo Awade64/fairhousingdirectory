@@ -48,9 +48,10 @@
     }
     .searchbar-wrapper input:focus { outline: none; border-color: var(--brand); }
 
-    .btn-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; }
-    .btn { padding: 0.5rem 1.25rem; border: none; cursor: pointer; font-weight: 600; background: transparent; color: var(--muted); transition: 0.2s; }
-    .btn.active { background: #fff; color: var(--brand); border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .btn-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; gap: 2px; }
+    .btn { padding: 0.5rem 1.25rem; border: none; cursor: pointer; font-weight: 600; background: transparent; color: var(--muted); transition: 0.2s; border-radius: 6px; white-space: nowrap; }
+    .btn.active { background: #fff; color: var(--brand); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .btn.active.corr-btn { color: var(--nav-green); }
 
     .region-title { margin: 2.5rem 0 1rem; color: var(--brand); font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
     .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
@@ -65,6 +66,24 @@
     table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
     th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); text-transform: uppercase; font-size: 0.75rem; }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
+
+    /* Correspondent Code view styles */
+    .corr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; padding: 1.5rem; }
+    .corr-card {
+      background: #fff; border: 1px solid var(--border); padding: 1.1rem 1.25rem;
+      border-radius: var(--radius); border-left: 5px solid var(--nav-green);
+      display: flex; flex-direction: column; gap: 0.35rem;
+    }
+    .corr-card .corr-name { font-weight: 700; color: var(--brand); font-size: 1rem; margin: 0; }
+    .corr-card .corr-position { font-size: 0.75rem; color: #b45309; font-weight: 800; text-transform: uppercase; }
+    .corr-card .corr-meta { font-size: 0.85rem; color: var(--muted); }
+    .corr-card .corr-code-badge {
+      display: inline-block; margin-top: 0.4rem;
+      background: #e8f5e9; color: var(--nav-green);
+      font-size: 0.75rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 999px; letter-spacing: 0.04em; text-transform: uppercase;
+      border: 1px solid #a5d6a7;
+    }
   </style>
 </head>
 <body>
@@ -79,8 +98,10 @@
     <section class="section">
       <div class="section-header-main">
         <nav class="btn-group">
-          <button id="btnGrid" class="btn active">Grid View</button>
+          <!-- Swapped: Table View first, Grid View second, then Correspondent Code -->
           <button id="btnTable" class="btn">Table View</button>
+          <button id="btnGrid" class="btn active">Grid View</button>
+          <button id="btnCorr" class="btn corr-btn">Correspondent Code</button>
         </nav>
         <div id="resultCount" style="font-weight: 600; color: var(--brand);"></div>
       </div>
@@ -99,6 +120,7 @@
   const searchInput = document.getElementById('globalSearch');
   const btnGrid = document.getElementById('btnGrid');
   const btnTable = document.getElementById('btnTable');
+  const btnCorr = document.getElementById('btnCorr');
   const resultCount = document.getElementById('resultCount');
   
   let employees = [];
@@ -111,7 +133,8 @@
     city: "DUTY STATION CITY STATE",
     sup: "SUPERVISOR NAME",
     geo: "GEO REGION",
-    code: "POSITION SUPERVISORY CODE AND DESCR"
+    code: "POSITION SUPERVISORY CODE AND DESCR",
+    room: "ROOM NUMBER"
   };
 
   function formatNameFirstLast(name) {
@@ -123,11 +146,11 @@
   function cleanNameForMatch(name) {
     if (!name) return "";
     return String(name).toUpperCase()
-      .replace(/JOESPH/g, "JOSEPH") // Custom typo fix
-      .replace(/[^A-Z,]/g, "")      // Strip middle initials/spaces
+      .replace(/JOESPH/g, "JOSEPH")
+      .replace(/[^A-Z,]/g, "")
       .split(',')
       .map(p => p.trim())
-      .sort()                       // Normalize order (Last, First vs First Last)
+      .sort()
       .join('');
   }
 
@@ -147,17 +170,43 @@
     const term = filter.toLowerCase().trim();
     let totalVisible = 0;
     
-    // PRE-SCAN: Map titles
     const titleLookup = {};
     employees.forEach(emp => {
       const normalizedKey = cleanNameForMatch(emp[k.name]);
       if (normalizedKey) titleLookup[normalizedKey] = emp[k.title] || "";
     });
 
+    // Correspondent Code view renders flat (no grouping), sorted by name
+    if (currentView === 'corr') {
+      const filtered = employees.filter(emp =>
+        !term || Object.values(emp).some(v => String(v).toLowerCase().includes(term))
+      );
+      filtered.sort((a, b) => String(a[k.name]).localeCompare(String(b[k.name])));
+      totalVisible = filtered.length;
+      resultCount.textContent = `${totalVisible} Employees Found`;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'corr-grid';
+      wrapper.innerHTML = filtered.map(e => {
+        const room = e[k.room] ? `<span class="corr-meta">📍 Room: ${e[k.room]}</span>` : '';
+        const code = e[k.code] ? `<span class="corr-code-badge">Code: ${e[k.code]}</span>` : '<span class="corr-code-badge" style="background:#f1f5f9;color:var(--muted);border-color:#e2e8f0;">No Code on File</span>';
+        return `
+          <div class="corr-card">
+            <p class="corr-name">${e[k.name]}</p>
+            <span class="corr-position">${e[k.title] || '—'}</span>
+            <span class="corr-meta">📌 ${e[k.city] || '—'}</span>
+            ${room}
+            ${code}
+          </div>`;
+      }).join('');
+
+      root.appendChild(wrapper);
+      return;
+    }
+
     const hierarchy = {};
 
     employees.forEach(emp => {
-      // Search Logic
       const isMatch = Object.values(emp).some(v => String(v).toLowerCase().includes(term));
       if (term && !isMatch) return;
       
@@ -262,11 +311,30 @@
   }
 
   searchInput.addEventListener('input', e => render(e.target.value));
-  btnGrid.onclick = () => { currentView='grid'; btnGrid.classList.add('active'); btnTable.classList.remove('active'); render(searchInput.value); };
-  btnTable.onclick = () => { currentView='table'; btnTable.classList.add('active'); btnGrid.classList.remove('active'); render(searchInput.value); };
+
+  btnGrid.onclick = () => {
+    currentView = 'grid';
+    [btnGrid, btnTable, btnCorr].forEach(b => b.classList.remove('active'));
+    btnGrid.classList.add('active');
+    render(searchInput.value);
+  };
+  btnTable.onclick = () => {
+    currentView = 'table';
+    [btnGrid, btnTable, btnCorr].forEach(b => b.classList.remove('active'));
+    btnTable.classList.add('active');
+    render(searchInput.value);
+  };
+  btnCorr.onclick = () => {
+    currentView = 'corr';
+    [btnGrid, btnTable, btnCorr].forEach(b => b.classList.remove('active'));
+    btnCorr.classList.add('active');
+    render(searchInput.value);
+  };
   
   init();
 })();
 </script>
 </body>
 </html>
+
+

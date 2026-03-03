@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUD Fair Housing Office — AI Agent Build Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hud-navy: #002D62;
+    --hud-blue: #0057A8;
+    --hud-sky: #1B8FD4;
+    --accent: #E8A020;
+    --accent2: #2ECC9A;
+    --red: #D94F3D;
+    --bg: #F0F4FA;
+    --card: #FFFFFF;
+    --text: #0A1628;
+    --muted: #6B7B99;
+    --border: #C8D5E8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--hud-navy);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,87,168,0.5) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 36px 40px 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .hud-seal {
+    width: 72px; height: 72px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: var(--hud-navy);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(232,160,32,0.3);
+  }
+  .header-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .header-text h1 span { color: var(--accent); }
+  .header-text p {
+    font-size: 13px;
+    color: #8AABCC;
+    margin-top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+  .header-meta {
+    margin-left: auto;
+    text-align: right;
+  }
+  .header-meta .badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #aac4e0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .header-meta .total-agents {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .header-meta .total-label {
+    font-size: 11px;
+    color: #8AABCC;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* SUMMARY STRIP */
+  .summary-strip {
+    background: var(--hud-blue);
+    padding: 14px 40px;
+    display: flex;
+    gap: 40px;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .summary-strip .stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .summary-strip .stat-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .summary-strip .stat-label {
+    font-size: 11px;
+    color: #9ABFE0;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .divider { width: 1px; background: rgba(255,255,255,0.2); }
+
+  /* LEGEND */
+  .legend {
+    max-width: 1400px;
+    margin: 28px auto 0;
+    padding: 0 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 4px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+
+  /* MAIN TABLE AREA */
+  .table-wrap {
+    max-width: 1400px;
+    margin: 20px auto 40px;
+    padding: 0 40px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--card);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,45,98,0.08);
+  }
+
+  thead {
+    background: var(--hud-navy);
+  }
+  thead th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c0d5ee;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 14px 16px;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 2px solid var(--hud-sky);
+  }
+  thead th:first-child { border-radius: 10px 0 0 0; }
+  thead th:last-child { border-radius: 0 10px 0 0; }
+
+  .category-row td {
+    background: #E8EEF8;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--hud-navy);
+    padding: 10px 16px;
+    border-top: 2px solid var(--border);
+  }
+  .category-row .cat-icon {
+    margin-right: 8px;
+  }
+
+  tbody tr:not(.category-row) {
+    transition: background 0.15s;
+  }
+  tbody tr:not(.category-row):hover {
+    background: #F5F8FF;
+  }
+  tbody tr:not(.category-row) td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: top;
+  }
+
+  .agent-name {
+    font-weight: 600;
+    color: var(--hud-navy);
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+  .agent-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* TIME PILL */
+  .time-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .time-short { background: #D4F5E8; color: #1A7A56; }
+  .time-medium { background: #FFF3D4; color: #8A6010; }
+  .time-long { background: #FFE8E6; color: #9A2A20; }
+
+  /* PLATFORM BADGE */
+  .platform-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .plat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  .plat-dynamics { background: #E6F0FF; color: #0057A8; border: 1px solid #B8D0F0; }
+  .plat-copilot { background: #EDE6FF; color: #5B1AB8; border: 1px solid #C9B8F0; }
+  .plat-power { background: #E6F7FF; color: #0078B8; border: 1px solid #B8E0F0; }
+  .plat-azure { background: #E8F8FF; color: #006B9A; border: 1px solid #9ED4EE; }
+  .plat-purview { background: #F0E6FF; color: #6B00B8; border: 1px solid #D0B8EE; }
+
+  /* AI BADGE */
+  .ai-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  .ai-claude { background: #FFF3E6; color: #C05800; border: 1px solid #F0CCB0; }
+  .ai-copilot { background: #E6F0FF; color: #003F8A; border: 1px solid #B0CCF0; }
+  .ai-azure { background: #E0F4FF; color: #005A8A; border: 1px solid #9DCEED; }
+  .ai-gpt { background: #E8F8EE; color: #1A6B3A; border: 1px solid #9EDAB8; }
+  .ai-perplexity { background: #E8F0E8; color: #2A5A2A; border: 1px solid #9EBE9E; }
+
+  /* PRIORITY */
+  .priority {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .p-high { background: var(--red); }
+  .p-med { background: var(--accent); }
+  .p-low { background: var(--accent2); }
+
+  .priority-cell {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .p-high-text { color: var(--red); }
+  .p-med-text { color: #B07010; }
+  .p-low-text { color: #1A8060; }
+
+  /* TOTAL ROW */
+  .total-row td {
+    background: var(--hud-navy);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 16px;
+    letter-spacing: 0.5px;
+  }
+  .total-row td:first-child { border-radius: 0 0 0 10px; }
+  .total-row td:last-child { border-radius: 0 0 10px 0; }
+
+  /* FOOTNOTES */
+  .footnotes {
+    max-width: 1400px;
+    margin: 0 auto 60px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .footnote-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 8px rgba(0,45,98,0.05);
+  }
+  .footnote-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--hud-navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footnote-card p, .footnote-card li {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .footnote-card ul {
+    padding-left: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .footnotes { grid-template-columns: 1fr; }
+    .header-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="hud-seal">HUD</div>
+    <div class="header-text">
+      <h1>Fair Housing Office — <span>AI Agent Build Plan</span></h1>
+      <p>PLATFORM: MICROSOFT DYNAMICS 365 + COPILOT STUDIO &nbsp;|&nbsp; MARCH 2026</p>
+    </div>
+    <div class="header-meta">
+      <div class="badge">TOTAL AGENTS</div>
+      <div class="total-agents">24</div>
+      <div class="total-label">Agents to Deploy</div>
+    </div>
+  </div>
+</div>
+
+<div class="summary-strip">
+  <div class="stat"><div><div class="stat-val">~58–98</div><div class="stat-label">Total Weeks (All Agents)</div></div></div>
+  <div class="divider"></div>
+  <div class="stat"><div><div class="stat-val">7</div><div class="stat-label">Agent Categories</div></div></div>
+  <div class="divider"></div>
+  <div class="stat"><div><div class="stat-val">D365 + Copilot</div><div class="stat-label">Primary Platform</div></div></div>
+  <div class="divider"></div>
+  <div class="stat"><div><div class="stat-val">Claude + Azure AI</div><div class="stat-label">Recommended AI Stack</div></div></div>
+  <div class="divider"></div>
+  <div class="stat"><div><div class="stat-val">8</div><div class="stat-label">High Priority Agents</div></div></div>
+</div>
+
+<div class="legend">
+  <span class="legend-title">Build Time:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#2ECC9A"></div> 1–4 Weeks (Quick Win)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E8A020"></div> 5–10 Weeks (Medium)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#D94F3D"></div> 11–16 Weeks (Complex)</div>
+  &nbsp;&nbsp;
+  <span class="legend-title" style="margin-left:12px">Priority:</span>
+  <div class="legend-item"><span class="priority p-high"></span> High</div>
+  <div class="legend-item"><span class="priority p-med"></span> Medium</div>
+  <div class="legend-item"><span class="priority p-low"></span> Low</div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Agent Name</th>
+      <th>Function</th>
+      <th>Build Time</th>
+      <th>Primary Platform</th>
+      <th>Supporting Platform</th>
+      <th>AI Engine</th>
+      <th>Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- CATEGORY 1 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">📥</span> INTAKE & TRIAGE</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><div class="agent-name">Complaint Intake Agent</div><div class="agent-desc">Web, phone & mail intake</div></td>
+      <td style="font-size:12px;color:#444">Collects & categorizes discrimination complaints from all channels</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><div class="platform-cell"><span class="plat-badge plat-dynamics">⚙ Dynamics 365 Customer Service</span><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></div></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><div class="agent-name">Eligibility Screening Agent</div><div class="agent-desc">FHA jurisdiction check</div></td>
+      <td style="font-size:12px;color:#444">Determines if complaint falls under Fair Housing Act jurisdiction</td>
+      <td><span class="time-pill time-medium">4–6 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365 + Power Apps</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><div class="agent-name">Priority Triage Agent</div><div class="agent-desc">Urgent case flagging</div></td>
+      <td style="font-size:12px;color:#444">Flags urgent cases (evictions, harassment) for immediate human review</td>
+      <td><span class="time-pill time-short">2–4 Weeks</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="ai-badge ai-azure">🔷 Azure AI Services</span></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+
+    <!-- CATEGORY 2 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">🔍</span> INVESTIGATION & ANALYSIS</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><div class="agent-name">Document Review Agent</div><div class="agent-desc">Lease & record scanning</div></td>
+      <td style="font-size:12px;color:#444">Scans leases, emails, records for discriminatory language or patterns</td>
+      <td><span class="time-pill time-long">10–14 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure AI Document Intelligence</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-azure">🔷 Azure OpenAI</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><div class="agent-name">Pattern Detection Agent</div><div class="agent-desc">Systemic discrimination trends</div></td>
+      <td style="font-size:12px;color:#444">Identifies systemic discrimination trends across regions, landlords, lenders</td>
+      <td><span class="time-pill time-long">12–16 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure Machine Learning</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-azure">🔷 Azure AI / OpenAI</span><span class="ai-badge ai-perplexity">🟢 Perplexity (research)</span></div></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><div class="agent-name">Statistical Analysis Agent</div><div class="agent-desc">Disparate impact analysis</div></td>
+      <td style="font-size:12px;color:#444">Runs disparate impact analyses on housing & lending data</td>
+      <td><span class="time-pill time-long">10–14 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure Synapse Analytics</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI</span></td>
+      <td><span class="ai-badge ai-azure">🔷 Azure AI Services</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><div class="agent-name">Evidence Compilation Agent</div><div class="agent-desc">Case file organization</div></td>
+      <td style="font-size:12px;color:#444">Organizes case files, timelines, and supporting documents</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365 Case Mgmt</span></td>
+      <td><span class="plat-badge plat-purview">🔐 Microsoft Purview</span></td>
+      <td><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+
+    <!-- CATEGORY 3 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">⚖️</span> LEGAL & COMPLIANCE</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><div class="agent-name">Case Research Agent</div><div class="agent-desc">Precedent & regulation lookup</div></td>
+      <td style="font-size:12px;color:#444">Pulls relevant precedents, regulations, and prior HUD rulings</td>
+      <td><span class="time-pill time-medium">6–10 Weeks</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure AI Search</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-perplexity">🟢 Perplexity (research)</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><div class="agent-name">Conciliation Support Agent</div><div class="agent-desc">Settlement drafting</div></td>
+      <td style="font-size:12px;color:#444">Drafts settlement agreements and tracks conciliation outcomes</td>
+      <td><span class="time-pill time-medium">8–10 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365 Legal</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><div class="agent-name">Audit Compliance Agent</div><div class="agent-desc">Consent order monitoring</div></td>
+      <td style="font-size:12px;color:#444">Monitors whether respondents are following consent orders</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="ai-badge ai-azure">🔷 Azure AI Services</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+
+    <!-- CATEGORY 4 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">🌐</span> OUTREACH & EDUCATION</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><div class="agent-name">Public Education Agent</div><div class="agent-desc">FAQ & rights chatbot</div></td>
+      <td style="font-size:12px;color:#444">Answers fair housing rights FAQs via web portals and chat</td>
+      <td><span class="time-pill time-medium">4–6 Weeks</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-gpt">🟩 GPT-4o</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><div class="agent-name">Multilingual Communication Agent</div><div class="agent-desc">LEP translation</div></td>
+      <td style="font-size:12px;color:#444">Translates materials and communications for Limited English Proficiency communities</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure AI Translator</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-gpt">🟩 GPT-4o</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td><div class="agent-name">Stakeholder Notification Agent</div><div class="agent-desc">Updates & alerts</div></td>
+      <td style="font-size:12px;color:#444">Sends case updates to complainants, respondents, and housing partners</td>
+      <td><span class="time-pill time-short">2–4 Weeks</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></td>
+      <td><span class="priority p-low"></span><span class="priority-cell p-low-text">Low</span></td>
+    </tr>
+
+    <!-- CATEGORY 5 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">📁</span> CASE MANAGEMENT</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td><div class="agent-name">Workflow Orchestration Agent</div><div class="agent-desc">Case routing & deadlines</div></td>
+      <td style="font-size:12px;color:#444">Routes cases to right investigators and tracks all statutory deadlines</td>
+      <td><span class="time-pill time-medium">8–10 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365 Customer Service</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td><div class="agent-name">Status Update Agent</div><div class="agent-desc">Proactive case notifications</div></td>
+      <td style="font-size:12px;color:#444">Proactively notifies all parties of case progress milestones</td>
+      <td><span class="time-pill time-short">2–3 Weeks</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power Automate</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></td>
+      <td><span class="priority p-low"></span><span class="priority-cell p-low-text">Low</span></td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td><div class="agent-name">Backlog Management Agent</div><div class="agent-desc">Stalled case intervention</div></td>
+      <td style="font-size:12px;color:#444">Identifies stalled or aging cases and escalates for action</td>
+      <td><span class="time-pill time-medium">4–6 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI</span></td>
+      <td><span class="ai-badge ai-azure">🔷 Azure AI Services</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+
+    <!-- CATEGORY 6 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">🏘️</span> MARKET MONITORING</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td><div class="agent-name">Advertising Audit Agent</div><div class="agent-desc">Listing discrimination scan</div></td>
+      <td style="font-size:12px;color:#444">Scans online rental/sale listings for discriminatory language patterns</td>
+      <td><span class="time-pill time-long">10–14 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure AI + Web Scraping</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-azure">🔷 Azure AI Language</span></div></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td><div class="agent-name">Algorithmic Bias Detection Agent</div><div class="agent-desc">AI fairness auditing</div></td>
+      <td style="font-size:12px;color:#444">Reviews AI-based lending or tenant screening tools for discriminatory outputs</td>
+      <td><span class="time-pill time-long">12–16 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure ML + Responsible AI</span></td>
+      <td><span class="plat-badge plat-purview">🔐 Microsoft Purview</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-azure">🔷 Azure AI Fairness</span></div></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td><div class="agent-name">Zoning & Policy Monitor Agent</div><div class="agent-desc">Segregation policy flags</div></td>
+      <td style="font-size:12px;color:#444">Flags local zoning policies that may perpetuate housing segregation</td>
+      <td><span class="time-pill time-long">10–14 Weeks</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure AI Search</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-perplexity">🟢 Perplexity (research)</span></div></td>
+      <td><span class="priority p-low"></span><span class="priority-cell p-low-text">Low</span></td>
+    </tr>
+
+    <!-- CATEGORY 7 -->
+    <tr class="category-row">
+      <td colspan="8"><span class="cat-icon">📈</span> REPORTING & ACCOUNTABILITY</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td><div class="agent-name">Performance Dashboard Agent</div><div class="agent-desc">KPI tracking</div></td>
+      <td style="font-size:12px;color:#444">Tracks KPIs: case resolution time, complaint volume, outcomes</td>
+      <td><span class="time-pill time-medium">4–6 Weeks</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td><div class="agent-name">Congressional Reporting Agent</div><div class="agent-desc">Federal report compilation</div></td>
+      <td style="font-size:12px;color:#444">Compiles data and narratives for required federal & congressional reports</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="plat-badge plat-power">⚡ Power BI + Power Automate</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></div></td>
+      <td><span class="priority p-med"></span><span class="priority-cell p-med-text">Medium</span></td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td><div class="agent-name">FOIA Request Agent</div><div class="agent-desc">Freedom of Info management</div></td>
+      <td style="font-size:12px;color:#444">Manages, triages, and drafts responses to FOIA requests</td>
+      <td><span class="time-pill time-medium">6–8 Weeks</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="plat-badge plat-purview">🔐 Microsoft Purview</span></td>
+      <td><div class="ai-cell"><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span><span class="ai-badge ai-copilot">🔵 M365 Copilot</span></div></td>
+      <td><span class="priority p-low"></span><span class="priority-cell p-low-text">Low</span></td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td><div class="agent-name">Investigator Assist Agent</div><div class="agent-desc">Human-in-loop AI assistant</div></td>
+      <td style="font-size:12px;color:#444">Real-time AI co-pilot for investigators during interviews and case review</td>
+      <td><span class="time-pill time-medium">8–10 Weeks</span></td>
+      <td><span class="plat-badge plat-copilot">🤖 Copilot Studio</span></td>
+      <td><span class="plat-badge plat-dynamics">⚙ Dynamics 365</span></td>
+      <td><span class="ai-badge ai-claude">🟠 Claude (Anthropic)</span></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td><div class="agent-name">Data Security & Privacy Agent</div><div class="agent-desc">PII protection & compliance</div></td>
+      <td style="font-size:12px;color:#444">Monitors data handling, flags PII exposure, enforces retention policies</td>
+      <td><span class="time-pill time-long">10–12 Weeks</span></td>
+      <td><span class="plat-badge plat-purview">🔐 Microsoft Purview</span></td>
+      <td><span class="plat-badge plat-azure">☁ Azure Security Center</span></td>
+      <td><span class="ai-badge ai-azure">🔷 Azure AI Services</span></td>
+      <td><span class="priority p-high"></span><span class="priority-cell p-high-text">High</span></td>
+    </tr>
+
+    <tr class="total-row">
+      <td colspan="2">📊 TOTAL — 24 AGENTS</td>
+      <td>Full operational coverage: intake → investigation → enforcement → reporting</td>
+      <td>~58–98 Weeks<br><span style="font-size:11px;font-weight:400;color:#9ABFE0">(phased over 18–24 months)</span></td>
+      <td>Dynamics 365 (primary backbone)</td>
+      <td>Copilot Studio + Power Platform + Azure AI</td>
+      <td>Claude + Azure AI (core) / GPT-4o + Perplexity (supplemental)</td>
+      <td>8 High · 10 Med · 6 Low</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="footnotes">
+  <div class="footnote-card">
+    <h3>🔵 Why Microsoft Dynamics 365?</h3>
+    <ul>
+      <li>HUD already uses Microsoft infrastructure (M365, Teams)</li>
+      <li>FedRAMP authorized for government data</li>
+      <li>Native integration with Power Platform, Copilot Studio, Azure AI</li>
+      <li>Case management, workflows, and dashboards built-in</li>
+      <li>Strong audit trail and compliance features (Purview)</li>
+      <li>No vendor lock-in on AI layer — plugs into Claude, Azure OpenAI, GPT-4o</li>
+    </ul>
+  </div>
+  <div class="footnote-card">
+    <h3>🟠 Why Claude as Primary AI?</h3>
+    <ul>
+      <li><strong>Document reasoning:</strong> Best-in-class for long legal docs, leases, case files</li>
+      <li><strong>Low hallucination:</strong> Critical for legal/compliance accuracy</li>
+      <li><strong>Nuanced language:</strong> Detects subtle discriminatory language patterns</li>
+      <li><strong>Instruction-following:</strong> Strict adherence to FHA policy rules</li>
+      <li><strong>Perplexity:</strong> Best for live web research on regulations & case law</li>
+      <li><strong>Azure OpenAI (GPT-4o):</strong> Translation, embeddings, classification tasks</li>
+    </ul>
+  </div>
+  <div class="footnote-card">
+    <h3>📅 Recommended Rollout Phases</h3>
+    <ul>
+      <li><strong>Phase 1 (Months 1–6):</strong> Intake, Triage, Public Education, Stakeholder Notifications, Workflow Orchestration</li>
+      <li><strong>Phase 2 (Months 7–12):</strong> Document Review, Case Research, Conciliation, Dashboard, Investigator Assist</li>
+      <li><strong>Phase 3 (Months 13–18):</strong> Pattern Detection, Advertising Audit, Algorithmic Bias, Zoning Monitor</li>
+      <li><strong>Phase 4 (Months 18–24):</strong> Congressional Reporting, FOIA, Data Security & Privacy</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

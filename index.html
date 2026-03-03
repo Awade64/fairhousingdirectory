@@ -121,12 +121,17 @@
   }
 
   // DEEP CLEAN NORMALIZATION: Fixes typos (Joesph), removes middle initials and extra commas
+  // UPDATED FIX FOR SMALLWOOD AND GANO
   function cleanNameForMatch(name) {
     if (!name) return "";
     let n = String(name).toUpperCase()
-      .replace(/JOESPH/g, "JOSEPH") // Fix the common Joseph typo found in your JSON
-      .replace(/[^A-Z,]/g, "")      // Remove everything except letters and commas
+      .replace(/JOESPH/g, "JOSEPH") // Fixes the Joseph typo
+      .replace(/[^A-Z,]/g, "")      // Removes spaces and initials
       .split(',');
+    
+    // Sorts the name parts alphabetically so "SMALLWOOD,MARCUS" and "MARCUS,SMALLWOOD" match
+    return n.map(p => p.trim()).sort().join(''); 
+  }
     
     // We only care about the Last Name and the very first word of the First Name
     let last = n[0] ? n[0].trim() : "";
@@ -275,4 +280,5 @@
 </script>
 </body>
 </html>
+
 

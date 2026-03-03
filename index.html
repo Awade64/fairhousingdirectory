@@ -85,7 +85,7 @@
         <div id="resultCount" style="font-weight: 600; color: var(--brand);"></div>
       </div>
       <div class="searchbar-wrapper">
-        <input type="text" id="globalSearch" placeholder="Search directory..." autocomplete="off">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, or location..." autocomplete="off">
       </div>
     </section>
   </div>
@@ -99,6 +99,7 @@
   const searchInput = document.getElementById('globalSearch');
   const btnGrid = document.getElementById('btnGrid');
   const btnTable = document.getElementById('btnTable');
+  const resultCount = document.getElementById('resultCount');
   
   let employees = [];
   let currentView = 'grid';
@@ -113,51 +114,40 @@
     code: "POSITION SUPERVISORY CODE AND DESCR"
   };
 
-  // Standardizes "LAST, FIRST" to "First Last" for Header Display
   function formatNameFirstLast(name) {
     if (!name || !name.includes(',')) return name;
     const parts = name.split(',').map(p => p.trim());
     return `${parts[parts.length-1]} ${parts[0]}`;
   }
 
-  // DEEP CLEAN NORMALIZATION: Fixes typos (Joesph), removes middle initials and extra commas
-  // UPDATED FIX FOR SMALLWOOD AND GANO
   function cleanNameForMatch(name) {
     if (!name) return "";
-    let n = String(name).toUpperCase()
-      .replace(/JOESPH/g, "JOSEPH") // Fixes the Joseph typo
-      .replace(/[^A-Z,]/g, "")      // Removes spaces and initials
-      .split(',');
-    
-    // Sorts the name parts alphabetically so "SMALLWOOD,MARCUS" and "MARCUS,SMALLWOOD" match
-    return n.map(p => p.trim()).sort().join(''); 
-  }
-    
-    // We only care about the Last Name and the very first word of the First Name
-    let last = n[0] ? n[0].trim() : "";
-    let first = n[1] ? n[1].trim().split(" ")[0] : ""; 
-    
-    return last + first; // Example result: "GANOJOSEPH"
+    return String(name).toUpperCase()
+      .replace(/JOESPH/g, "JOSEPH") // Custom typo fix
+      .replace(/[^A-Z,]/g, "")      // Strip middle initials/spaces
+      .split(',')
+      .map(p => p.trim())
+      .sort()                       // Normalize order (Last, First vs First Last)
+      .join('');
   }
 
   async function init() {
-    // In a real app, use fetch('employees.json')
-    // Using provided JSON data directly for this update
-    employees = [/* ...Your JSON Data... */];
-    
-    // For your testing environment, replace the line above with your fetch logic:
     try {
         const response = await fetch('employees.json');
         employees = await response.json();
         render();
-    } catch(e) { console.error("Data load error"); }
+    } catch(e) { 
+        console.error("Data load error", e);
+        root.innerHTML = `<p style="text-align:center; padding: 2rem;">Error loading employee data. Please ensure employees.json exists.</p>`;
+    }
   }
 
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
+    let totalVisible = 0;
     
-    // PRE-SCAN: Map normalized names to their POSITION OFFICIAL TITLE
+    // PRE-SCAN: Map titles
     const titleLookup = {};
     employees.forEach(emp => {
       const normalizedKey = cleanNameForMatch(emp[k.name]);
@@ -167,7 +157,11 @@
     const hierarchy = {};
 
     employees.forEach(emp => {
-      if (term && !Object.values(emp).some(v => String(v).toLowerCase().includes(term))) return;
+      // Search Logic
+      const isMatch = Object.values(emp).some(v => String(v).toLowerCase().includes(term));
+      if (term && !isMatch) return;
+      
+      totalVisible++;
 
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city]).toLowerCase();
@@ -180,10 +174,8 @@
       
       if (!hierarchy[reg]) hierarchy[reg] = {};
       
-      // Look up title using normalized name logic
       const rawTitle = titleLookup[supNormalized] || "";
       const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
-      
       const displaySupName = formatNameFirstLast(supervisor);
       let groupKey = "";
 
@@ -205,6 +197,8 @@
       hierarchy[reg][groupKey].push(emp);
     });
 
+    resultCount.textContent = `${totalVisible} Employees Found`;
+
     const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
       if (a === "Headquarters Senior Leadership") return -1;
       return a.localeCompare(b);
@@ -222,10 +216,6 @@
         staff.sort((a, b) => {
             const nameA = String(a[k.name]).toUpperCase();
             const nameB = String(b[k.name]).toUpperCase();
-            const leaderMatch = cleanNameForMatch(groupKey.split(':').pop().split('&')[0].trim());
-            
-            if (cleanNameForMatch(nameA) === leaderMatch) return -1;
-            if (cleanNameForMatch(nameB) === leaderMatch) return 1;
             return nameA.localeCompare(nameB);
         });
 
@@ -280,5 +270,6 @@
 </script>
 </body>
 </html>
+
 
 

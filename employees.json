@@ -856,7 +856,7 @@
    "SUPERVISOR NAME": "Doles,Robert",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Director, Enforcement Support Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDEE - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDEE ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -906,7 +906,7 @@
    "SUPERVISOR NAME": "Kevin,Cooke R",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Associate Deputy Assistant Secretary for Operations and Management (SES) / Director, Administrative Services",
-   "POSITION SUPERVISORY CODE AND DESCR": "EGC - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGC ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -1876,7 +1876,7 @@
    "SUPERVISOR NAME": "Doles,Robert A",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Acting Director, Special Investigations",
-   "POSITION SUPERVISORY CODE AND DESCR": "EB - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EB ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -1896,7 +1896,7 @@
    "SUPERVISOR NAME": "Doles,Robert A",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Director, Program Standards and Compliance Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDPP - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDPP ",
    "DUTY STATION CITY STATE": "NEW YORK, NY",
    "GEO REGION": "REGION 2"
 },
@@ -2166,7 +2166,7 @@
    "SUPERVISOR NAME": "Doles,Robert",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Acting Director, Compliance and Disability Rights Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDEC - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDEC ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -2576,7 +2576,7 @@
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Acting Director, Office of Programs",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDP - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDP ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -2756,7 +2756,7 @@
    "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Director, Office of Information Services and Communications",
-   "POSITION SUPERVISORY CODE AND DESCR": "EGID - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EGID ",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
 },
@@ -2786,7 +2786,7 @@
    "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Acting Director, Policy and Legislative Initiatives Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EC - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EC ",
    "DUTY STATION CITY STATE": "NEW YORK, NY",
    "GEO REGION": "REGION 2"
 },
@@ -2816,7 +2816,7 @@
    "SUPERVISOR NAME": "Roth,Nathan",
    "HOCS HQ": { "FIELD": "FIELD" },
    "POSITION OFFICIAL TITLE": "Director, Fair Housing Assistance Program (FHAP) Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDEA - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDEA ",
    "DUTY STATION CITY STATE": "SEATTLE, WA",
    "GEO REGION": "REGION 10"
 },
@@ -2856,7 +2856,7 @@
    "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Director, Field Oversight",
-   "POSITION SUPERVISORY CODE AND DESCR": "E1A - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "E1A ",
    "DUTY STATION CITY STATE": "MIAMI, FL",
    "GEO REGION": "REGION 4"
 },
@@ -3076,7 +3076,7 @@
    "SUPERVISOR NAME": "",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "Acting Director, Fair Housing Initiatives Program (FHIP) Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EDPP - Supervisor or Manager",
+   "POSITION SUPERVISORY CODE AND DESCR": "EDPP ",
    "DUTY STATION CITY STATE": "NEW YORK, NY",
    "GEO REGION": "REGION 2"
 },
@@ -3361,6 +3361,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

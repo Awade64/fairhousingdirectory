@@ -51,39 +51,66 @@
     .btn-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; gap: 2px; }
     .btn { padding: 0.5rem 1.25rem; border: none; cursor: pointer; font-weight: 600; background: transparent; color: var(--muted); transition: 0.2s; border-radius: 6px; white-space: nowrap; }
     .btn.active { background: #fff; color: var(--brand); box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .btn.active.corr-btn { color: var(--nav-green); }
+
+    .region-title { margin: 2.5rem 0 1rem; color: var(--brand); font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .region-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; padding: 1.5rem; }
+    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); }
+    .card h4 { margin: 0 0 0.5rem; color: var(--brand); font-size: 1.1rem; }
+    .position-text { display: block; font-size: 0.75rem; color: #b45309; font-weight: 800; text-transform: uppercase; margin-top: 4px; }
+
+    .table-wrap { overflow-x: auto; padding: 0 1.25rem 1.25rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); text-transform: uppercase; font-size: 0.75rem; }
+    td { padding: 1rem; border-bottom: 1px solid var(--border); }
+    tr:target { background-color: #fef9c3; transition: background 1.5s; }
 
     /* ══════════════════════════════════════════════
-        ORG CHART STYLES (NEW)
+        ORG CHART PANEL WRAPPER
        ══════════════════════════════════════════════ */
-    .org-chart-header {
-      background: var(--brand); color: #fff; padding: 1rem;
-      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    .org-chart-panel {
+      background: #fff; border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 2rem;
     }
-    .org-chart-body { background: #fff; overflow-x: auto; padding: 2rem 1rem; transition: max-height 0.3s ease-out; }
-    .org-chart-body.collapsed { display: none; }
 
-    .oc-container { min-width: 1000px; display: flex; flex-direction: column; align-items: center; font-size: 11px; }
-    .oc-box { border: 1.5px solid #444; padding: 8px; width: 180px; text-align: center; background-color: #e8f4f8; margin: 5px; text-decoration: none; color: inherit; display: block; }
-    .oc-box:hover { background-color: #d1e9f0; border-color: var(--nav-green); }
-    .oc-box.leadership { background-color: #fff; width: 140px; }
+    .org-chart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1.25rem; background: var(--brand); color: #fff;
+      cursor: pointer; user-select: none;
+    }
+    .org-chart-header h3 { margin: 0; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    .org-toggle-btn {
+      background: rgba(255,255,255,0.2); border: none; color: #fff;
+      padding: 0.3rem 0.85rem; border-radius: 6px; font-size: 0.8rem;
+      font-weight: 600; cursor: pointer;
+    }
+
+    .org-chart-body { overflow-x: auto; padding: 2rem 1rem; background: #f8fafc; }
+
+    /* Org Chart Internals */
+    .oc-container { min-width: 1000px; display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #000; }
+    .oc-box { border: 1.5px solid #444; padding: 6px; width: 180px; text-align: center; background-color: #e8f4f8; margin: 5px; text-decoration: none; color: inherit; display: block; line-height: 1.3; }
+    .oc-box:hover { border-color: var(--nav-green); background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     .oc-box.vacant { color: var(--accent-red); font-weight: bold; }
     .oc-box.acting { font-weight: bold; border-style: dashed; }
+    .oc-box.leadership { background-color: #ffffff; width: 150px; }
     
     .oc-row { display: flex; justify-content: center; width: 100%; gap: 10px; }
     .oc-col { display: flex; flex-direction: column; align-items: center; }
-    .oc-region-list { background-color: #f1f5f9; width: 230px; text-align: left; padding: 12px; border: 1px solid #ccc; font-size: 10px; }
+    .oc-region-list { background-color: #f1f5f9; width: 230px; text-align: left; padding: 12px; border: 1.5px solid #444; font-size: 10px; }
     .oc-region-list a { text-decoration: none; color: var(--brand); display: block; margin-bottom: 2px; }
-    .oc-region-list a:hover { text-decoration: underline; }
+    .oc-region-list a:hover { text-decoration: underline; font-weight: bold; }
 
-    /* Standard Directory Styles */
-    .region-title { margin: 2.5rem 0 1rem; color: var(--brand); font-size: 1.4rem; font-weight: 800; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; padding: 1.5rem; }
-    .card { background: #fff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius); }
-    .table-wrap { overflow-x: auto; padding: 0 1.25rem 1.25rem; }
-    table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); font-size: 0.75rem; }
-    td { padding: 1rem; border-bottom: 1px solid var(--border); }
-    tr:target { background-color: #fef9c3; transition: background 1s; } /* Highlight row when clicked from chart */
+    /* Correspondent code doc styling */
+    .corr-doc-outer { background: #fff; padding: 2.5rem 2.5rem 3rem; }
+    .corr-doc-title { text-align: center; margin-bottom: 1.75rem; }
+    .corr-doc-table { width: 100%; border-collapse: collapse; font-family: 'Georgia',serif; border: 1.5px solid #888; }
+    .corr-doc-table th { background-color: #c8c8c8; border: 1.5px solid #888; color: #000; }
+    .corr-doc-table td { border: 1.5px solid #888; color: #000; }
   </style>
 </head>
 <body>
@@ -100,157 +127,219 @@
         <nav class="btn-group">
           <button id="btnTable" class="btn active">Table View</button>
           <button id="btnGrid"  class="btn">Grid View</button>
-          <button id="btnCorr"  class="btn">Correspondent Code</button>
+          <button id="btnCorr"  class="btn corr-btn">Correspondent Code</button>
         </nav>
-        <div id="resultCount"></div>
+        <div id="resultCount" style="font-weight:600; color:var(--brand);"></div>
       </div>
       <div class="searchbar-wrapper">
-        <input type="text" id="globalSearch" placeholder="Search staff...">
+        <input type="text" id="globalSearch" placeholder="Search by name, title, or location..." autocomplete="off">
       </div>
     </section>
   </div>
 
-  <section class="section" id="org-section">
-    <div class="org-chart-header" onclick="toggleOrg()">
-      <h3>📊 FHEO Organizational Hierarchy</h3>
-      <span id="toggleText">Collapse [-]</span>
-    </div>
-    <div class="org-chart-body" id="orgBody">
-      <div class="oc-container">
-        <div style="color: var(--accent-red); font-weight: bold; margin-bottom: 10px;">Current as of February 3, 2026</div>
-        
-        <a href="#TRAINOR_CRAIG" class="oc-box"><strong>Hon. Craig W. Trainor</strong><br>Assistant Secretary</a>
-        
-        <div class="oc-row">
-          <a href="#TAGERT_EARL_E" class="oc-box leadership">Trey Tagert<br>Senior Advisor</a>
-          <a href="#HAWKINS_BRIAN_L" class="oc-box leadership">Brian Hawkins<br>Senior Advisor</a>
-          <a href="#MCKAY_CHARLES_A" class="oc-box leadership">Charles McKay<br>Policy Advisor</a>
-        </div>
-
-        <div style="height:20px; border-left:2px solid #444;"></div>
-        <a href="#COOKE_JR_KEVIN_R" class="oc-box"><strong>Kevin R. Cooke Jr.</strong><br>General Deputy Assistant Secretary<br><span class="vacant">Vacant - Executive Director</span></a>
-
-        <div class="oc-row" style="margin-top: 20px;">
+  <div id="org-chart-wrapper">
+    <div class="org-chart-panel">
+      <div class="org-chart-header" id="orgChartToggle">
+        <h3>📊 &nbsp;FHEO Organizational Chart</h3>
+        <button class="org-toggle-btn" id="orgCollapseBtn">Collapse</button>
+      </div>
+      <div class="org-chart-body" id="orgChartBody">
+        <div class="oc-container">
+          <a href="#TRAINOR_CRAIG" class="oc-box"><strong>Hon. Craig W. Trainor</strong><br>Assistant Secretary</a>
           
-          <div class="oc-col">
-            <div class="oc-box vacant">Vacant<br>DAS Operations</div>
-            <a href="#GANO_JOSEPH_L" class="oc-box acting">Joseph Gano - Acting<br>ADAS O&M</a>
-            <a href="#GANO_JOSEPH_L" class="oc-box">Joseph Gano<br>Admin Services</a>
-            <a href="#SMALLWOOD_MARCUS_R" class="oc-box">Marcus Smallwood<br>Info Services</a>
-            <a href="#MONTGOMERY_III_CHARLES_M" class="oc-box">Charles Montgomery III<br>Mgt & Budget</a>
-            <a href="#WELLS_ERIC_LAMONT" class="oc-box">Eric Wells<br>Budget Division</a>
+          <div class="oc-row">
+            <a href="#TAGERT_III_EARL_EUGENE" class="oc-box leadership">Trey Tagert<br>Senior Advisor</a>
+            <a href="#HAWKINS_BRIAN_LEROI" class="oc-box leadership">Brian Hawkins<br>Senior Advisor</a>
+            <a href="#MCKAY_CHARLES_ARTHUR" class="oc-box leadership">Charles McKay<br>Policy Advisor</a>
           </div>
 
-          <div class="oc-col">
-            <a href="#DOLES_ROBERT_A" class="oc-box acting">Robert Doles - Acting<br>DAS Enforcement</a>
-            <div class="oc-box vacant">Vacant<br>ADAS Enforcement Comp.</div>
-            <a href="#SUTTON_JAMES_N" class="oc-box">James Sutton<br>Field Oversight</a>
-            <a href="#ROTH_NATHAN" class="oc-box acting">Nathan Roth - Acting<br>Office of Programs</a>
-            <div class="oc-box vacant">Vacant<br>Office of Enforcement</div>
-            <a href="#MCGLINCY_HUGH_JAMES" class="oc-box acting">Hugh McGlincy - Acting<br>Special Investigations</a>
-          </div>
+          <div style="height:20px; border-left:2px solid #444; margin: 5px 0;"></div>
 
-          <div class="oc-col">
-            <a href="#ROTH_NATHAN" class="oc-box acting">Nathan Roth - Acting<br>DAS Policy & Outreach</a>
-            <a href="#PACE_REX_JEFFERSON" class="oc-box acting">Rex Pace - Acting<br>Compliance & Disability</a>
-            <a href="#MCNALLY_CHARLES_EDWARD" class="oc-box">Charles McNally<br>Program Standards</a>
-            <a href="#FLEMING_TIFFANY_TAYLOR" class="oc-box">Tiffany Fleming<br>Enforcement Support</a>
-            <a href="#ROTH_NATHAN" class="oc-box">Nathan Roth<br>Education & Outreach</a>
-            <a href="#SPRINGER_IRIS" class="oc-box acting">Iris Springer-Elkerson - Acting<br>Policy & Leg. Initiatives</a>
-            <a href="#STEINECKER_ERIK_L" class="oc-box">Erik Steinecker<br>FHAP Division</a>
-            <a href="#VASILOPOULOS_KATHERINE" class="oc-box acting">Katherine Vasilopoulos - Acting<br>FHIP Division</a>
-          </div>
+          <a href="#COOKE_JR_KEVIN_R" class="oc-box"><strong>Kevin R. Cooke Jr.</strong><br>General Deputy Assistant Secretary<br><span class="vacant">Vacant - Exec Director Field Ops</span></a>
 
-          <div class="oc-col">
-            <div class="oc-region-list">
-                <div style="text-align:center; font-weight:bold; border-bottom: 1px solid #ccc; margin-bottom:5px;">REGION DIRECTORS</div>
-                <a href="#WEAVER_DANIEL_J"><b>I:</b> Daniel J. Weaver</a>
-                <a href="#RIVERA-GIUSTI_IVETTE"><b>II:</b> Ivette Rivera-Giusti</a>
-                <a href="#LEITH_RACHEL_L"><b>III:</b> Rachel L. Leith (Acting)</a>
-                <a href="#MELTESEN_LON_DAVID"><b>IV:</b> Lon David Meltesen (Acting)</a>
-                <a href="#MELTESEN_LON_DAVID"><b>V:</b> Lon David Meltesen</a>
-                <a href="#LEWIS_CHRISTINA"><b>VI:</b> Christina Lewis</a>
-                <a href="#WATSON_NATASHA_J"><b>VII:</b> Natasha J. Watson</a>
-                <a href="#WATSON_NATASHA_J"><b>VIII:</b> Natasha J. Watson (Acting)</a>
-                <a href="#PAI_SALLY_Y"><b>IX:</b> Sally Y. Pai (Acting)</a>
-                <a href="#LEE_BREANNE_ALISE"><b>X:</b> Breanne Alise Lee (Acting)</a>
+          <div class="oc-row" style="margin-top: 20px;">
+            <div class="oc-col">
+              <div class="oc-box vacant">Vacant<br>DAS Operations</div>
+              <a href="#JOSEPH_GANO_L" class="oc-box acting">Joseph Gano - Acting<br>ADAS O&M</a>
+              <a href="#JOSEPH_GANO_L" class="oc-box">Joseph Gano<br>Administrative Services</a>
+              <a href="#SMALLWOOD_MARCUS_R" class="oc-box">Marcus Smallwood<br>Info Services & Comm</a>
+              <a href="#MONTGOMERY_III_CHARLES_M" class="oc-box">Charles Montgomery III<br>Mgt, Planning & Budget</a>
+              <a href="#WELLS_ERIC_LAMONT" class="oc-box">Eric Wells<br>Budget Division</a>
+            </div>
+
+            <div class="oc-col">
+              <a href="#DOLES_ROBERT_A" class="oc-box acting">Robert Doles - Acting<br>DAS Enforcement</a>
+              <div class="oc-box vacant">Vacant<br>ADAS Enforcement Comp</div>
+              <a href="#SUTTON_JAMES_N" class="oc-box">James Sutton<br>Field Oversight</a>
+              <a href="#ROTH_NATHAN" class="oc-box acting">Nathan Roth - Acting<br>Office of Programs</a>
+              <div class="oc-box vacant">Vacant<br>Office of Enforcement</div>
+              <a href="#MCGLINCY_HUGH_JAMES" class="oc-box acting">Hugh McGlincy - Acting<br>Special Investigations</a>
+            </div>
+
+            <div class="oc-col">
+              <a href="#ROTH_NATHAN" class="oc-box acting">Nathan Roth - Acting<br>DAS Policy & Outreach</a>
+              <a href="#PACE_REX_JEFFERSON" class="oc-box acting">Rex Pace - Acting<br>Compliance & Disability</a>
+              <a href="#MCNALLY_CHARLES_EDWARD" class="oc-box">Charles McNally<br>Program Standards</a>
+              <a href="#FLEMING_TIFFANY_TAYLOR" class="oc-box">Tiffany Fleming<br>Enforcement Support</a>
+              <a href="#ROTH_NATHAN" class="oc-box">Nathan Roth<br>Education & Outreach</a>
+              <a href="#SPRINGER_IRIS" class="oc-box acting">Iris Springer-Elkerson - Acting<br>Policy & Leg. Initiatives</a>
+              <a href="#STEINECKER_ERIK_L" class="oc-box">Erik Steinecker<br>FHAP Division</a>
+              <a href="#VASILOPOULOS_KATHERINE" class="oc-box acting">Katherine Vasilopoulos - Acting<br>FHIP Division</a>
+            </div>
+
+            <div class="oc-col">
+              <div class="oc-region-list">
+                  <div style="text-align:center; font-weight:bold; border-bottom:1px solid #444; margin-bottom:8px;">REGION DIRECTORS</div>
+                  <a href="#WEAVER_DANIEL_J"><strong>I:</strong> Dan Weaver</a>
+                  <a href="#RIVERA_GIUSTI_IVETTE"><strong>II:</strong> Ivette Rivera-Giusti</a>
+                  <a href="#LEITH_RACHEL_L"><strong>III:</strong> Rachel Leith (Acting)</a>
+                  <a href="#MELTESEN_LON_DAVID"><strong>IV:</strong> Lon Meltesen (Acting)</a>
+                  <a href="#MELTESEN_LON_DAVID"><strong>V:</strong> Lon Meltesen</a>
+                  <a href="#LEWIS_CHRISTINA"><strong>VI:</strong> Christina Lewis</a>
+                  <a href="#WATSON_NATASHA_J"><strong>VII:</strong> Natasha Watson</a>
+                  <a href="#WATSON_NATASHA_J"><strong>VIII:</strong> Natasha Watson (Acting)</a>
+                  <a href="#PAI_SALLY_Y"><strong>IX:</strong> Sally Pai (Acting)</a>
+                  <a href="#LEE_BREANNE_ALISE"><strong>X:</strong> Breanne Lee (Acting)</a>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <div id="directory-root"></div>
 </main>
 
 <script>
-// Mocking the employee data structure for functionality
-const employees = [
-    {"EMPLOYEE NAME": "TRAINOR, CRAIG", "POSITION OFFICIAL TITLE": "Assistant Secretary", "EMPLOYEE WORK EMAIL": "craig.w.trainor@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "COOKE JR, KEVIN R", "POSITION OFFICIAL TITLE": "General Deputy Assistant Secretary", "EMPLOYEE WORK EMAIL": "Kevin.R.Cooke@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "GANO, JOSEPH L", "POSITION OFFICIAL TITLE": "Director, Administrative Services", "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "SMALLWOOD, MARCUS R", "POSITION OFFICIAL TITLE": "Director, Information Services", "EMPLOYEE WORK EMAIL": "Marcus.R.Smallwood@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "MONTGOMERY III, CHARLES M", "POSITION OFFICIAL TITLE": "Director, Mgt & Budget", "EMPLOYEE WORK EMAIL": "Charles.M.MontgomeryIII@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "WELLS, ERIC LAMONT", "POSITION OFFICIAL TITLE": "Director, Budget Division", "EMPLOYEE WORK EMAIL": "eric.l.wells@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "DOLES, ROBERT A", "POSITION OFFICIAL TITLE": "DAS for Enforcement", "EMPLOYEE WORK EMAIL": "Robert.a.doles@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "SUTTON, JAMES N", "POSITION OFFICIAL TITLE": "Director, Field Oversight", "EMPLOYEE WORK EMAIL": "James.N.Sutton@hud.gov", "DUTY STATION CITY STATE": "MIAMI, FL", "GEO REGION": "REGION 4"},
-    {"EMPLOYEE NAME": "ROTH, NATHAN", "POSITION OFFICIAL TITLE": "Acting Director, Office of Programs", "EMPLOYEE WORK EMAIL": "Nathan.S.Roth@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "MCGLINCY, HUGH JAMES", "POSITION OFFICIAL TITLE": "Acting Director, Special Investigations", "EMPLOYEE WORK EMAIL": "Hugh.J.McGlincy@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "PACE, REX JEFFERSON", "POSITION OFFICIAL TITLE": "Acting Director, Compliance", "EMPLOYEE WORK EMAIL": "Rex.J.Pace@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "MCNALLY, CHARLES EDWARD", "POSITION OFFICIAL TITLE": "Director, Program Standards", "EMPLOYEE WORK EMAIL": "Charles.McNally@hud.gov", "DUTY STATION CITY STATE": "NEW YORK, NY", "GEO REGION": "REGION 2"},
-    {"EMPLOYEE NAME": "FLEMING, TIFFANY TAYLOR", "POSITION OFFICIAL TITLE": "Director, Enforcement Support", "EMPLOYEE WORK EMAIL": "tiffany.t.fleming@hud.gov", "DUTY STATION CITY STATE": "WASHINGTON, DC", "GEO REGION": "HQ"},
-    {"EMPLOYEE NAME": "SPRINGER, IRIS", "POSITION OFFICIAL TITLE": "Acting Director, Policy", "EMPLOYEE WORK EMAIL": "Iris.Springer-Elkerson@hud.gov", "DUTY STATION CITY STATE": "NEW YORK, NY", "GEO REGION": "REGION 2"},
-    {"EMPLOYEE NAME": "STEINECKER, ERIK L", "POSITION OFFICIAL TITLE": "Director, FHAP", "EMPLOYEE WORK EMAIL": "Erik.L.Steinecker@hud.gov", "DUTY STATION CITY STATE": "SEATTLE, WA", "GEO REGION": "REGION 10"},
-    {"EMPLOYEE NAME": "VASILOPOULOS, KATHERINE", "POSITION OFFICIAL TITLE": "Acting Director, FHIP", "EMPLOYEE WORK EMAIL": "KATHERINE.VASILOPOULOS@HUD.GOV", "DUTY STATION CITY STATE": "NEW YORK, NY", "GEO REGION": "REGION 2"},
-    {"EMPLOYEE NAME": "WEAVER, DANIEL J", "POSITION OFFICIAL TITLE": "Region Director", "EMPLOYEE WORK EMAIL": "Daniel.J.Weaver@hud.gov", "DUTY STATION CITY STATE": "BOSTON, MA", "GEO REGION": "REGION 1"},
-    {"EMPLOYEE NAME": "RIVERA-GIUSTI, IVETTE", "POSITION OFFICIAL TITLE": "Region Director", "EMPLOYEE WORK EMAIL": "Ivette.M.Rivera-Giusti@hud.gov", "DUTY STATION CITY STATE": "NEW YORK, NY", "GEO REGION": "REGION 2"},
-    {"EMPLOYEE NAME": "LEITH, RACHEL L", "POSITION OFFICIAL TITLE": "Acting Region Director", "EMPLOYEE WORK EMAIL": "Rachel.L.Leith@hud.gov", "DUTY STATION CITY STATE": "BALTIMORE, MD", "GEO REGION": "REGION 3"},
-    {"EMPLOYEE NAME": "MELTESEN, LON DAVID", "POSITION OFFICIAL TITLE": "Region Director", "EMPLOYEE WORK EMAIL": "LON.D.MELTESEN@HUD.GOV", "DUTY STATION CITY STATE": "CHICAGO, IL", "GEO REGION": "REGION 5"},
-    {"EMPLOYEE NAME": "LEWIS, CHRISTINA", "POSITION OFFICIAL TITLE": "Region Director", "EMPLOYEE WORK EMAIL": "Christina.Lewis@hud.gov", "DUTY STATION CITY STATE": "HOUSTON, TX", "GEO REGION": "REGION 6"},
-    {"EMPLOYEE NAME": "WATSON, NATASHA J", "POSITION OFFICIAL TITLE": "Region Director", "EMPLOYEE WORK EMAIL": "Natasha.J.Watson@hud.gov", "DUTY STATION CITY STATE": "KANSAS CITY, KS", "GEO REGION": "REGION 7"},
-    {"EMPLOYEE NAME": "PAI, SALLY Y", "POSITION OFFICIAL TITLE": "Acting Region Director", "EMPLOYEE WORK EMAIL": "Sally.Y.Pai@hud.gov", "DUTY STATION CITY STATE": "SANTA ANA, CA", "GEO REGION": "REGION 9"},
-    {"EMPLOYEE NAME": "LEE, BREANNE ALISE", "POSITION OFFICIAL TITLE": "Acting Region Director", "EMPLOYEE WORK EMAIL": "Breanne.A.Lee@hud.gov", "DUTY STATION CITY STATE": "ANCHORAGE, AK", "GEO REGION": "REGION 10"}
-];
+(function () {
+  const root = document.getElementById('directory-root');
+  const searchInput = document.getElementById('globalSearch');
+  const btnGrid = document.getElementById('btnGrid');
+  const btnTable = document.getElementById('btnTable');
+  const btnCorr = document.getElementById('btnCorr');
+  const resultCount = document.getElementById('resultCount');
+  const orgWrapper = document.getElementById('org-chart-wrapper');
+  const orgChartBody = document.getElementById('orgChartBody');
+  const orgCollapseBtn = document.getElementById('orgCollapseBtn');
 
-function toggleOrg() {
-    const body = document.getElementById('orgBody');
-    const txt = document.getElementById('toggleText');
-    if(body.classList.contains('collapsed')) {
-        body.classList.remove('collapsed');
-        txt.textContent = "Collapse [-]";
-    } else {
-        body.classList.add('collapsed');
-        txt.textContent = "Expand [+]";
+  let employees = [];
+  let currentView = 'table';
+  let isCollapsed = false;
+
+  const k = {
+    name: "EMPLOYEE NAME",
+    title: "POSITION OFFICIAL TITLE",
+    email: "EMPLOYEE WORK EMAIL",
+    city: "DUTY STATION CITY STATE",
+    sup: "SUPERVISOR NAME",
+    geo: "GEO REGION",
+    code: "POSITION SUPERVISORY CODE AND DESCR"
+  };
+
+  /* Helper to generate consistent IDs for linking */
+  function getSafeId(name) {
+    return name.toUpperCase().replace(/[^A-Z]/g, '_');
+  }
+
+  function setActive(btn) {
+    [btnGrid, btnTable, btnCorr].forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function toggleOrg() {
+    isCollapsed = !isCollapsed;
+    orgChartBody.style.display = isCollapsed ? 'none' : 'block';
+    orgCollapseBtn.textContent = isCollapsed ? 'Expand' : 'Collapse';
+  }
+
+  document.getElementById('orgChartToggle').onclick = toggleOrg;
+
+  async function init() {
+    // In production, this would be fetch('employees.json')
+    // For this example, replace with your actual JSON data array
+    employees = [
+      // ... Paste the JSON data here ...
+    ];
+    
+    // Simulate loading data if you have an external file:
+    try {
+        const response = await fetch('employees.json');
+        employees = await response.json();
+    } catch(e) { console.log("External JSON not found, using internal data"); }
+
+    render();
+  }
+
+  function render(filter = "") {
+    root.innerHTML = "";
+    const term = filter.toLowerCase().trim();
+    let totalVisible = 0;
+
+    orgWrapper.style.display = (currentView === 'table' && !term) ? 'block' : 'none';
+
+    if (currentView === 'corr') {
+        renderCorrView(term);
+        return;
     }
-}
 
-function renderTable() {
-    const root = document.getElementById('directory-root');
-    let html = '<div class="table-wrap"><table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>';
+    const filtered = employees.filter(emp => 
+        Object.values(emp).some(v => String(v).toLowerCase().includes(term))
+    );
+
+    resultCount.textContent = `${filtered.length} Staff Members Found`;
+
+    if (currentView === 'grid') {
+        root.innerHTML = `<div class="grid">${renderGrid(filtered)}</div>`;
+    } else {
+        root.innerHTML = `<div class="table-wrap">${renderTable(filtered)}</div>`;
+    }
+  }
+
+  function renderGrid(data) {
+    return data.map(e => `
+      <article class="card" id="${getSafeId(e[k.name])}">
+        <h4>${e[k.name]} <span class="position-text">${e[k.title]}</span></h4>
+        <div style="font-size:0.85rem; margin-top:0.75rem;">
+          <a href="mailto:${e[k.email]}" style="color:var(--brand); text-decoration:none; font-weight:600;">${e[k.email]}</a><br>
+          <span style="color:var(--muted)">${e[k.city]}</span>
+        </div>
+      </article>`).join('');
+  }
+
+  function renderTable(data) {
+    const rows = data.map(e => `
+      <tr id="${getSafeId(e[k.name])}">
+        <td style="font-weight:700;">${e[k.name]}</td>
+        <td>${e[k.title]}</td>
+        <td>${e[k.email]}</td>
+        <td>${e[k.city]}</td>
+      </tr>`).join('');
+    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderCorrView(term) {
+    const filtered = employees.filter(emp => (emp[k.code] || "").trim() !== "" && Object.values(emp).some(v => String(v).toLowerCase().includes(term)));
+    resultCount.textContent = `${filtered.length} Codes Found`;
     
-    employees.forEach(emp => {
-        // Create unique ID for linking from Org Chart
-        const id = emp["EMPLOYEE NAME"].replace(/[^a-zA-Z]/g, "_");
-        html += `<tr id="${id}">
-            <td><strong>${emp["EMPLOYEE NAME"]}</strong></td>
-            <td>${emp["POSITION OFFICIAL TITLE"]}</td>
-            <td>${emp["EMPLOYEE WORK EMAIL"]}</td>
-            <td>${emp["DUTY STATION CITY STATE"]}</td>
-        </tr>`;
-    });
-    
-    html += '</tbody></table></div>';
+    let html = `<div class="corr-doc-outer"><div class="corr-doc-title"><h2>Program Offices and Correspondence Codes</h2></div>`;
+    html += `<table class="corr-doc-table"><thead><tr><th>Name</th><th>Position</th><th>Code</th></tr></thead><tbody>`;
+    html += filtered.map(e => `<tr><td>${e[k.name]}</td><td>${e[k.title]}</td><td style="font-weight:bold">${e[k.code]}</td></tr>`).join('');
+    html += `</tbody></table></div>`;
     root.innerHTML = html;
-    document.getElementById('resultCount').textContent = `${employees.length} Staff Members`;
-}
+  }
 
-// Initialize
-renderTable();
+  searchInput.addEventListener('input', e => render(e.target.value));
+  btnGrid.onclick = () => { currentView = 'grid'; setActive(btnGrid); render(searchInput.value); };
+  btnTable.onclick = () => { currentView = 'table'; setActive(btnTable); render(searchInput.value); };
+  btnCorr.onclick = () => { currentView = 'corr'; setActive(btnCorr); render(searchInput.value); };
+
+  init();
+})();
 </script>
 </body>
 </html>
+
 
 
 

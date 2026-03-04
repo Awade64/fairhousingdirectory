@@ -1,14 +1,5 @@
 [
-{
-   "EMPLOYEE NAME": "JOSEPH, GANO L",
-   "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
-   "SUPERVISOR NAME": "Cooke Jr,Kevin R",
-   "HOCS HQ": { "FIELD": "HQ" },
-   "POSITION OFFICIAL TITLE": "Associate Deputy Assistant Secretary for Operations and Management (SES) / Director, Administrative Services",
-   "POSITION SUPERVISORY CODE AND DESCR": "EG",
-   "DUTY STATION CITY STATE": "WASHINGTON, DC",
-   "GEO REGION": "REGION 3"
-},
+
  {
    "EMPLOYEE NAME": "ADAMS, SHERRIE D",
    "EMPLOYEE WORK EMAIL": "Sherrie.D.Adams@hud.gov",
@@ -908,17 +899,7 @@
    "POSITION SUPERVISORY CODE AND DESCR": "",
    "DUTY STATION CITY STATE": "CHICAGO, IL",
    "GEO REGION": "REGION 5"
-},
- {
-   "EMPLOYEE NAME": "JONES-PETERS, JACQUELINE",
-   "EMPLOYEE WORK EMAIL": "Jacqueline.Jones-Peters@hud.gov",
-   "SUPERVISOR NAME": "Kevin,Cooke R",
-   "HOCS HQ": { "FIELD": "HQ" },
-   "POSITION OFFICIAL TITLE": "Director, Resource Management Division",
-   "POSITION SUPERVISORY CODE AND DESCR": "EGCA",
-   "DUTY STATION CITY STATE": "WASHINGTON, DC",
-   "GEO REGION": "REGION 3"
-},
+}, 
  {
    "EMPLOYEE NAME": "JOSEPH, GANO L",
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
@@ -3380,6 +3361,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

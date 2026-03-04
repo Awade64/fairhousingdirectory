@@ -28,7 +28,7 @@
 
     .controls-container {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(248, 250, 252, 0.9); backdrop-filter: blur(10px); padding: 1rem 0;
+      background: rgba(248,250,252,0.9); backdrop-filter: blur(10px); padding: 1rem 0;
     }
 
     .section {
@@ -66,250 +66,146 @@
     th { text-align: left; padding: 1rem; background: #f8fafc; border-bottom: 2px solid var(--border); color: var(--brand); text-transform: uppercase; font-size: 0.75rem; }
     td { padding: 1rem; border-bottom: 1px solid var(--border); }
 
-    /* ══════════════════════════════════════════════════
-       ORG CHART STYLES
-       ══════════════════════════════════════════════════ */
-    #org-chart-wrapper {
-      margin-bottom: 2rem;
-    }
+    /* ══════════════════════════════════════════════
+       ORG CHART PANEL WRAPPER
+       ══════════════════════════════════════════════ */
+    #org-chart-wrapper { margin-bottom: 2rem; }
 
     .org-chart-panel {
-      background: #fff;
-      border-radius: var(--radius);
+      background: #fff; border-radius: var(--radius);
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      border: 1px solid var(--border);
-      overflow: hidden;
+      border: 1px solid var(--border); overflow: hidden;
     }
 
     .org-chart-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.25rem;
-      background: var(--brand);
-      color: #fff;
-      cursor: pointer;
-      user-select: none;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1.25rem; background: var(--brand); color: #fff;
+      cursor: pointer; user-select: none;
     }
-
-    .org-chart-header h3 {
-      margin: 0;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
+    .org-chart-header h3 { margin: 0; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
 
     .org-toggle-btn {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: #fff;
-      padding: 0.3rem 0.85rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: rgba(255,255,255,0.2); border: none; color: #fff;
+      padding: 0.3rem 0.85rem; border-radius: 6px; font-size: 0.8rem;
+      font-weight: 600; cursor: pointer; transition: background 0.2s;
     }
     .org-toggle-btn:hover { background: rgba(255,255,255,0.35); }
 
     .org-chart-body {
       overflow-x: auto;
-      padding: 2rem 1.5rem;
+      padding: 1.5rem 1rem 2rem;
       background: #f8fafc;
     }
 
-    .org-tree {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
+    /* ══════════════════════════════════════════════
+       ORG CHART INTERNAL STYLES (oc-*)
+       ══════════════════════════════════════════════ */
+    .oc-page {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px; color: #000;
+      min-width: 860px;
     }
 
-    /* Level containers */
-    .org-level {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      position: relative;
-      width: 100%;
+    /* Full-width header bar */
+    .oc-header {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; padding: 8px 16px 10px;
+      border-bottom: 3px solid #1a3a6b;
+      width: 100%; box-sizing: border-box; background: #fff;
+    }
+    .oc-header-title { font-size: 17px; font-weight: bold; color: #1a3a6b; text-align: center; }
+    .oc-header-date  { color: red; font-size: 11px; margin-top: 2px; text-align: center; }
+
+    /* Generic box */
+    .bx {
+      border: 1.5px solid #555; padding: 5px 7px;
+      text-align: center; background: #fff;
+      font-size: 10px; line-height: 1.4; display: inline-block;
+    }
+    .bx.blue { background: #b3c6de; }
+    .bx .v   { color: red; font-weight: bold; display: block; }
+    .bx .n   { font-weight: bold; display: block; }
+
+    /* Staff side panel */
+    .oc-staff-panel {
+      border: 1.5px solid #555; padding: 5px 9px;
+      font-size: 10px; line-height: 1.7; text-align: left;
+      background: #fff; display: inline-block;
+    }
+    .oc-staff-panel .spt {
+      font-weight: bold; border-bottom: 1px solid #aaa;
+      padding-bottom: 2px; margin-bottom: 3px; white-space: nowrap;
+    }
+    .oc-staff-panel .sn { font-weight: bold; }
+
+    /* Region directors box */
+    .oc-region-box {
+      border: 1.5px solid #555; padding: 5px 8px; background: #fff;
+      font-size: 9px; line-height: 1.55; text-align: left; display: inline-block; min-width: 172px;
+    }
+    .oc-region-box .rt {
+      font-weight: bold; font-size: 10px;
+      border-bottom: 1px solid #aaa; padding-bottom: 2px; margin-bottom: 3px;
     }
 
-    .org-connector-down {
-      width: 2px;
-      height: 28px;
-      background: #94a3b8;
-      margin: 0 auto;
-    }
+    /* ── CSS tree connectors ── */
+    .oc-tree, .oc-tree ul, .oc-tree li { list-style: none; margin: 0; padding: 0; }
 
-    .org-connector-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      position: relative;
-      width: 100%;
-      gap: 1rem;
-      padding-top: 0;
+    .oc-tree ul {
+      display: flex; justify-content: center;
+      position: relative; padding-top: 18px;
     }
+    /* Vertical stub from parent box down to horizontal rail */
+    .oc-tree ul::before {
+      content: ''; position: absolute;
+      top: 0; left: 50%; transform: translateX(-1px);
+      width: 2px; height: 18px; background: #666;
+    }
+    .oc-tree li {
+      display: flex; flex-direction: column; align-items: center;
+      position: relative; padding: 18px 4px 0; flex: 1;
+    }
+    /* Left half of horizontal rail */
+    .oc-tree li::before {
+      content: ''; position: absolute;
+      top: 0; right: 50%; width: 50%; height: 18px;
+      border-top: 2px solid #666;
+    }
+    /* Right half + drop line */
+    .oc-tree li::after {
+      content: ''; position: absolute;
+      top: 0; left: 50%; width: 50%; height: 18px;
+      border-top: 2px solid #666; border-left: 2px solid #666;
+    }
+    .oc-tree li:only-child { padding-top: 0; }
+    .oc-tree li:only-child::before,
+    .oc-tree li:only-child::after { display: none; }
+    .oc-tree li:first-child::before { border: none; }
+    .oc-tree li:last-child::after   { border: none; }
+    .oc-tree li:last-child::before  { border-right: 2px solid #666; }
 
-    .org-branch {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 160px;
-    }
+    .oc-root-vline { width: 2px; height: 18px; background: #666; margin: 0 auto; }
 
-    .org-branch-line {
-      width: 2px;
-      height: 20px;
-      background: #94a3b8;
-    }
+    /* ══════════════════════════════════════════════
+       CORRESPONDENT CODE
+       ══════════════════════════════════════════════ */
+    .corr-doc-outer { background: #fff; padding: 2.5rem 2.5rem 3rem; }
+    .corr-doc-title { text-align: center; margin-bottom: 1.75rem; }
+    .corr-doc-title h2 { font-family: 'Georgia','Times New Roman',serif; font-size: 1.05rem; font-weight: 700; color: #111; margin: 0; line-height: 1.65; }
 
-    /* Org node cards */
-    .org-node {
-      border-radius: 8px;
-      padding: 0.65rem 1rem;
-      font-size: 0.78rem;
-      text-align: center;
-      border: 2px solid transparent;
-      min-width: 150px;
-      max-width: 200px;
-      position: relative;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.09);
-      line-height: 1.35;
-    }
-
-    .org-node .node-name {
-      font-weight: 700;
-      display: block;
-      margin-bottom: 2px;
-    }
-
-    .org-node .node-title {
-      font-size: 0.68rem;
-      opacity: 0.82;
-      display: block;
-      line-height: 1.3;
-    }
-
-    .org-node .node-count {
-      display: inline-block;
-      margin-top: 4px;
-      background: rgba(0,0,0,0.12);
-      border-radius: 999px;
-      padding: 1px 8px;
-      font-size: 0.65rem;
-      font-weight: 700;
-    }
-
-    /* Node color variants */
-    .org-node.level-as {
-      background: var(--brand);
-      color: #fff;
-      border-color: var(--nav-green);
-      padding: 0.85rem 1.2rem;
-      font-size: 0.82rem;
-    }
-
-    .org-node.level-dep {
-      background: #1a4e8a;
-      color: #fff;
-      border-color: #2563eb;
-    }
-
-    .org-node.level-region {
-      background: #fff;
-      color: var(--brand);
-      border-color: var(--brand);
-    }
-
-    .org-node.level-group {
-      background: #f0f9ff;
-      color: #0369a1;
-      border-color: #7dd3fc;
-      font-size: 0.72rem;
-      min-width: 130px;
-    }
-
-    /* Horizontal branch line across multiple children */
-    .org-horiz-line {
-      height: 2px;
-      background: #94a3b8;
-      width: calc(100% - 2rem);
-      margin: 0 1rem;
-      position: relative;
-    }
-
-    /* ══════════════════════════════════════════════════
-       CORRESPONDENT CODE — Government Document Style
-       ══════════════════════════════════════════════════ */
-    .corr-doc-outer {
-      background: #fff;
-      padding: 2.5rem 2.5rem 3rem;
-    }
-
-    .corr-doc-title {
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-    .corr-doc-title h2 {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #111;
-      margin: 0;
-      line-height: 1.65;
-    }
-
-    .corr-doc-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 0.875rem;
-      border: 1.5px solid #888;
-    }
-
+    .corr-doc-table { width: 100%; border-collapse: collapse; font-family: 'Georgia','Times New Roman',serif; font-size: 0.875rem; border: 1.5px solid #888; }
     .corr-doc-table col.col-name     { width: 22%; }
     .corr-doc-table col.col-position { width: 38%; }
     .corr-doc-table col.col-location { width: 22%; }
     .corr-doc-table col.col-code     { width: 18%; }
-
-    .corr-doc-table thead th {
-      background-color: #c8c8c8;
-      color: #111;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      padding: 0.6rem 0.9rem;
-      border: 1.5px solid #888;
-      text-align: left;
-      vertical-align: bottom;
-      line-height: 1.35;
-    }
-
+    .corr-doc-table thead th { background-color: #c8c8c8; color: #111; font-family: 'Georgia','Times New Roman',serif; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.6rem 0.9rem; border: 1.5px solid #888; text-align: left; vertical-align: bottom; line-height: 1.35; }
     .corr-doc-table tbody tr:nth-child(odd)  td { background-color: #ffffff; }
     .corr-doc-table tbody tr:nth-child(even) td { background-color: #d9d9d9; }
     .corr-doc-table tbody tr:hover td { background-color: #c5d9f0 !important; }
-
-    .corr-doc-table tbody td {
-      padding: 0.55rem 0.9rem;
-      border: 1.5px solid #888;
-      color: #111;
-      vertical-align: top;
-      line-height: 1.4;
-    }
-
+    .corr-doc-table tbody td { padding: 0.55rem 0.9rem; border: 1.5px solid #888; color: #111; vertical-align: top; line-height: 1.4; }
     .corr-doc-table tbody td.td-name { font-weight: 600; }
     .corr-doc-table tbody td.td-code { font-weight: 700; }
-
-    .corr-no-results {
-      text-align: center; padding: 2rem;
-      color: var(--muted); font-style: italic;
-      font-family: 'Georgia', serif;
-    }
+    .corr-no-results { text-align: center; padding: 2rem; color: var(--muted); font-style: italic; font-family: 'Georgia',serif; }
   </style>
 </head>
 <body>
@@ -355,20 +251,20 @@
 </main>
 
 <script>
-(function() {
-  const root        = document.getElementById('directory-root');
-  const searchInput = document.getElementById('globalSearch');
-  const btnGrid     = document.getElementById('btnGrid');
-  const btnTable    = document.getElementById('btnTable');
-  const btnCorr     = document.getElementById('btnCorr');
-  const resultCount = document.getElementById('resultCount');
-  const orgWrapper  = document.getElementById('org-chart-wrapper');
+(function () {
+  const root            = document.getElementById('directory-root');
+  const searchInput     = document.getElementById('globalSearch');
+  const btnGrid         = document.getElementById('btnGrid');
+  const btnTable        = document.getElementById('btnTable');
+  const btnCorr         = document.getElementById('btnCorr');
+  const resultCount     = document.getElementById('resultCount');
+  const orgWrapper      = document.getElementById('org-chart-wrapper');
   const orgChartContent = document.getElementById('org-chart-content');
   const orgCollapseBtn  = document.getElementById('orgCollapseBtn');
   const orgChartBody    = document.getElementById('orgChartBody');
 
   let employees   = [];
-  let currentView = 'table'; // ← DEFAULT: Table View
+  let currentView = 'table';
   let orgCollapsed = false;
   orgChartBody.style.display = 'block';
   orgCollapseBtn.textContent = 'Collapse';
@@ -384,6 +280,7 @@
     room:  "ROOM NUMBER"
   };
 
+  /* ─── Helpers ─────────────────────────────────────────── */
   function formatNameFirstLast(name) {
     if (!name || !name.includes(',')) return name;
     const parts = name.split(',').map(p => p.trim());
@@ -403,149 +300,219 @@
     btn.classList.add('active');
   }
 
-  /* ─────────────────────────────────────────────────── */
-  /* ORG CHART BUILDER                                    */
-  /* ─────────────────────────────────────────────────── */
+  /* ═══════════════════════════════════════════════════════
+     DATA-DRIVEN ORG CHART
+     ═══════════════════════════════════════════════════════ */
   function buildOrgChart() {
-    // Build hierarchy buckets
-    const titleLookup = {};
-    employees.forEach(emp => {
-      const key = cleanNameForMatch(emp[k.name]);
-      if (key) titleLookup[key] = emp[k.title] || "";
-    });
+    if (!employees.length) return;
 
-    // Identify key leaders
-    let asNode = null;
-    let depNode = null;
-    const regionMap = {}; // region → { groups: {groupKey → count} }
+    /* ── 1. Build lookup: normName → employee & normSup → [reports] ── */
+    const byNorm  = {};   // normalizedName → employee object
+    const reports = {};   // normalizedSupervisorName → [employee objects]
 
     employees.forEach(emp => {
-      const sup = String(emp[k.sup] || "").trim();
-      const supNorm = cleanNameForMatch(sup);
-      let reg = emp[k.geo] || "Other";
-      const city = String(emp[k.city]).toLowerCase();
-
-      if (reg.toLowerCase().includes("hq") ||
-          (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
-        reg = "Headquarters";
-      }
-
-      // Detect AS & GDAS by supervisor patterns
-      if (supNorm.includes("TRAINOR")) {
-        if (!asNode) asNode = { name: "Craig Trainor", title: "Assistant Secretary for FHEO", count: 0 };
-        asNode.count++;
-      } else if (supNorm.includes("COOKE")) {
-        if (!depNode) depNode = { name: "Kevin R. Cooke Jr.", title: "General Deputy Assistant Secretary", count: 0 };
-        depNode.count++;
-      }
-
-      if (!regionMap[reg]) regionMap[reg] = { count: 0 };
-      regionMap[reg].count++;
+      const n = cleanNameForMatch(emp[k.name]);
+      if (n) byNorm[n] = emp;
     });
 
-    // Render the org chart
-    const hqCount = regionMap["Headquarters"] ? regionMap["Headquarters"].count : 0;
-    const regions = Object.keys(regionMap).filter(r => r !== "Headquarters").sort();
-
-    let html = `<div class="org-tree">`;
-
-    // Top: Assistant Secretary
-    if (asNode) {
-      html += `
-        <div class="org-level">
-          <div class="org-node level-as">
-            <span class="node-name">${asNode.name}</span>
-            <span class="node-title">${asNode.title}</span>
-            <span class="node-count">${asNode.count} staff reporting</span>
-          </div>
-        </div>
-        <div class="org-connector-down"></div>`;
-    }
-
-    // General Deputy AS
-    if (depNode) {
-      html += `
-        <div class="org-level">
-          <div class="org-node level-dep">
-            <span class="node-name">${depNode.name}</span>
-            <span class="node-title">${depNode.title}</span>
-            <span class="node-count">${depNode.count} staff reporting</span>
-          </div>
-        </div>
-        <div class="org-connector-down"></div>`;
-    }
-
-    // HQ + Regions row
-    const allRegionNodes = [];
-    if (hqCount > 0) {
-      allRegionNodes.push({ label: "HQ / Washington DC", count: hqCount, type: 'hq' });
-    }
-    regions.forEach(r => {
-      allRegionNodes.push({ label: r, count: regionMap[r].count, type: 'region' });
+    employees.forEach(emp => {
+      const sn = cleanNameForMatch(emp[k.sup] || '');
+      if (!reports[sn]) reports[sn] = [];
+      reports[sn].push(emp);
     });
 
-    if (allRegionNodes.length) {
-      html += `<div class="org-connector-row" style="position:relative;">`;
+    /* ── 2. Find root (Assistant Secretary — Trainor) ── */
+    let rootEmp = null;
 
-      // Horizontal line
-      if (allRegionNodes.length > 1) {
-        html += `<div style="position:absolute;top:0;left:calc(50% - ${Math.min(allRegionNodes.length * 90, 500)}px);width:${Math.min(allRegionNodes.length * 180, 1000)}px;height:2px;background:#94a3b8;"></div>`;
+    // Primary: employee whose own supervisor is NOT in the dataset
+    // AND who has direct reports AND whose title includes "Assistant Secretary"
+    employees.forEach(emp => {
+      const norm    = cleanNameForMatch(emp[k.name]);
+      const supNorm = cleanNameForMatch(emp[k.sup] || '');
+      const title   = (emp[k.title] || '').toUpperCase();
+      if (!byNorm[supNorm] && reports[norm] &&
+          (title.includes('ASSISTANT SECRETARY') || norm.includes('TRAINOR'))) {
+        rootEmp = emp;
       }
+    });
 
-      allRegionNodes.forEach(node => {
-        html += `
-          <div class="org-branch">
-            <div class="org-branch-line"></div>
-            <div class="org-node level-region">
-              <span class="node-name" style="font-size:0.73rem;">${node.label}</span>
-              <span class="node-count">${node.count} employees</span>
-            </div>
-          </div>`;
+    // Fallback: find by name keyword
+    if (!rootEmp) {
+      rootEmp = Object.values(byNorm).find(e =>
+        cleanNameForMatch(e[k.name]).includes('TRAINOR') ||
+        (e[k.title] || '').toUpperCase().includes('ASSISTANT SECRETARY FOR FAIR')
+      ) || null;
+    }
+
+    // Last resort: employee with the most direct reports
+    if (!rootEmp) {
+      let max = 0;
+      Object.keys(reports).forEach(sn => {
+        if (byNorm[sn] && reports[sn].length > max) {
+          max = reports[sn].length;
+          rootEmp = byNorm[sn];
+        }
       });
-
-      html += `</div>`;
     }
 
-    html += `</div>`; // end org-tree
+    if (!rootEmp) {
+      orgChartContent.innerHTML =
+        '<p style="padding:2rem;text-align:center;color:var(--muted)">Unable to build org chart from current data.</p>';
+      return;
+    }
 
-    // Summary stats bar
-    const totalEmp = employees.length;
-    const totalRegions = regions.length;
-    html = `
-      <div style="display:flex;gap:2rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap;">
-        <div style="text-align:center;padding:0.75rem 1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-          <div style="font-size:1.6rem;font-weight:800;color:var(--brand);">${totalEmp}</div>
-          <div style="font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;">Total Employees</div>
-        </div>
-        <div style="text-align:center;padding:0.75rem 1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-          <div style="font-size:1.6rem;font-weight:800;color:var(--nav-green);">${totalRegions}</div>
-          <div style="font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;">Regional Offices</div>
-        </div>
-        ${hqCount ? `<div style="text-align:center;padding:0.75rem 1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-          <div style="font-size:1.6rem;font-weight:800;color:var(--accent-red);">${hqCount}</div>
-          <div style="font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;">HQ Staff</div>
-        </div>` : ''}
-      </div>
-    ` + html;
+    /* ── 3. Separate root's direct staff: advisors vs line reports ── */
+    const rootNorm    = cleanNameForMatch(rootEmp[k.name]);
+    const rootReports = reports[rootNorm] || [];
 
-    orgChartContent.innerHTML = html;
+    const advisors   = rootReports.filter(e =>
+      (e[k.title] || '').toLowerCase().includes('advisor'));
+    const lineReports = rootReports.filter(e =>
+      !(e[k.title] || '').toLowerCase().includes('advisor'));
+
+    /* ── 4. Helpers for rendering ── */
+
+    // Blue box = senior leadership (AS / General Deputy)
+    function isBlueBox(emp) {
+      const t = (emp[k.title] || '').toUpperCase();
+      return t.includes('ASSISTANT SECRETARY') || t.includes('GENERAL DEPUTY');
+    }
+
+    // Detect when a group of employees are predominantly region directors
+    function isRegionGroup(emps) {
+      if (emps.length < 3) return false;
+      const regionCount = emps.filter(e => {
+        const geo = String(e[k.geo] || '').toUpperCase();
+        return /REGION\s*[IVX\d]+/.test(geo) || geo.includes('REGION');
+      }).length;
+      return regionCount >= Math.ceil(emps.length * 0.6);
+    }
+
+    // Sort children: General Deputy first, then alphabetically by name
+    function sortChildren(arr) {
+      return [...arr].sort((a, b) => {
+        const aGD = (a[k.title] || '').toUpperCase().includes('GENERAL DEPUTY');
+        const bGD = (b[k.title] || '').toUpperCase().includes('GENERAL DEPUTY');
+        if (aGD && !bGD) return -1;
+        if (!aGD && bGD) return  1;
+        return String(a[k.name]).localeCompare(String(b[k.name]));
+      });
+    }
+
+    /* ── 5. Recursive node renderer ── */
+    function renderNode(emp, visited) {
+      const norm = cleanNameForMatch(emp[k.name]);
+      if (visited.has(norm)) return ''; // guard against circular refs
+      const nextVisited = new Set(visited).add(norm);
+
+      const displayName = formatNameFirstLast(emp[k.name]) || '—';
+      const title       = emp[k.title] || '';
+      const blueClass   = isBlueBox(emp) ? ' blue' : '';
+      const kids        = reports[norm] || [];
+
+      // The box itself
+      const boxHtml = `<div class="bx${blueClass}" style="min-width:130px;">
+        <span class="n">${displayName}</span>
+        <span>${title}</span>
+      </div>`;
+
+      if (!kids.length) return boxHtml;
+
+      // Special rendering: region director group → show as region box
+      if (isRegionGroup(kids)) {
+        const regionRows = [...kids]
+          .sort((a, b) => String(a[k.geo] || '').localeCompare(String(b[k.geo] || '')))
+          .map(r =>
+            `<div><b>${r[k.geo] || ''}</b>&nbsp;${formatNameFirstLast(r[k.name])}</div>`
+          ).join('');
+        return boxHtml + `<ul><li>
+          <div class="oc-region-box">
+            <div class="rt">REGION DIRECTORS</div>${regionRows}
+          </div>
+        </li></ul>`;
+      }
+
+      // Normal children
+      const childLis = sortChildren(kids)
+        .map(r => `<li>${renderNode(r, nextVisited)}</li>`)
+        .join('');
+      return boxHtml + `<ul>${childLis}</ul>`;
+    }
+
+    /* ── 6. Assemble full chart HTML ── */
+    const asDisplayName = formatNameFirstLast(rootEmp[k.name]);
+    const asTitle       = rootEmp[k.title] || 'Assistant Secretary';
+
+    const staffPanelRows = advisors.map(a =>
+      `<div><span class="sn">${formatNameFirstLast(a[k.name])}</span> &ndash; ${a[k.title]}</div>`
+    ).join('');
+
+    const lineItems = sortChildren(lineReports)
+      .map(r => `<li>${renderNode(r, new Set([rootNorm]))}</li>`)
+      .join('');
+
+    orgChartContent.innerHTML = `
+      <div class="oc-page">
+
+        <!-- Full-width header matching the image -->
+        <div class="oc-header">
+          <svg width="46" height="46" viewBox="0 0 100 100" style="flex-shrink:0;">
+            <circle cx="50" cy="50" r="47" fill="#1a3a6b" stroke="#c8a900" stroke-width="4"/>
+            <text x="50" y="38" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold" font-family="Arial">U.S. DEPT. OF HOUSING</text>
+            <text x="50" y="50" text-anchor="middle" fill="#fff" font-size="8" font-family="Arial">AND URBAN</text>
+            <text x="50" y="62" text-anchor="middle" fill="#fff" font-size="8" font-family="Arial">DEVELOPMENT</text>
+          </svg>
+          <div>
+            <div class="oc-header-title">OFFICE OF FAIR HOUSING AND EQUAL OPPORTUNITY (FHEO)</div>
+            <div class="oc-header-date">Current as of February 3, 2026</div>
+          </div>
+        </div>
+
+        <!-- Level 0: AS box centered, advisors panel to the right -->
+        <div style="display:flex;align-items:flex-start;justify-content:center;width:100%;margin-top:14px;">
+          <div style="flex:1;"></div>
+          <div style="flex:0 0 auto;">
+            <div class="bx blue" style="min-width:175px;padding:8px 14px;">
+              <span class="n" style="font-size:11px;">${asDisplayName}</span>
+              <span style="display:block;">${asTitle}</span>
+            </div>
+          </div>
+          <div style="flex:1;padding-left:16px;">
+            ${advisors.length ? `
+            <div class="oc-staff-panel">
+              <div class="spt">Assistant Secretary: HON. CRAIG TRAINOR &amp; STAFF</div>
+              ${staffPanelRows}
+            </div>` : ''}
+          </div>
+        </div>
+
+        <!-- Root vertical connector -->
+        <div class="oc-root-vline"></div>
+
+        <!-- Recursive tree -->
+        <div class="oc-tree">
+          <ul style="padding-top:0;width:100%;">
+            ${lineItems}
+          </ul>
+        </div>
+
+      </div>`;
   }
 
   /* Org chart collapse toggle */
-  orgCollapseBtn.addEventListener('click', (e) => {
+  orgCollapseBtn.addEventListener('click', e => {
     e.stopPropagation();
     orgCollapsed = !orgCollapsed;
     orgChartBody.style.display = orgCollapsed ? 'none' : 'block';
     orgCollapseBtn.textContent = orgCollapsed ? 'Expand' : 'Collapse';
   });
-
   document.getElementById('orgChartToggle').addEventListener('click', () => {
     orgCollapsed = !orgCollapsed;
     orgChartBody.style.display = orgCollapsed ? 'none' : 'block';
     orgCollapseBtn.textContent = orgCollapsed ? 'Expand' : 'Collapse';
   });
 
-  /* ─────────────────────────────────────────────────── */
+  /* ─── Data load ─────────────────────────────────────────── */
   async function init() {
     try {
       const res = await fetch('employees.json');
@@ -558,13 +525,12 @@
     }
   }
 
-  /* ─────────────────────────────────────────────────── */
+  /* ─── Render directory ──────────────────────────────────── */
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
     let totalVisible = 0;
 
-    // Show/hide org chart only in table view
     orgWrapper.style.display = (currentView === 'table') ? 'block' : 'none';
 
     const titleLookup = {};
@@ -593,7 +559,6 @@
 
       const outer = document.createElement('div');
       outer.className = 'corr-doc-outer';
-
       outer.innerHTML = `
         <div class="corr-doc-title">
           <h2>Office of Fair Housing and Equal Opportunity<br>
@@ -607,11 +572,11 @@
       }
 
       const rows = filtered.map(e => {
-        const name     = formatNameFirstLast(e[k.name]) || '—';
+        const name    = formatNameFirstLast(e[k.name]) || '—';
         const position = e[k.title] || '—';
         const locLine  = [e[k.city], e[k.room] ? `Room ${e[k.room]}` : '']
                            .filter(Boolean).join('<br>') || '—';
-        const code     = e[k.code] || '—';
+        const code    = e[k.code] || '—';
         return `<tr>
           <td class="td-name">${name}</td>
           <td>${position}</td>
@@ -623,19 +588,13 @@
       outer.innerHTML += `
         <table class="corr-doc-table">
           <colgroup>
-            <col class="col-name">
-            <col class="col-position">
-            <col class="col-location">
-            <col class="col-code">
+            <col class="col-name"><col class="col-position">
+            <col class="col-location"><col class="col-code">
           </colgroup>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Location /<br>Room Number</th>
-              <th>Correspondence<br>Code</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Name</th><th>Position</th>
+            <th>Location /<br>Room Number</th><th>Correspondence<br>Code</th>
+          </tr></thead>
           <tbody>${rows}</tbody>
         </table>`;
 
@@ -697,10 +656,13 @@
 
       Object.keys(hierarchy[region]).sort().forEach(groupKey => {
         const staff = hierarchy[region][groupKey];
-        staff.sort((a, b) => String(a[k.name]).toUpperCase().localeCompare(String(b[k.name]).toUpperCase()));
+        staff.sort((a, b) =>
+          String(a[k.name]).toUpperCase().localeCompare(String(b[k.name]).toUpperCase())
+        );
 
         const displayHeader = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
-        const hColor = region === "Headquarters Senior Leadership" ? "var(--accent-red)" : "var(--brand)";
+        const hColor = region === "Headquarters Senior Leadership"
+          ? "var(--accent-red)" : "var(--brand)";
 
         const sec = document.createElement('section');
         sec.className = 'section';
@@ -749,6 +711,7 @@
 </script>
 </body>
 </html>
+
 
 
 

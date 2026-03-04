@@ -541,21 +541,24 @@
 
     /* ── CORRESPONDENT CODE VIEW ── */
     if (currentView === 'corr') {
-      const filtered = employees.filter(emp =>
-        !term || Object.values(emp).some(v => String(v).toLowerCase().includes(term))
-      );
+      // Updated filter: must have a valid code AND match the search term (if any)
+      const filtered = employees.filter(emp => {
+        const codeValue = (emp[k.code] || "").trim();
+        const hasValidCode = codeValue !== "" && codeValue !== "—";
+        const matchesSearch = !term || Object.values(emp).some(v => String(v).toLowerCase().includes(term));
+        
+        return hasValidCode && matchesSearch;
+      });
 
+      // Sort alphabetically by the Correspondence Code
       filtered.sort((a, b) => {
         const cA = (a[k.code] || "").trim();
         const cB = (b[k.code] || "").trim();
-        if (cA && !cB) return -1;
-        if (!cA && cB) return  1;
-        if (cA && cB)  return cA.localeCompare(cB);
-        return String(a[k.name]).localeCompare(String(b[k.name]));
+        return cA.localeCompare(cB);
       });
 
       totalVisible = filtered.length;
-      resultCount.textContent = `${totalVisible} Employees Found`;
+      resultCount.textContent = `${totalVisible} Staff with Codes Found`;
 
       const outer = document.createElement('div');
       outer.className = 'corr-doc-outer';
@@ -566,17 +569,17 @@
         </div>`;
 
       if (!filtered.length) {
-        outer.innerHTML += `<p class="corr-no-results">No employees match your search.</p>`;
+        outer.innerHTML += `<p class="corr-no-results">No staff with correspondence codes found.</p>`;
         root.appendChild(outer);
         return;
       }
 
       const rows = filtered.map(e => {
-        const name    = formatNameFirstLast(e[k.name]) || '—';
+        const name     = formatNameFirstLast(e[k.name]) || '—';
         const position = e[k.title] || '—';
         const locLine  = [e[k.city], e[k.room] ? `Room ${e[k.room]}` : '']
                            .filter(Boolean).join('<br>') || '—';
-        const code    = e[k.code] || '—';
+        const code     = e[k.code] || '—';
         return `<tr>
           <td class="td-name">${name}</td>
           <td>${position}</td>
@@ -601,7 +604,6 @@
       root.appendChild(outer);
       return;
     }
-
     /* ── GRID / TABLE VIEWS ── */
     const hierarchy = {};
 
@@ -711,6 +713,7 @@
 </script>
 </body>
 </html>
+
 
 
 

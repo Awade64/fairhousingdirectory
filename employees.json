@@ -4,7 +4,7 @@
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": { "FIELD": "HQ" },
-   "POSITION OFFICIAL TITLE": "Acting Associate DAS for Operations and Management (SES) / Director, Administrative Services",
+   "POSITION OFFICIAL TITLE": "Associate Deputy Assistant Secretary for Operations and Management (SES) / Director, Administrative Services",
    "POSITION SUPERVISORY CODE AND DESCR": "EG",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
@@ -662,7 +662,7 @@
  {
    "EMPLOYEE NAME": "COOPER, LAURA THOMAS",
    "EMPLOYEE WORK EMAIL": "Laura.T.Cooper@hud.gov",
-   "SUPERVISOR NAME": "Gano,Joseph Lynn",
+   "SUPERVISOR NAME": "Gano,Joseph L",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "MGMT ANAL",
    "POSITION SUPERVISORY CODE AND DESCR": "",
@@ -924,7 +924,7 @@
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
    "SUPERVISOR NAME": "Kevin,Cooke R",
    "HOCS HQ": { "FIELD": "HQ" },
-   "POSITION OFFICIAL TITLE": "Acting Associate DAS for Operations and Management (SES) / Director, Administrative Services",
+   "POSITION OFFICIAL TITLE": "Associate Deputy Assistant Secretary for Operations and Management (SES) / Director, Administrative Services",
    "POSITION SUPERVISORY CODE AND DESCR": "EGC - Supervisor or Manager",
    "DUTY STATION CITY STATE": "WASHINGTON, DC",
    "GEO REGION": "REGION 3"
@@ -3380,6 +3380,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

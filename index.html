@@ -206,6 +206,39 @@
       .split(',').map(p => p.trim()).sort().join('');
   }
 
+  /**
+   * Deduplicate employees from the raw JSON array.
+   *
+   * Two records are considered the same person when their
+   * normalised name AND normalised email both match.
+   * If either field is blank we fall back to just the other field.
+   * The first occurrence wins; all subsequent duplicates are dropped.
+   */
+  function deduplicateEmployees(raw) {
+    const seen = new Set();
+    return raw.filter(emp => {
+      const normName  = String(emp[k.name]  || "").toUpperCase().replace(/\s+/g, "").trim();
+      const normEmail = String(emp[k.email] || "").toLowerCase().replace(/\s+/g, "").trim();
+
+      // Build a composite key; use whichever fields are populated
+      let key = "";
+      if (normName && normEmail) {
+        key = `${normName}|${normEmail}`;
+      } else if (normName) {
+        key = `NAME:${normName}`;
+      } else if (normEmail) {
+        key = `EMAIL:${normEmail}`;
+      } else {
+        // No identifying info — keep the record but don't deduplicate
+        return true;
+      }
+
+      if (seen.has(key)) return false; // duplicate — skip
+      seen.add(key);
+      return true;
+    });
+  }
+
   function setActive(btn) {
     [btnGrid, btnTable, btnCorr].forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -213,8 +246,9 @@
 
   async function init() {
     try {
-      const res = await fetch('employees.json');
-      employees = await res.json();
+      const res  = await fetch('employees.json');
+      const raw  = await res.json();
+      employees  = deduplicateEmployees(raw);  // ← deduplicate on load
       render();
     } catch (e) {
       console.error("Data load error", e);
@@ -410,7 +444,8 @@
 })();
 </script>
 </body>
-</html>>
+</html>
+
 
 
 

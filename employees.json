@@ -353,7 +353,7 @@
  {
    "EMPLOYEE NAME": "BRODEN, TAMARA R",
    "EMPLOYEE WORK EMAIL": "Tamara.R.Broden@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "CORRES SPECLST",
    "POSITION SUPERVISORY CODE AND DESCR": "",
@@ -1483,7 +1483,7 @@
  {
    "EMPLOYEE NAME": "KING SMITH, SHEILA O",
    "EMPLOYEE WORK EMAIL": "Sheila.O.King-Smith@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "CORRES SPECLST",
    "POSITION SUPERVISORY CODE AND DESCR": "",
@@ -1493,7 +1493,7 @@
  {
    "EMPLOYEE NAME": "KING, BRENDAN FRANCIS",
    "EMPLOYEE WORK EMAIL": "brendan.f.king@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Marcus, Smallwood",
    "HOCS HQ": { "FIELD": "HQ" },
    "POSITION OFFICIAL TITLE": "MGMT INF SPECLST",
    "POSITION SUPERVISORY CODE AND DESCR": "",
@@ -3352,6 +3352,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

@@ -1,6 +1,6 @@
 [
  {
-   "EMPLOYEE NAME": "JOESPH, GANO L, Acting Associate",
+   "EMPLOYEE NAME": "JOESPH, GANO L, Acting Associate", 
    "EMPLOYEE WORK EMAIL": "joseph.l.gano@hud.gov",
    "SUPERVISOR NAME": "Cooke Jr,Kevin R",
    "HOCS HQ": {
@@ -434,7 +434,7 @@
  {
    "EMPLOYEE NAME": "BRODEN, TAMARA R",
    "EMPLOYEE WORK EMAIL": "Tamara.R.Broden@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Smallwood,Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1814,7 +1814,7 @@
  {
    "EMPLOYEE NAME": "KING SMITH, SHEILA O",
    "EMPLOYEE WORK EMAIL": "Sheila.O.King-Smith@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Smallwood,Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -1826,7 +1826,7 @@
  {
    "EMPLOYEE NAME": "KING, BRENDAN FRANCIS",
    "EMPLOYEE WORK EMAIL": "brendan.f.king@hud.gov",
-   "SUPERVISOR NAME": "Marcus, Smallwood",
+    "SUPERVISOR NAME": "Smallwood,Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -3516,7 +3516,7 @@
  {
    "EMPLOYEE NAME": "TATE, NAKEITA LYNN",
    "EMPLOYEE WORK EMAIL": "NAKEITA.L.TATE@HUD.GOV",
-   "SUPERVISOR NAME": "Smallwood, Marcus",
+    "SUPERVISOR NAME": "Smallwood,Marcus",
    "HOCS HQ": {
       "FIELD": "HQ"
    },
@@ -4113,6 +4113,7 @@
    "GEO REGION": "REGION 2"
 }
 ]
+
 
 
 

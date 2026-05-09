@@ -69,77 +69,22 @@
     /* ══════════════════════════════════════════════════
        CORRESPONDENT CODE — Government Document Style
        ══════════════════════════════════════════════════ */
-    .corr-doc-outer {
-      background: #fff;
-      padding: 2.5rem 2.5rem 3rem;
-    }
-
-    .corr-doc-title {
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-    .corr-doc-title h2 {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #111;
-      margin: 0;
-      line-height: 1.65;
-    }
-
-    .corr-doc-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 0.875rem;
-      border: 1.5px solid #888;
-    }
-
-    .corr-doc-table col.col-name     { width: 22%; }
+    .corr-doc-outer { background: #fff; padding: 2.5rem 2.5rem 3rem; }
+    .corr-doc-title { text-align: center; margin-bottom: 1.75rem; }
+    .corr-doc-title h2 { font-family: 'Georgia', serif; font-size: 1.05rem; font-weight: 700; color: #111; margin: 0; line-height: 1.65; }
+    .corr-doc-table { width: 100%; border-collapse: collapse; font-family: 'Georgia', serif; font-size: 0.875rem; border: 1.5px solid #888; }
+    .corr-doc-table col.col-name { width: 22%; }
     .corr-doc-table col.col-position { width: 38%; }
     .corr-doc-table col.col-location { width: 22%; }
-    .corr-doc-table col.col-code     { width: 18%; }
-
-    /* Header row */
-    .corr-doc-table thead th {
-      background-color: #c8c8c8;
-      color: #111;
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-weight: 700;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      padding: 0.6rem 0.9rem;
-      border: 1.5px solid #888;
-      text-align: left;
-      vertical-align: bottom;
-      line-height: 1.35;
-    }
-
-    /* Alternating rows — white / mid-gray, matching the document screenshot */
+    .corr-doc-table col.col-code { width: 18%; }
+    .corr-doc-table thead th { background-color: #c8c8c8; color: #111; font-family: 'Georgia', serif; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; padding: 0.6rem 0.9rem; border: 1.5px solid #888; text-align: left; }
     .corr-doc-table tbody tr:nth-child(odd)  td { background-color: #ffffff; }
     .corr-doc-table tbody tr:nth-child(even) td { background-color: #d9d9d9; }
-
-    .corr-doc-table tbody tr:hover td {
-      background-color: #c5d9f0 !important;
-    }
-
-    .corr-doc-table tbody td {
-      padding: 0.55rem 0.9rem;
-      border: 1.5px solid #888;
-      color: #111;
-      vertical-align: top;
-      line-height: 1.4;
-    }
-
+    .corr-doc-table tbody tr:hover td { background-color: #c5d9f0 !important; }
+    .corr-doc-table tbody td { padding: 0.55rem 0.9rem; border: 1.5px solid #888; color: #111; vertical-align: top; line-height: 1.4; }
     .corr-doc-table tbody td.td-name { font-weight: 600; }
     .corr-doc-table tbody td.td-code { font-weight: 700; }
-
-    .corr-no-results {
-      text-align: center; padding: 2rem;
-      color: var(--muted); font-style: italic;
-      font-family: 'Georgia', serif;
-    }
+    .corr-no-results { text-align: center; padding: 2rem; color: var(--muted); font-style: italic; font-family: 'Georgia', serif; }
   </style>
 </head>
 <body>
@@ -158,14 +103,12 @@
           <button id="btnGrid"  class="btn active">Grid View</button>
           <button id="btnCorr"  class="btn corr-btn">Correspondent Code</button>
         </nav>
-        <!-- <div id="resultCount" style="font-weight:600; color:var(--brand);"></div> -->
       </div>
       <div class="searchbar-wrapper">
         <input type="text" id="globalSearch" placeholder="Search by name, title, or location..." autocomplete="off">
       </div>
     </section>
   </div>
-
   <div id="directory-root"></div>
 </main>
 
@@ -173,10 +116,9 @@
 (function() {
   const root        = document.getElementById('directory-root');
   const searchInput = document.getElementById('globalSearch');
-  const btnGrid     = document.getElementById('btnGrid');
+  const btnGrid      = document.getElementById('btnGrid');
   const btnTable    = document.getElementById('btnTable');
-  const btnCorr     = document.getElementById('btnCorr');
-  // const resultCount = document.getElementById('resultCount');
+  const btnCorr      = document.getElementById('btnCorr');
 
   let employees    = [];
   let currentView  = 'grid';
@@ -200,40 +142,16 @@
 
   function cleanNameForMatch(name) {
     if (!name) return "";
-    return String(name).toUpperCase()
-      .replace(/JOESPH/g, "JOSEPH")
-      .replace(/[^A-Z,]/g, "")
-      .split(',').map(p => p.trim()).sort().join('');
+    return String(name).toUpperCase().replace(/JOESPH/g, "JOSEPH").replace(/[^A-Z,]/g, "").split(',').map(p => p.trim()).sort().join('');
   }
 
-  /**
-   * Deduplicate employees from the raw JSON array.
-   *
-   * Two records are considered the same person when their
-   * normalised name AND normalised email both match.
-   * If either field is blank we fall back to just the other field.
-   * The first occurrence wins; all subsequent duplicates are dropped.
-   */
   function deduplicateEmployees(raw) {
     const seen = new Set();
     return raw.filter(emp => {
       const normName  = String(emp[k.name]  || "").toUpperCase().replace(/\s+/g, "").trim();
       const normEmail = String(emp[k.email] || "").toLowerCase().replace(/\s+/g, "").trim();
-
-      // Build a composite key; use whichever fields are populated
-      let key = "";
-      if (normName && normEmail) {
-        key = `${normName}|${normEmail}`;
-      } else if (normName) {
-        key = `NAME:${normName}`;
-      } else if (normEmail) {
-        key = `EMAIL:${normEmail}`;
-      } else {
-        // No identifying info — keep the record but don't deduplicate
-        return true;
-      }
-
-      if (seen.has(key)) return false; // duplicate — skip
+      let key = (normName && normEmail) ? `${normName}|${normEmail}` : (normName ? `NAME:${normName}` : `EMAIL:${normEmail}`);
+      if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
     });
@@ -248,15 +166,28 @@
     try {
       const res  = await fetch('employees.json');
       const raw  = await res.json();
-      employees  = deduplicateEmployees(raw);  // ← deduplicate on load
+      employees  = deduplicateEmployees(raw);
+
+      // --- NEW: CHECK URL FOR VIEW MODE ---
+      const urlParams = new URLSearchParams(window.location.search);
+      const view = urlParams.get('view');
+      
+      if (view === 'corr') {
+        currentView = 'corr';
+        setActive(btnCorr);
+      } else if (view === 'table') {
+        currentView = 'table';
+        setActive(btnTable);
+      }
+      // ------------------------------------
+
       render();
     } catch (e) {
       console.error("Data load error", e);
-      root.innerHTML = `<p style="text-align:center;padding:2rem;">Error loading employee data. Please ensure employees.json exists.</p>`;
+      root.innerHTML = `<p style="text-align:center;padding:2rem;">Error loading employee data.</p>`;
     }
   }
 
-  /* ─────────────────────────────────────────────────── */
   function render(filter = "") {
     root.innerHTML = "";
     const term = filter.toLowerCase().trim();
@@ -268,172 +199,68 @@
       if (key) titleLookup[key] = emp[k.title] || "";
     });
 
-    /* ── CORRESPONDENT CODE VIEW ── */
     if (currentView === 'corr') {
-      const filtered = employees.filter(emp =>
-        !term || Object.values(emp).some(v => String(v).toLowerCase().includes(term))
-      );
-
-      // Sort: coded entries first by code alphabetically, then no-code by name
+      const filtered = employees.filter(emp => !term || Object.values(emp).some(v => String(v).toLowerCase().includes(term)));
       filtered.sort((a, b) => {
-        const cA = (a[k.code] || "").trim();
-        const cB = (b[k.code] || "").trim();
-        if (cA && !cB) return -1;
-        if (!cA && cB) return  1;
-        if (cA && cB)  return cA.localeCompare(cB);
+        const cA = (a[k.code] || "").trim(), cB = (b[k.code] || "").trim();
+        if (cA && !cB) return -1; if (!cA && cB) return 1;
+        if (cA && cB) return cA.localeCompare(cB);
         return String(a[k.name]).localeCompare(String(b[k.name]));
       });
 
-      totalVisible = filtered.length;
-      // resultCount.textContent = `${totalVisible} Employees Found`;
-
       const outer = document.createElement('div');
       outer.className = 'corr-doc-outer';
-
-      outer.innerHTML = `
-        <div class="corr-doc-title">
-          <h2>Office of Fair Housing and Equal Opportunity<br>
-              Program Offices and Corresponding Organization Codes</h2>
-        </div>`;
+      outer.innerHTML = `<div class="corr-doc-title"><h2>Office of Fair Housing and Equal Opportunity<br>Program Offices and Corresponding Organization Codes</h2></div>`;
 
       if (!filtered.length) {
         outer.innerHTML += `<p class="corr-no-results">No employees match your search.</p>`;
-        root.appendChild(outer);
-        return;
+      } else {
+        const rows = filtered.map(e => `
+          <tr>
+            <td class="td-name">${formatNameFirstLast(e[k.name]) || '—'}</td>
+            <td>${e[k.title] || '—'}</td>
+            <td>${[e[k.city], e[k.room] ? `Room ${e[k.room]}` : ''].filter(Boolean).join('<br>') || '—'}</td>
+            <td class="td-code">${e[k.code] || '—'}</td>
+          </tr>`).join('');
+        outer.innerHTML += `<table class="corr-doc-table"><colgroup><col class="col-name"><col class="col-position"><col class="col-location"><col class="col-code"></colgroup>
+          <thead><tr><th>Name</th><th>Position</th><th>Location /<br>Room Number</th><th>Correspondence<br>Code</th></tr></thead><tbody>${rows}</tbody></table>`;
       }
-
-      const rows = filtered.map(e => {
-        const name     = formatNameFirstLast(e[k.name]) || '—';
-        const position = e[k.title] || '—';
-        const locLine  = [e[k.city], e[k.room] ? `Room ${e[k.room]}` : '']
-                           .filter(Boolean).join('<br>') || '—';
-        const code     = e[k.code] || '—';
-        return `<tr>
-          <td class="td-name">${name}</td>
-          <td>${position}</td>
-          <td>${locLine}</td>
-          <td class="td-code">${code}</td>
-        </tr>`;
-      }).join('');
-
-      outer.innerHTML += `
-        <table class="corr-doc-table">
-          <colgroup>
-            <col class="col-name">
-            <col class="col-position">
-            <col class="col-location">
-            <col class="col-code">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Location /<br>Room Number</th>
-              <th>Correspondence<br>Code</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>`;
-
       root.appendChild(outer);
       return;
     }
 
-    /* ── GRID / TABLE VIEWS ── */
     const hierarchy = {};
-
     employees.forEach(emp => {
-      const isMatch = Object.values(emp).some(v => String(v).toLowerCase().includes(term));
-      if (term && !isMatch) return;
-      totalVisible++;
-
+      if (term && !Object.values(emp).some(v => String(v).toLowerCase().includes(term))) return;
       let reg = emp[k.geo] || "Other";
       const city = String(emp[k.city]).toLowerCase();
-      const supervisor = String(emp[k.sup] || "Office Staff").trim();
-      const supNorm    = cleanNameForMatch(supervisor);
-
-      if (reg.toLowerCase().includes("hq") ||
-          (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) {
-        reg = "Headquarters Senior Leadership";
-      }
-
+      if (reg.toLowerCase().includes("hq") || (reg.includes("3") && (city.includes("washington") || city.includes("dc")))) reg = "Headquarters Senior Leadership";
       if (!hierarchy[reg]) hierarchy[reg] = {};
-
-      const rawTitle   = titleLookup[supNorm] || "";
-      const cleanTitle = rawTitle.replace(/Lead\/Supervisor:?\s?/gi, "").trim();
-      const dispSup    = formatNameFirstLast(supervisor);
-      let groupKey     = "";
-
-      if (reg === "Headquarters Senior Leadership") {
-        if (supNorm.includes("TRAINOR")) {
-          groupKey = `10_ASSISTANT SECRETARY: HON. CRAIG TRAINOR & STAFF`;
-        } else if (supNorm.includes("COOKE")) {
-          groupKey = `20_GENERAL DEPUTY ASSISTANT SECRETARY: KEVIN R. COOKE JR. & STAFF`;
-        } else {
-          groupKey = `30_LEAD/SUPERVISOR: ${cleanTitle ? cleanTitle + ': ' : ''}${dispSup} & STAFF`;
-        }
-      } else {
-        groupKey = `LEAD/SUPERVISOR: ${cleanTitle ? cleanTitle + ': ' : ''}${dispSup} & STAFF`;
-      }
-
+      const supNorm = cleanNameForMatch(emp[k.sup] || "Office Staff");
+      const cleanTitle = (titleLookup[supNorm] || "").replace(/Lead\/Supervisor:?\s?/gi, "").trim();
+      const dispSup = formatNameFirstLast(emp[k.sup] || "Office Staff");
+      let groupKey = reg === "Headquarters Senior Leadership" ? (supNorm.includes("TRAINOR") ? `10_ASSISTANT SECRETARY` : (supNorm.includes("COOKE") ? `20_GDAS` : `30_LEAD: ${cleanTitle}: ${dispSup}`)) : `LEAD: ${cleanTitle}: ${dispSup}`;
       if (!hierarchy[reg][groupKey]) hierarchy[reg][groupKey] = [];
       hierarchy[reg][groupKey].push(emp);
     });
 
-    // resultCount.textContent = `${totalVisible} Employees Found`;
-
-    const sortedRegions = Object.keys(hierarchy).sort((a, b) => {
-      if (a === "Headquarters Senior Leadership") return -1;
-      return a.localeCompare(b);
-    });
-
-    sortedRegions.forEach(region => {
+    Object.keys(hierarchy).sort((a,b) => a === "Headquarters Senior Leadership" ? -1 : a.localeCompare(b)).forEach(region => {
       const regionBox = document.createElement('div');
       regionBox.innerHTML = `<h2 class="region-title">${region}</h2>`;
-
       Object.keys(hierarchy[region]).sort().forEach(groupKey => {
-        const staff = hierarchy[region][groupKey];
-        staff.sort((a, b) => String(a[k.name]).toUpperCase().localeCompare(String(b[k.name]).toUpperCase()));
-
-        const displayHeader = groupKey.includes("_") ? groupKey.split("_")[1] : groupKey;
-        const hColor = region === "Headquarters Senior Leadership" ? "var(--accent-red)" : "var(--brand)";
-
+        const staff = hierarchy[region][groupKey].sort((a,b) => String(a[k.name]).localeCompare(String(b[k.name])));
         const sec = document.createElement('section');
         sec.className = 'section';
-        sec.innerHTML = `
-          <div class="section-header-main" style="background:#f1f5f9; border-left:6px solid ${hColor};">
-            <h3 style="margin:0; font-size:0.85rem; color:${hColor}; text-transform:uppercase; letter-spacing:0.04em;">${displayHeader}</h3>
-          </div>
-          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">
-            ${currentView === 'grid' ? renderGrid(staff) : renderTable(staff)}
-          </div>`;
+        sec.innerHTML = `<div class="section-header-main" style="background:#f1f5f9; border-left:6px solid var(--brand);"><h3 style="margin:0; font-size:0.85rem; text-transform:uppercase;">${groupKey.includes("_") ? groupKey.split("_")[1] : groupKey}</h3></div>
+          <div class="${currentView === 'grid' ? 'grid' : 'table-wrap'}">${currentView === 'grid' ? renderGrid(staff) : renderTable(staff)}</div>`;
         regionBox.appendChild(sec);
       });
       root.appendChild(regionBox);
     });
   }
 
-  function renderGrid(data) {
-    return data.map(e => `
-      <article class="card">
-        <h4>${e[k.name]} <span class="position-text">${e[k.title]}</span></h4>
-        <div style="font-size:0.85rem; margin-top:0.75rem;">
-          <a href="mailto:${e[k.email]}" style="color:var(--brand); text-decoration:none; font-weight:600;">${e[k.email]}</a><br>
-          <span style="color:var(--muted)">${e[k.city]}</span>
-        </div>
-      </article>`).join('');
-  }
-
-  function renderTable(data) {
-    const rows = data.map(e => `
-      <tr>
-        <td style="font-weight:700;">${e[k.name]}</td>
-        <td>${e[k.title]}</td>
-        <td>${e[k.email]}</td>
-        <td>${e[k.city]}</td>
-      </tr>`).join('');
-    return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }
+  function renderGrid(data) { return data.map(e => `<article class="card"><h4>${e[k.name]} <span class="position-text">${e[k.title]}</span></h4><div style="font-size:0.85rem; margin-top:0.75rem;"><a href="mailto:${e[k.email]}" style="color:var(--brand); text-decoration:none; font-weight:600;">${e[k.email]}</a><br><span style="color:var(--muted)">${e[k.city]}</span></div></article>`).join(''); }
+  function renderTable(data) { const rows = data.map(e => `<tr><td style="font-weight:700;">${e[k.name]}</td><td>${e[k.title]}</td><td>${e[k.email]}</td><td>${e[k.city]}</td></tr>`).join(''); return `<table><thead><tr><th>Name</th><th>Position</th><th>Email</th><th>Location</th></tr></thead><tbody>${rows}</tbody></table>`; }
 
   searchInput.addEventListener('input', e => render(e.target.value));
   btnGrid.onclick  = () => { currentView = 'grid';  setActive(btnGrid);  render(searchInput.value); };
